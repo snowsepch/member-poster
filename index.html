@@ -471,9 +471,8 @@ function toggleHeaderColorBar() {
 
 const CONFIG = {
   EXCLUDED_FAMILIES: [
-    // 本活動為教育價，iPhone 不在活動範圍內
-    'iPhone 16e', 'iPhone 16', 'iPhone 16 Plus',
-    'iPhone 17e', 'iPhone 17', 'iPhone 17 Pro', 'iPhone 17 Pro Max', 'iPhone Air',
+    // 每檔期手動調整：填入不想顯示在海報的機型
+    // 例如：'iPhone 16e', 'Mac mini M4',
   ],
   MAX_FAMILIES:  { iPhone:6, iPad:6, Mac:4, AppleWatch:3, AirPods:4 },
   MAX_VARIANTS:  { iPhone:4, iPad:4, Mac:5, AppleWatch:8, AirPods:3 },
@@ -574,16 +573,25 @@ const PRODUCT_FAMILIES = [
 
 // 贈品文字（每檔期手動維護）— 只放贈品，不放折扣
 const GIFT_KEYWORDS = {
-  'MacBook Neo':            '滿萬送 300 配件金',
-  'MacBook Air M5 13"':     '滿萬送 400 配件金',
-  'MacBook Air M5 15"':     '滿萬送 400 配件金',
+  // iPhone（每檔期維護）
+  'iPhone 16e':           '滿萬送 300 配件金',
+  'iPhone 17':            '送市價 1,580 UAG 保護殼',
+  'iPhone 17 Pro':        '送市價 990 保護貼',
+  'iPhone 17 Pro Max':    '送市價 790 保護貼',
+  // Mac
+  'MacBook Neo':            '滿萬送 200 配件金',
+  'MacBook Air M5 13"':     '滿萬送 300 配件金',
+  'MacBook Air M5 15"':     '滿萬送 300 配件金',
   'MacBook Pro 14" M5':     '滿萬送 400 配件金',
   'MacBook Pro 14" M4 Pro': '停產清倉優惠',
   'MacBook Pro 14" M5 Pro': '滿萬送 400 配件金',
   'MacBook Pro 14" M5 Max': '滿萬送 400 配件金',
-  'MacBook Pro 16" M5':     '滿萬送 400 配件金',
-  'MacBook Pro 16" M5 Pro': '滿萬送 400 配件金',
-  'MacBook Pro 16" M5 Max': '滿萬送 400 配件金',
+  'MacBook Pro 16" M5':     '滿萬送 200 配件金',
+  'MacBook Pro 16" M5 Pro': '滿萬送 200 配件金',
+  'MacBook Pro 16" M5 Max': '滿萬送 200 配件金',
+  // iPad
+  'iPad Air M4 11"':      '送市價 690 充電器',
+  'iPad Air M4 13"':      '送市價 1,080 保護殼',
 };
 // 折扣說明備用（只在 PDF 無法自動算出折扣時顯示）— 不與 GIFT_KEYWORDS 重疊
 const PROMO_FALLBACK = {
@@ -718,15 +726,19 @@ function tryParseLine(seg, cats) {
         if (colorM) spec = colorM[1];
       }
     } else if (cat === 'iPad' || cat === 'iPhone') {
-      // iPad/iPhone：Wi-Fi 128G / LTE 256G 格式
-      const conn = /LTE|行動網路|Cellular/i.test(name) ? 'LTE' : 'Wi-Fi';
       const storAll = [...name.matchAll(/(\d+)\s*(?:GB?|G)\b/gi)]
-        .filter(x => parseInt(x[1]) >= 16)   // 排掉 CPU/GPU 核心數
+        .filter(x => parseInt(x[1]) >= 16 && !_cpuGpuNums.has(parseInt(x[1])))
         .map(x => x[1] + 'G');
-      // 1T 格式
-      const tbM2 = name.match(/\/(\d+T)\b/i) || name.match(/\b(\d+T)\b(?!B)/i);
-      const stor = tbM2 ? tbM2[1].toUpperCase() : (storAll.length ? storAll[storAll.length-1] : '');
-      if (stor) spec = `${conn} ${stor}`;
+      const tbM2 = name.match(/(\d+TB)\b/i) || name.match(/(\d+T)\b(?!B)/i);
+      const stor = tbM2 ? tbM2[1].toUpperCase().replace('TB','TB') : (storAll.length ? storAll[storAll.length-1] : '');
+      if (cat === 'iPhone') {
+        // iPhone 只顯示容量，不顯示 Wi-Fi/LTE
+        if (stor) spec = stor;
+      } else {
+        // iPad 顯示 Wi-Fi/LTE + 容量
+        const conn = /LTE|行動網路|Cellular/i.test(name) ? 'LTE' : 'Wi-Fi';
+        if (stor) spec = `${conn} ${stor}`;
+      }
     } else if (tbM) {
       const tbM2 = name.match(/\/(\d+T)\b/i);
       spec = tbM2 ? tbM2[1].toUpperCase() : tbM[1].replace(/\s+/g,'').toUpperCase();
