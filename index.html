@@ -170,6 +170,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 </style>
 </head>
 <body>
+<script>
+const _storePoster = decodeURIComponent(new URLSearchParams(location.search).get('store') || '右昌 Apple Shop');
+</script>
 
 <!-- Bar 1 主題 -->
 <div class="cbar" id="b1">
@@ -183,7 +186,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 <!-- Bar 2 操作 -->
 <div class="cbar" id="b2">
-  <div class="pbadge">右昌 <em>會員優惠</em> 海報</div>
+  <div class="pbadge" id="pbadge-store">右昌 <em>會員優惠</em> 海報</div>
   <input type="file" id="pfi" accept=".pdf">
   <button class="bbtn pdf" onclick="document.getElementById('pfi').click()">📋 選擇操盤 PDF</button>
 
@@ -339,7 +342,7 @@ function makePoster(cfg, dateStr, productsHTML){
   return `<div class="poster" id="poster-${cfg.id}">
   <div class="store-bar">
     <div style="display:flex;align-items:center;">
-      <span class="sname" contenteditable="true">右昌 Apple Shop</span>
+      <span class="sname" contenteditable="true">${_storePoster}</span>
       <span class="ssep">|</span>
       <span class="ssub" contenteditable="true">Apple Authorized Reseller</span>
     </div>
@@ -363,7 +366,7 @@ function makePoster(cfg, dateStr, productsHTML){
   <div class="pfoot">
     <div class="fnote" contenteditable="true">● 分期0利率：3 / 6 / 12期，限持有效信用卡&#10;● 活動期間如有異動，以現場公告為準</div>
     <div class="fbrand">
-      <div class="fstore" contenteditable="true">右昌 Apple Shop</div>
+      <div class="fstore" contenteditable="true">${_storePoster}</div>
       <div class="freseller">Apple Authorized Reseller</div>
     </div>
   </div>
@@ -583,6 +586,9 @@ window.addEventListener('afterprint', ()=>{
 
 window.addEventListener('load',()=>{
   setT('dp');setSc(85);initPosters();
+  // 更新 pbadge 店名
+  const pb = document.getElementById('pbadge-store');
+  if (pb) pb.innerHTML = _storePoster + ' <em>會員優惠</em> 海報';
   // 重置所有滑桿顯示值到預設
   document.querySelectorAll('.sv').forEach(el=>{
     const input = el.parentElement.querySelector('input[type=range]');
