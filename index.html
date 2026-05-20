@@ -138,41 +138,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 /* ══ 列印：每張海報分頁 ══ */
 @media print{
-  .row-del,.row-add{display:none!important;}
-  @page{
-    size: A4 portrait;
-    margin: 0;
-  }
-  html{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .cbar, #cbar-sticky, #rbtn, #rpanel { display: none !important; }
-  body { margin: 0; padding: 0; background: white; }
-  #pa { padding: 0; margin: 0; display: block; }
-  #psw { transform: none !important; margin: 0; }
-  #posters-wrap { margin: 0; padding: 0; }
-  .poster {
-    display: block;
-    position: relative;
-    width: 210mm;
-    height: 297mm;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    outline: none;
-    break-before: page;
-    page-break-before: always;
-  }
-  .poster:first-child {
-    break-before: avoid;
-    page-break-before: avoid;
-  }
-  .poster-inner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 794px;
-    transform-origin: top left;
-  }
-  [contenteditable] { outline: none !important; }
+  @page{size:A4 portrait;margin:0;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
+  body{margin:0;padding:0;background:white;}
+  #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;}
+  .poster{display:block;width:210mm;margin:0;padding:0;outline:none;overflow:hidden;break-after:page;page-break-after:always;}
+  .poster:last-child{break-after:avoid;page-break-after:avoid;}
+  .poster-inner{width:794px;transform-origin:top left;}
+  [contenteditable]{outline:none!important;}
 }
 </style>
 </head>
@@ -686,7 +660,7 @@ function calcPrintZoom(){
 
 function doPrint(){
   calcPrintZoom();
-  setTimeout(()=>window.print(), 80);
+  setTimeout(()=>window.print(), 200);
 }
 
 if(window.matchMedia){
