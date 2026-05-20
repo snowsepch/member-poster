@@ -152,6 +152,45 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   .poster{display:block;width:210mm;margin:0;padding:0;outline:none;position:relative;break-after:page;page-break-after:always;}
   .poster:last-child{break-after:auto;page-break-after:auto;}
   .poster-inner{width:794px;}
+  /* — store bar — */
+  .store-bar{padding:7px 22px!important;}
+  .sname{font-size:13px!important;}
+  .sbadge{padding:3px 8px!important;font-size:9px!important;}
+  /* — 頁首 — */
+  .ph{min-height:0!important;padding:12px 22px 10px!important;}
+  .ph-ghost{display:none!important;}
+  .ph-toprow{margin-bottom:6px!important;}
+  .ph-eye{margin-bottom:2px!important;font-size:8px!important;}
+  .ph-title{font-size:58px!important;line-height:.88!important;}
+  .ph-sub{font-size:11px!important;margin-top:4px!important;}
+  .date-pill{padding:3px 8px!important;font-size:10px!important;}
+  .mem-pill{padding:3px 10px!important;font-size:10px!important;}
+  /* — 日期 / 服務 — */
+  .dbar{padding:5px 22px!important;}
+  .dtext{font-size:12px!important;}
+  .svc{padding:5px 10px!important;font-size:9px!important;}
+  /* — 品類 — */
+  .catrow{padding:4px 16px!important;font-size:10px!important;}
+  /* — 產品格 — */
+  .pcol{padding:6px 12px 7px!important;}
+  .phead{margin-bottom:2px!important;}
+  .pname{font-size:12px!important;}
+  .psp{font-size:22px!important;}
+  .psup{font-size:7px!important;}
+  .pbadge2{padding:1px 5px 1px 3px!important;margin-bottom:3px!important;}
+  .bbar{height:8px!important;}
+  .btxt{font-size:8px!important;}
+  .srow{padding:2px 0!important;}
+  .slbl{font-size:9px!important;}
+  .sprice{font-size:14px!important;}
+  .sorig{font-size:8px!important;}
+  /* 每商品最多顯示 3 條規格（節省高度） */
+  .pcol .srow~.srow~.srow~.srow{display:none!important;}
+  /* — 頁尾 — */
+  .pfoot{padding:7px 22px!important;}
+  .fnote{font-size:8px!important;line-height:1.5!important;}
+  .fstore{font-size:11px!important;}
+  .freseller{font-size:7px!important;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -686,34 +725,11 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-let _printZoomApplied=false;
-function _applyPrintZoom(){
-  if(_printZoomApplied)return;
-  _printZoomApplied=true;
-  const A4H=297*3.7795275591;
-  document.querySelectorAll('.poster').forEach(poster=>{
-    const inner=poster.querySelector('.poster-inner');
-    if(!inner)return;
-    inner.style.transform='';inner.style.transformOrigin='';
-    inner.style.marginBottom='';inner.style.marginRight='';
-    void inner.offsetHeight;
-    const natH=inner.scrollHeight;
-    const target=A4H*0.97;
-    if(natH<=target)return;
-    const z=target/natH;
-    inner.style.transformOrigin='top left';
-    inner.style.transform=`scale(${z.toFixed(4)})`;
-    inner.style.marginBottom=`-${Math.round(natH*(1-z))}px`;
-    inner.style.marginRight=`-${Math.round(794*(1-z))}px`;
-  });
-}
-function doPrint(){_applyPrintZoom();setTimeout(()=>window.print(),500);}
-window.addEventListener('beforeprint',_applyPrintZoom);
+function doPrint(){window.print();}
 window.addEventListener('afterprint',()=>{
-  _printZoomApplied=false;
   document.querySelectorAll('.poster-inner').forEach(inner=>{
-    inner.style.zoom='';inner.style.transform='';inner.style.transformOrigin='';
-    inner.style.marginBottom='';inner.style.marginRight='';
+    inner.style.transform='';inner.style.transformOrigin='';
+    inner.style.marginBottom='';inner.style.marginRight='';inner.style.zoom='';
   });
 });
 
