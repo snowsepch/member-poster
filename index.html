@@ -45,7 +45,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 /* ══ 海報區 ══ */
 #pa{display:flex;justify-content:center;padding:28px 16px 80px;}
-#psw{transform-origin:top center;transition:transform .2s;}
+#psw{transition:zoom .15s;transform-origin:top center;}
 
 /* 四張海報垂直排列 */
 .poster-inner{width:794px;}
@@ -142,8 +142,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
   body{margin:0;padding:0;min-height:0!important;background:white;}
-  #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;}
-  .poster{display:block;width:210mm;margin:0;padding:0;outline:none;}
+  #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;}
+  .poster{display:block;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;}
   .poster:not(:last-child){break-after:page;}
   .poster-inner{width:794px;}
   [contenteditable]{outline:none!important;}
@@ -223,7 +223,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 <!-- Bar 3 -->
 <div class="cbar" id="b3">
-  🖨 列印：Cmd+P → 紙張 <strong>A4</strong> → 縮放選 <b>「縮放至可列印區域」</b> → 勾 <b>「列印背景」</b> → 共 <b>4頁</b>
+  🖨 縮放建議：<b>80%</b> Watch 完整顯示 ／ <b>85%</b> 一般使用 — 點「🖨 列印」→ A4 直向 → 勾 <b>「列印背景」</b> → 共 <b>4頁</b>
 </div>
 </div><!-- /cbar-sticky -->
 
@@ -287,7 +287,7 @@ function setT(k){
 
 /* ══ 字體 ══ */
 function sc(cls,v,vid){document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-size',v+'px','important'));const vl=document.getElementById(vid);if(vl)vl.textContent=v+'px';_as();}
-function setSc(v){document.getElementById('psw').style.transform=`scale(${v/100})`;document.getElementById('vsc').textContent=v+'%';}
+function setSc(v){document.getElementById('psw').style.zoom=v/100;document.getElementById('vsc').textContent=v+'%';}
 function tp(id){document.querySelectorAll('.pop').forEach(p=>{if(p.id!==id)p.classList.remove('on');});document.getElementById(id).classList.toggle('on');}
 document.addEventListener('click',e=>{if(!e.target.closest('.pwrap'))document.querySelectorAll('.pop').forEach(p=>p.classList.remove('on'));});
 
@@ -642,25 +642,15 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-/* 列印前直接把 zoom 寫到 inline style，印後還原 */
-function calcPrintZoom(){
-  const a4H = 297 * 3.7795275591;
-  document.querySelectorAll('.poster-inner').forEach(inner=>{
-    const h = inner.scrollHeight;
-    const z = h > a4H ? ((a4H / h) * 0.97).toFixed(4) : '1';
-    inner.style.zoom = z;
-  });
-}
-
+/* 列印前把畫面縮放比例套到 poster-inner，印後還原 */
 function doPrint(){
-  calcPrintZoom();
+  const z = parseFloat(document.getElementById('psw').style.zoom) || 0.85;
+  document.querySelectorAll('.poster-inner').forEach(inner=>{ inner.style.zoom = z; });
   setTimeout(()=>window.print(), 300);
 }
 
 window.addEventListener('afterprint', ()=>{
-  document.querySelectorAll('.poster-inner').forEach(inner=>{
-    inner.style.zoom = '';
-  });
+  document.querySelectorAll('.poster-inner').forEach(inner=>{ inner.style.zoom = ''; });
 });
 
 window.addEventListener('load',()=>{
