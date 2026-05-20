@@ -159,18 +159,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
     outline: none;
     break-before: page;
     page-break-before: always;
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
   .poster:first-child {
     break-before: avoid;
     page-break-before: avoid;
   }
   .poster-inner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    zoom: 0.79;
     width: 794px;
-    transform-origin: top left;
   }
   [contenteditable] { outline: none !important; }
 }
@@ -620,20 +617,17 @@ document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),
 
 /* 列印前動態計算每張海報的 zoom */
 function calcPrintZoom(){
-  const A4_W_MM = 210;
-  const A4_H_MM = 297;
-  const PX_PER_MM = 3.7795275591;
-  const a4W = A4_W_MM * PX_PER_MM;
-  const a4H = A4_H_MM * PX_PER_MM;
+  const a4W = 210 * 3.7795275591;
+  const a4H = 297 * 3.7795275591;
 
   document.querySelectorAll('.poster-inner').forEach(inner=>{
     inner.style.zoom = '';
+    void inner.offsetHeight; // force reflow before measuring
     const h = inner.scrollHeight;
-    const w = 794;
-    const zW = a4W / w;
     const zH = a4H / h;
-    const z = Math.min(zW, zH, 1);
-    inner.style.zoom = z;
+    const zW = a4W / 794;
+    const z = Math.min(zH, zW, 1) * 0.99; // 1% safety margin
+    inner.style.zoom = String(z);
   });
 }
 
