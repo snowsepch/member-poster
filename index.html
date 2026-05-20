@@ -647,7 +647,7 @@ function calcPrintZoom(){
   const a4H = 297 * 3.7795275591;
   document.querySelectorAll('.poster-inner').forEach(inner=>{
     const h = inner.scrollHeight;
-    const z = h > a4H ? ((a4H / h) * 0.88).toFixed(4) : '1';
+    const z = h > a4H ? ((a4H / h) * 0.97).toFixed(4) : '1';
     inner.style.zoom = z;
   });
 }
