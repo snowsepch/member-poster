@@ -150,6 +150,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   #posters-wrap { margin: 0; padding: 0; }
   .poster {
     display: block;
+    position: relative;
     width: 210mm;
     height: 297mm;
     overflow: hidden;
@@ -158,13 +159,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
     outline: none;
     break-before: page;
     page-break-before: always;
-    position: relative;
   }
   .poster:first-child {
     break-before: avoid;
     page-break-before: avoid;
   }
   .poster-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
     zoom: 0.79;
     width: 794px;
     transform-origin: top left;
