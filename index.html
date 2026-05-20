@@ -666,15 +666,22 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-/* 列印前動態計算每張海報的 zoom */
+/* 列印前動態計算每張海報的 zoom，注入 @media print CSS */
 function calcPrintZoom(){
   const a4H = 297 * 3.7795275591;
+  let css = '';
   document.querySelectorAll('.poster-inner').forEach(inner=>{
-    inner.style.zoom = '';
-    void inner.offsetHeight;
+    const poster = inner.closest('.poster');
+    if(!poster) return;
     const h = inner.scrollHeight;
-    if(h > a4H) inner.style.zoom = String((a4H / h) * 0.99);
+    if(h > a4H){
+      const z = ((a4H / h) * 0.99).toFixed(4);
+      css += `  #${poster.id} .poster-inner { zoom:${z} !important; }\n`;
+    }
   });
+  let el = document.getElementById('pz-style');
+  if(!el){ el=document.createElement('style'); el.id='pz-style'; document.head.appendChild(el); }
+  el.textContent = css ? `@media print {\n${css}}` : '';
 }
 
 function doPrint(){
@@ -690,7 +697,8 @@ if(window.matchMedia){
 }
 window.addEventListener('beforeprint', calcPrintZoom);
 window.addEventListener('afterprint', ()=>{
-  document.querySelectorAll('.poster-inner').forEach(el=>el.style.zoom='');
+  const el = document.getElementById('pz-style');
+  if(el) el.textContent = '';
 });
 
 window.addEventListener('load',()=>{
