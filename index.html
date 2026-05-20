@@ -149,9 +149,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
   body{margin:0;padding:0;min-height:0!important;background:white;}
   #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;height:auto!important;}
-  .poster{display:block;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;position:relative;break-inside:avoid;page-break-inside:avoid;}
-  .poster:not(:last-child){break-after:page;}
-  .poster-inner{width:794px;}
+  .poster{display:block;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;position:relative;break-after:page;page-break-after:always;}
+  .poster:last-child{break-after:auto;page-break-after:auto;}
+  .poster-inner{width:794px;zoom:0.88;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -694,13 +694,15 @@ function _applyPrintZoom(){
   const A4H=297*3.7795275591;
   document.querySelectorAll('.poster').forEach(poster=>{
     const inner=poster.querySelector('.poster-inner');
+    if(!inner)return;
     inner.style.zoom='';
+    void inner.offsetHeight;
     const natH=inner.scrollHeight;
-    inner.style.zoom=Math.min(0.98,A4H*0.97/Math.max(natH,1));
+    if(natH>0)inner.style.zoom=Math.min(0.98,A4H*0.97/natH);
   });
 }
 /* 列印前量每張海報自然高度，自動算最佳縮放確保頁尾不被裁 */
-function doPrint(){_applyPrintZoom();setTimeout(()=>window.print(),250);}
+function doPrint(){_applyPrintZoom();setTimeout(()=>window.print(),400);}
 window.addEventListener('beforeprint',_applyPrintZoom);
 window.addEventListener('afterprint',()=>{
   _printZoomApplied=false;
