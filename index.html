@@ -679,20 +679,20 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-/* 列印前量每張海報自然高度，自動算最佳縮放確保頁尾不被裁 */
-function doPrint(){
-  const A4H = 297 * 3.7795275591;
+function _applyPrintZoom(){
+  const A4H=297*3.7795275591;
   document.querySelectorAll('.poster').forEach(poster=>{
-    const inner = poster.querySelector('.poster-inner');
-    inner.style.zoom = '';
-    const natH = inner.scrollHeight;
-    inner.style.zoom = Math.min(0.98, A4H * 0.97 / Math.max(natH, 1));
+    const inner=poster.querySelector('.poster-inner');
+    inner.style.zoom='';
+    const natH=inner.scrollHeight;
+    inner.style.zoom=Math.min(0.98,A4H*0.97/Math.max(natH,1));
   });
-  setTimeout(()=>window.print(), 300);
 }
-
-window.addEventListener('afterprint', ()=>{
-  document.querySelectorAll('.poster-inner').forEach(inner=>{ inner.style.zoom = ''; });
+/* 列印前量每張海報自然高度，自動算最佳縮放確保頁尾不被裁 */
+function doPrint(){_applyPrintZoom();setTimeout(()=>window.print(),300);}
+window.addEventListener('beforeprint',_applyPrintZoom);
+window.addEventListener('afterprint',()=>{
+  document.querySelectorAll('.poster-inner').forEach(inner=>{inner.style.zoom='';});
 });
 
 window.addEventListener('load',()=>{
