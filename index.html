@@ -149,7 +149,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
   body{margin:0;padding:0;min-height:0!important;background:white;}
   #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;}
-  .poster{display:block;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;break-inside:avoid;page-break-inside:avoid;}
+  .poster{display:block;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;position:relative;break-inside:avoid;page-break-inside:avoid;}
   .poster:not(:last-child){break-after:page;}
   .poster-inner{width:794px;}
   [contenteditable]{outline:none!important;}
@@ -679,7 +679,11 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
+let _printPrevZoom=null;
 function _applyPrintZoom(){
+  const psw=document.getElementById('psw');
+  _printPrevZoom=psw.style.zoom;
+  psw.style.zoom='1'; /* 強制歸零 #psw zoom，避免父層縮放讓海報超過 A4 */
   const A4H=297*3.7795275591;
   document.querySelectorAll('.poster').forEach(poster=>{
     const inner=poster.querySelector('.poster-inner');
@@ -692,6 +696,9 @@ function _applyPrintZoom(){
 function doPrint(){_applyPrintZoom();setTimeout(()=>window.print(),300);}
 window.addEventListener('beforeprint',_applyPrintZoom);
 window.addEventListener('afterprint',()=>{
+  const psw=document.getElementById('psw');
+  psw.style.zoom=_printPrevZoom||'';
+  _printPrevZoom=null;
   document.querySelectorAll('.poster-inner').forEach(inner=>{inner.style.zoom='';});
 });
 
