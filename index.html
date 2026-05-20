@@ -54,7 +54,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   background:var(--poster-bg);
   outline:1px solid rgba(0,0,0,.08);
   overflow:hidden;
-  margin-bottom:40px; /* 海報間距 */
+  margin-bottom:40px;
 }
 .poster:last-child{margin-bottom:0;}
 
@@ -93,8 +93,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .pcol:last-child{border-right:none;}
 .phead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;}
 .pname{font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:900;color:var(--text);flex:1;}
-.pstart{text-align:right;flex-shrink:0;}
-.psup{font-size:8px;color:var(--muted);display:block;text-align:right;line-height:1;margin-bottom:1px;}
+.pstart{text-align:right;flex-shrink:0;display:flex;align-items:baseline;gap:2px;justify-content:flex-end;}
+.psup{font-size:9px;color:var(--muted);line-height:1;}
 .psp{font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1;color:var(--price-col);letter-spacing:.02em;}
 .pbadge2{display:inline-flex;align-items:center;background:var(--badge-bg);border-radius:2px;padding:3px 8px 3px 4px;margin-bottom:8px;max-width:100%;}
 .bbar{width:3px;height:11px;border-radius:1px;background:var(--badge-bar);margin-right:6px;flex-shrink:0;}
@@ -129,8 +129,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 #rsub:disabled{background:#1e1e1e;color:#333;cursor:not-allowed;}
 #rok{display:none;text-align:center;padding:7px 0;font-size:11px;color:#3DAB8A;font-weight:700;}
 
+/* 規格列新增/刪除按鈕 */
+.row-del{display:inline-flex;flex-shrink:0;margin-left:6px;background:none;border:none;color:#c44;font-size:10px;cursor:pointer;padding:1px 4px;border-radius:3px;line-height:1;align-items:center;opacity:.5;}
+.row-del:hover{opacity:1;}
+.row-add{display:block;width:100%;background:none;border:1px dashed #ccc;border-radius:3px;color:#aaa;cursor:pointer;font-size:9px;font-family:'Noto Sans TC',sans-serif;padding:3px 8px;margin-top:3px;text-align:left;box-sizing:border-box;}
+.row-add:hover{border-color:#888;color:#666;}
+
 /* ══ 列印：每張海報分頁 ══ */
 @media print{
+  .row-del,.row-add{display:none!important;}
   @page{
     size: A4 portrait;
     margin: 0;
@@ -158,9 +165,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
     page-break-before: avoid;
   }
   .poster-inner {
-    /* zoom 讓 794px → 210mm，比例 = 210mm/794px ≈ 0.7937 */
-    /* 但要讓高度也塞進 297mm，實際要動態算 */
-    /* 先用固定 zoom，讓寬度對齊 A4 */
     zoom: 0.79;
     width: 794px;
     transform-origin: top left;
@@ -170,9 +174,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 </style>
 </head>
 <body>
-<script>
-const _storePoster = decodeURIComponent(new URLSearchParams(location.search).get('store') || '右昌 Apple Shop');
-</script>
 
 <!-- Bar 1 主題 -->
 <div class="cbar" id="b1">
@@ -186,7 +187,7 @@ const _storePoster = decodeURIComponent(new URLSearchParams(location.search).get
 
 <!-- Bar 2 操作 -->
 <div class="cbar" id="b2">
-  <div class="pbadge" id="pbadge-store">右昌 <em>會員優惠</em> 海報</div>
+  <div class="pbadge">右昌 <em>會員優惠</em> 海報</div>
   <input type="file" id="pfi" accept=".pdf">
   <button class="bbtn pdf" onclick="document.getElementById('pfi').click()">📋 選擇操盤 PDF</button>
 
@@ -244,6 +245,17 @@ const _storePoster = decodeURIComponent(new URLSearchParams(location.search).get
   🖨 列印：Cmd+P → 紙張 <strong>A4</strong> → 縮放選 <b>「縮放至可列印區域」</b> → 勾 <b>「列印背景」</b> → 共 <b>4頁</b>
 </div>
 
+<!-- Debug 面板 -->
+<div id="dbgpanel" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#111;border:1.5px solid #333;border-radius:10px;width:90%;max-width:800px;padding:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="color:#f5e200;font-size:13px;font-weight:700;">🔍 PDF 解析診斷</span>
+      <button onclick="document.getElementById('dbgpanel').style.display='none'" style="background:#333;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:11px;">關閉</button>
+    </div>
+    <textarea id="dbgout" style="width:100%;height:60vh;background:#080808;color:#aaffaa;border:1px solid #333;border-radius:5px;padding:10px;font-size:11px;font-family:monospace;resize:none;" readonly></textarea>
+  </div>
+</div>
+
 <!-- ══ 四張海報垂直排列 ══ -->
 <div id="pa"><div id="psw">
 
@@ -299,20 +311,16 @@ document.addEventListener('click',e=>{if(!e.target.closest('.pwrap'))document.qu
 /* ══ 粗體 ══ */
 const boldState={};
 function toggleBoldCls(cls){
-  // 切換狀態（即使元素不存在也記錄）
   boldState[cls]=!boldState[cls];
   const isBold=boldState[cls];
-  // 套用到所有現有元素
   document.querySelectorAll('.'+cls).forEach(el=>{
     el.style.setProperty('font-weight',isBold?'900':'400','important');
     el.dataset.bold=isBold?'1':'';
   });
-  // 更新按鈕狀態
   document.querySelectorAll('.fbtn').forEach(b=>{
     if(b.getAttribute('onclick')===`toggleBoldCls('${cls}')`)b.classList.toggle('bold-on',isBold);
   });
 }
-// PDF上傳後重新套用已記錄的字體設定
 function applyStoredStyles(){
   Object.entries(boldState).forEach(([cls,isBold])=>{
     document.querySelectorAll('.'+cls).forEach(el=>{
@@ -320,7 +328,6 @@ function applyStoredStyles(){
       el.dataset.bold=isBold?'1':'';
     });
   });
-  // 重新套用字體大小
   document.querySelectorAll('.sv').forEach(el=>{
     const vid=el.id;
     const input=el.parentElement.querySelector('input[type=range]');
@@ -342,7 +349,7 @@ function makePoster(cfg, dateStr, productsHTML){
   return `<div class="poster" id="poster-${cfg.id}">
   <div class="store-bar">
     <div style="display:flex;align-items:center;">
-      <span class="sname" contenteditable="true">${_storePoster}</span>
+      <span class="sname" contenteditable="true">右昌 Apple Shop</span>
       <span class="ssep">|</span>
       <span class="ssub" contenteditable="true">Apple Authorized Reseller</span>
     </div>
@@ -366,7 +373,7 @@ function makePoster(cfg, dateStr, productsHTML){
   <div class="pfoot">
     <div class="fnote" contenteditable="true">● 分期0利率：3 / 6 / 12期，限持有效信用卡&#10;● 活動期間如有異動，以現場公告為準</div>
     <div class="fbrand">
-      <div class="fstore" contenteditable="true">${_storePoster}</div>
+      <div class="fstore" contenteditable="true">右昌 Apple Shop</div>
       <div class="freseller">Apple Authorized Reseller</div>
     </div>
   </div>
@@ -375,7 +382,7 @@ function makePoster(cfg, dateStr, productsHTML){
 
 function initPosters(){
   const wrap=document.getElementById('posters-wrap');
-  wrap.innerHTML=POSTER_CFG.map(cfg=>makePoster(cfg,'05/15 — 05/17','')).join('');
+  wrap.innerHTML=POSTER_CFG.map(cfg=>makePoster(cfg,'05/19 — 05/31','')).join('');
 }
 
 /* ══ PDF 解析 ══ */
@@ -384,18 +391,17 @@ const CATS=[
   {k:'iPhone 17 Pro',lbl:'iPhone 17 Pro',grp:'iPhone'},
   {k:'iPhone 17e',lbl:'iPhone 17e',grp:'iPhone'},
   {k:'iPhone 17',lbl:'iPhone 17',grp:'iPhone'},
-  {k:'iPhone 16e',lbl:'iPhone 16e',grp:'iPhone'},
   {k:'iPhone Air',lbl:'iPhone Air',grp:'iPhone'},
-  {k:'13吋MBN',lbl:'MacBook Neo 13"',grp:'Mac'},
-  {k:'13.6吋MBA',lbl:'MacBook Air 13"',grp:'Mac'},
-  {k:'15.3吋MBA',lbl:'MacBook Air 15"',grp:'Mac'},
-  {k:'14.2吋MBP',lbl:'MacBook Pro 14"',grp:'Mac'},
-  {k:'16.2吋MBP',lbl:'MacBook Pro 16"',grp:'Mac'},
+  {k:'13吋MBN',lbl:'MacBook Neo 13"',grp:'Mac',actKey:'MacBook Neo'},
+  {k:'13.6吋MBA',lbl:'MacBook Air 13"',grp:'Mac',actKey:'MacBook Air 13'},
+  {k:'15.3吋MBA',lbl:'MacBook Air 15"',grp:'Mac',actKey:'MacBook Air 15'},
+  {k:'14.2吋MBP',lbl:'MacBook Pro 14"',grp:'Mac',actKey:'MacBook Pro 14'},
+  {k:'16.2吋MBP',lbl:'MacBook Pro 16"',grp:'Mac',actKey:'MacBook Pro 16'},
   {k:'iMac',lbl:'iMac 24"',grp:'Mac'},
-  {k:'Mac mini',lbl:'Mac mini',grp:'Mac'},
   {k:'Mac Studio',lbl:'Mac Studio',grp:'Mac'},
   {k:'iPad mini',lbl:'iPad mini',grp:'iPad'},
-  {k:'iPad Air 11',lbl:'iPad Air 11"',grp:'iPad'},
+  {k:'iPad Air 11吋(M4)',lbl:'iPad Air 11"',grp:'iPad'},
+  {k:'iPad Air 11吋 M4',lbl:'iPad Air 11"',grp:'iPad'},
   {k:'iPad Air 13',lbl:'iPad Air 13"',grp:'iPad'},
   {k:'iPad Pro 11',lbl:'iPad Pro 11"',grp:'iPad'},
   {k:'iPad Pro 13',lbl:'iPad Pro 13"',grp:'iPad'},
@@ -403,9 +409,11 @@ const CATS=[
   {k:'AW Ultra',lbl:'Apple Watch Ultra 3',grp:'Apple Watch'},
   {k:'AW S11',lbl:'Apple Watch S11',grp:'Apple Watch'},
   {k:'AW SE',lbl:'Apple Watch SE',grp:'Apple Watch'},
+  {k:'AirPods Pro 3',lbl:'AirPods Pro 3',grp:'耳機 & 其他'},
   {k:'AirPods Pro',lbl:'AirPods Pro',grp:'耳機 & 其他'},
   {k:'AirPods 4-主動',lbl:'AirPods 4 ANC',grp:'耳機 & 其他'},
   {k:'AirPods 4',lbl:'AirPods 4',grp:'耳機 & 其他'},
+  {k:'AirPods Max 2',lbl:'AirPods Max 2',grp:'耳機 & 其他'},
   {k:'AirPods Max',lbl:'AirPods Max',grp:'耳機 & 其他'},
   {k:'AirTag 4件',lbl:'AirTag（4入）',grp:'耳機 & 其他'},
   {k:'AirTag 1件',lbl:'AirTag（1入）',grp:'耳機 & 其他'},
@@ -414,29 +422,29 @@ const CATS=[
   {k:'Apple TV 4K-128',lbl:'Apple TV 4K 128G',grp:'耳機 & 其他'},
   {k:'Apple TV 4K-64',lbl:'Apple TV 4K 64G',grp:'耳機 & 其他'},
 ];
-const EXCLUDE=['保護殼','保護貼','保護套','錶帶','鍵盤','雙面夾','Pencil','Trackpad','Mouse','Keyboard','掛繩','卡套','筆尖','編織線','USB','HomePod','展-'];
+const EXCLUDE=['保護殼','保護貼','保護套','錶帶','鍵盤','雙面夾','Pencil','Trackpad','Mouse','Keyboard','掛繩','卡套','筆尖','編織線','USB','HomePod','展-','高山錶環','越野錶環'];
 
-/* 修正品名前綴 */
 function fixName(name){
-  // iPhone/iPad/iMac 的 i 有時被 PDF 切分成獨立字元
   return name
     .replace(/^([Pp]hone\s)/,'iPhone ')
     .replace(/^([Pp]ad\s)/,'iPad ')
     .replace(/^([Mm]ac\s)/,'iMac ')
-    .replace(/Phone\s/g,'iPhone ')
-    .replace(/Pad\s/g,'iPad ');
+    .replace(/Phone\s/g,'iPhone ')
+    .replace(/Pad\s/g,'iPad ');
 }
 
 function getSpec(name){
-  // Apple Watch：抓尺寸 (40/42/44/46/49mm)
-  const awM=name.match(/\b(40|42|44|46|49)\b/);
-  if(awM&&(name.includes('AW ')||name.includes('Apple Watch')))return awM[1]+'mm';
-  // AirPods：不分規格，用型號本身
+  // Apple Watch：支援 "40mm" 與 "40 mm" 兩種格式
+  const awM=name.match(/\b(40|42|44|46|49)(?:mm)?\b/);
+  if(awM&&(name.includes('AW ')||name.includes('Apple Watch'))){
+    const mm=awM[1]+'mm';
+    if(name.includes('米蘭'))return mm+'/米蘭';
+    if(name.includes('海洋'))return mm+'/海洋';
+    return mm;
+  }
   if(name.match(/AirPods|AirTag|Apple TV/i))return'';
-  // Mac：抓記憶體+儲存
   const macM=name.match(/(\d+G)\/([\d.]+[GT])/i);
   if(macM)return macM[1]+'/'+macM[2];
-  // 一般：抓 GB/TB
   const m=name.match(/(\d+(?:\.\d+)?)\s*([GT]B?)\b/i);
   if(!m)return'';
   const n=parseFloat(m[1]),u=m[2].toUpperCase();
@@ -447,31 +455,69 @@ function getSpec(name){
 function getConn(name){if(/Wi-Fi\+LTE|LTE/i.test(name))return'LTE';if(/Wi-Fi/i.test(name))return'Wi-Fi';if(/GPS\+LTE/i.test(name))return'LTE';if(/GPS/i.test(name))return'GPS';return'';}
 
 function parsePDF(text){
+  const allLines=text.split('\n').map(l=>l.trim()).filter(l=>l.length>2);
   const tokens=text.split(/\s+/).filter(t=>t.length>0);
   const lines=[];let cur=[];
   for(const tok of tokens){if(/^\d{6}$/.test(tok)&&cur.length>0){lines.push(cur.join(' '));cur=[tok];}else cur.push(tok);}
   if(cur.length>0)lines.push(cur.join(' '));
-  const rows=[],actLines=[];
+  const rows=[];
   const re=/^(\d{6})\s+(.+?)\s+([A-Z][A-Z0-9]{5,}(?:\/[A-Z])?)\s+([\d,]+)(?:\s+([\d,]+)\s+([\d,]+))?/;
   for(const line of lines){
     const m=line.match(re);
     if(m){const mp=parseInt(m[4].replace(/,/g,'')),dc=m[5]?parseInt(m[5].replace(/,/g,'')):0,pp=m[6]?parseInt(m[6].replace(/,/g,'')):0;if(mp>500&&mp<200000)rows.push({name:fixName(m[2].trim()),memberPrice:mp,discount:dc,promoPrice:pp||mp});}
-    else if(!/^\d{6}/.test(line)&&line.length>4&&line.length<80)actLines.push(line.trim());
   }
+  function cleanAct(al){
+    const m=al.match(/[（(](.+?)[）)]/);
+    if(m){const t=m[1].replace(/^(活動|注意)[：:]\s*/,'').trim();if(t.length>=2)return t.slice(0,60);}
+    const kw=al.match(/(現折|滿萬|再送|附贈)[^\s，。；]{1,40}/);
+    if(kw)return kw[0].trim().slice(0,50);
+    return al.replace(/\s*(貨號|品名|型號|會員價|折讓額|促銷價).*/,'').trim().slice(0,60);
+  }
+  // 在單行中尋找最長匹配的 cat（含邊界檢查）
+  function findCatInLine(line){
+    let best=null,bestLen=0;
+    for(const cat of CATS){
+      const keys=[cat.k,cat.lbl];if(cat.actKey)keys.push(cat.actKey);
+      for(const key of keys){
+        if(key.length<=bestLen)continue;
+        const idx=line.indexOf(key);if(idx<0)continue;
+        if(/[^\x00-\x7F]/.test(key)){bestLen=key.length;best=cat;continue;}
+        // 允許空格作為合法邊界（如 "Air 13 M5" → '13' 後接 ' M5'）
+        const rest=line.slice(idx+key.length);
+        if(!rest[0]||rest[0]===' '||!/[a-zA-Z\d]/.test(rest[0])){bestLen=key.length;best=cat;}
+      }
+    }
+    return best;
+  }
+  // 逐行掃描：追蹤最近的產品 section，讓活動說明行可回溯對應
   const actMap={};
-  for(const al of actLines){for(const cat of CATS){if(al.includes(cat.k)||al.includes(cat.lbl)){if(!actMap[cat.lbl])actMap[cat.lbl]=al;}}}
+  let ctxCat=null;
+  for(const line of allLines){
+    if(/^\d{6}/.test(line))continue;
+    const catInLine=findCatInLine(line);
+    if(catInLine)ctxCat=catInLine; // 更新目前 section context
+    const hasAct=/[（(]/.test(line)||/現折|滿萬|再送|附贈|贈品|注意/.test(line);
+    if(hasAct&&line.length>4&&line.length<200){
+      const target=catInLine||ctxCat; // 優先直接匹配，否則用 context
+      if(target&&!actMap[target.lbl])actMap[target.lbl]=cleanAct(line);
+    }
+  }
+  // Apple Watch：不以「錶帶」排除（SE3 名稱含「運動型錶帶」）
+  const EXCL_WATCH=EXCLUDE.filter(k=>k!=='錶帶');
+  // debug 輸出供診斷
+  window._dbg={allLines:allLines.slice(0,200),actMap,rows:rows.slice(0,30)};
   const grouped={};
   for(const row of rows){
-    if(EXCLUDE.some(k=>row.name.includes(k)))continue;
     if(row.name.startsWith('展-'))continue;
     if(row.promoPrice<3000&&row.memberPrice<3000)continue;
     let matched=null;
-    for(const cat of CATS){if(row.name.includes(cat.k)){matched=cat;break;}}
+    for(const cat of CATS){if(row.name.includes(cat.k)||row.name.includes(cat.lbl)){matched=cat;break;}}
     if(!matched)continue;
+    const excl=matched.grp==='Apple Watch'?EXCL_WATCH:EXCLUDE;
+    if(excl.some(k=>row.name.includes(k)))continue;
     const lbl=matched.lbl;
     if(!grouped[lbl])grouped[lbl]={grp:matched.grp,lbl,specs:[],minPrice:Infinity,act:actMap[lbl]||''};
     const spec=getSpec(row.name),conn=getConn(row.name),price=row.promoPrice,orig=row.memberPrice;
-    // AirPods/AirTag/AppleTV 允許無規格
     const noSpecOk=matched.grp==='耳機 & 其他'||matched.grp==='Apple Watch';
     if(!spec&&!noSpecOk)continue;
     const key=spec+(conn?'|'+conn:'');
@@ -487,10 +533,10 @@ function colHTML(item){
   const specs=item.specs.slice(0,4);
   const specsHTML=specs.map(s=>{
     const lbl=[s.spec,s.conn].filter(Boolean).join(' ');
-    return`<div class="srow"><span class="slbl" contenteditable="true">${lbl}</span><div class="sright"><span class="sprice" contenteditable="true">${fmt(s.price)}</span>${s.orig>s.price?`<span class="sorig" contenteditable="true">原${fmt(s.orig)}</span>`:''}</div></div>`;
+    return`<div class="srow"><span class="slbl" contenteditable="true">${lbl}</span><div class="sright"><span class="sprice" contenteditable="true">${fmt(s.price)}</span>${s.orig>s.price?`<span class="sorig" contenteditable="true">原${fmt(s.orig)}</span>`:''}</div><button class="row-del" title="刪除此列" onclick="this.closest('.srow').remove()">✕</button></div>`;
   }).join('');
   const act=item.act?`<div class="pbadge2"><div class="bbar"></div><div class="btxt" contenteditable="true" style="font-size:10px;">${item.act}</div></div>`:'';
-  return`<div class="pcol"><div class="phead"><div class="pname" contenteditable="true">${item.lbl}</div><div class="pstart"><span class="psup">起</span><span class="psp" contenteditable="true">${fmt(item.minPrice)}</span></div></div>${act}${specsHTML}</div>`;
+  return`<div class="pcol"><div class="phead"><div class="pname" contenteditable="true">${item.lbl}</div><div class="pstart"><span class="psp" contenteditable="true">${fmt(item.minPrice)}</span><span class="psup" contenteditable="true">起</span></div></div>${act}${specsHTML}<button class="row-add" onclick="addRow(this)">＋ 新增規格列</button></div>`;
 }
 
 function buildGroupHTML(grouped, groups){
@@ -498,7 +544,7 @@ function buildGroupHTML(grouped, groups){
   for(const g of groups){
     const items=Object.values(grouped).filter(i=>i.grp===g);
     if(!items.length)continue;
-    html+=`<div class="catrow">${g}</div>`;
+    html+=`<div class="catrow" contenteditable="true">${g}</div>`;
     for(let i=0;i<items.length;i+=2){
       const a=items[i],b=items[i+1];
       html+=`<div class="pgrid">${colHTML(a)}${b?colHTML(b):'<div class="empty-col"></div>'}</div>`;
@@ -524,14 +570,12 @@ document.getElementById('pfi').addEventListener('change',async function(){
       fullText+=lineArr.join('\n')+'\n';
     }
 
-    // 日期
     const fname=file.name.replace('.pdf','');
     const dm=fname.match(/(\d{4})-(\d{4})/);
-    const dateStr=dm?(()=>{const f=d=>`${d.slice(0,2)}/${d.slice(2)}`;return`${f(dm[1])} — ${f(dm[2])}`;})():'05/15 — 05/17';
+    const dateStr=dm?(()=>{const f=d=>`${d.slice(0,2)}/${d.slice(2)}`;return`${f(dm[1])} — ${f(dm[2])}`;})():'05/19 — 05/31';
 
     const grouped=parsePDF(fullText);
 
-    // 重建四張海報
     const wrap=document.getElementById('posters-wrap');
     wrap.innerHTML=POSTER_CFG.map(cfg=>{
       const productsHTML=buildGroupHTML(grouped,cfg.groups);
@@ -540,10 +584,30 @@ document.getElementById('pfi').addEventListener('change',async function(){
 
     applyStoredStyles();
     st.textContent='✓ '+file.name;st.style.color='#3DAB8A';
+    // 顯示 debug 面板
+    const d=window._dbg;
+    const dp=document.getElementById('dbgpanel');
+    dp.style.display='flex';
+    dp.style.flexDirection='column';
+    document.getElementById('dbgout').value=
+      '=== actMap (活動對應) ===\n'+
+      (Object.keys(d.actMap).length?Object.entries(d.actMap).map(([k,v])=>`${k}: ${v}`).join('\n'):'（空白）')+
+      '\n\n=== 前50行 allLines ===\n'+
+      d.allLines.slice(0,50).map((l,i)=>`${i}: ${l}`).join('\n')+
+      '\n\n=== 前20筆 rows（已解析商品）===\n'+
+      d.rows.map(r=>`${r.name} | 會員:${r.memberPrice} 促銷:${r.promoPrice}`).join('\n');
   }catch(e){
     st.textContent='⚠️ 解析失敗：'+e.message;st.style.color='#f44';console.error(e);
   }
 });
+
+function addRow(btn){
+  const r=document.createElement('div');
+  r.className='srow';
+  r.innerHTML='<span class="slbl" contenteditable="true">規格</span><div class="sright"><span class="sprice" contenteditable="true">$—</span></div><button class="row-del" title="刪除此列" onclick="this.closest(\'.srow\').remove()">✕</button>';
+  btn.before(r);
+  r.querySelector('.slbl').focus();
+}
 
 /* ══ 回報 ══ */
 const API='https://script.google.com/macros/s/AKfycbyiX43HQKr48-rd7DZSm5u9KP-uoeT6DagKrPYPs-G4lE5mnpf1yHUb_n0LgHe_hMzc/exec';
@@ -551,28 +615,25 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-
 /* 列印前動態計算每張海報的 zoom */
 function calcPrintZoom(){
   const A4_W_MM = 210;
   const A4_H_MM = 297;
-  const PX_PER_MM = 3.7795275591; // 96dpi
-  const a4W = A4_W_MM * PX_PER_MM; // ~793px
-  const a4H = A4_H_MM * PX_PER_MM; // ~1122px
+  const PX_PER_MM = 3.7795275591;
+  const a4W = A4_W_MM * PX_PER_MM;
+  const a4H = A4_H_MM * PX_PER_MM;
 
   document.querySelectorAll('.poster-inner').forEach(inner=>{
-    // 先重置 zoom
     inner.style.zoom = '';
     const h = inner.scrollHeight;
-    const w = 794; // 固定寬度
+    const w = 794;
     const zW = a4W / w;
     const zH = a4H / h;
-    const z = Math.min(zW, zH, 1); // 不放大
+    const z = Math.min(zW, zH, 1);
     inner.style.zoom = z;
   });
 }
 
-// Safari 用 matchMedia 監聽列印
 if(window.matchMedia){
   const mq = window.matchMedia('print');
   mq.addListener(e=>{
@@ -586,10 +647,6 @@ window.addEventListener('afterprint', ()=>{
 
 window.addEventListener('load',()=>{
   setT('dp');setSc(85);initPosters();
-  // 更新 pbadge 店名
-  const pb = document.getElementById('pbadge-store');
-  if (pb) pb.innerHTML = _storePoster + ' <em>會員優惠</em> 海報';
-  // 重置所有滑桿顯示值到預設
   document.querySelectorAll('.sv').forEach(el=>{
     const input = el.parentElement.querySelector('input[type=range]');
     if(input) el.textContent = input.value + 'px';
