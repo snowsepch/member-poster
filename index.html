@@ -143,8 +143,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
   body{margin:0;padding:0;min-height:0!important;background:white;}
   #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;}
-  .poster{display:block;position:relative;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;}
-  .poster-inner{width:794px;overflow:hidden;}
+  .poster{display:block;width:210mm;margin:0;padding:0;outline:none;}
+  .poster:not(:last-child){break-after:page;}
+  .poster-inner{width:794px;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -646,7 +647,7 @@ function calcPrintZoom(){
   const a4H = 297 * 3.7795275591;
   document.querySelectorAll('.poster-inner').forEach(inner=>{
     const h = inner.scrollHeight;
-    const z = h > a4H ? ((a4H / h) * 0.95).toFixed(4) : '1';
+    const z = h > a4H ? ((a4H / h) * 0.88).toFixed(4) : '1';
     inner.style.zoom = z;
   });
 }
