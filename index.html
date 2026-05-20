@@ -45,7 +45,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 /* ══ 海報區 ══ */
 #pa{display:flex;justify-content:center;padding:28px 16px 80px;}
-#psw{transition:zoom .15s;transform-origin:top center;}
+#psw{transition:transform .15s;transform-origin:top center;overflow:hidden;}
 
 /* 四張海報垂直排列 */
 .poster-inner{width:794px;}
@@ -148,7 +148,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
   body{margin:0;padding:0;min-height:0!important;background:white;}
-  #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;}
+  #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;height:auto!important;}
   .poster{display:block;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;position:relative;break-inside:avoid;page-break-inside:avoid;}
   .poster:not(:last-child){break-after:page;}
   .poster-inner{width:794px;}
@@ -291,9 +291,16 @@ function setT(k){
 
 /* ══ 字體 ══ */
 function sc(cls,v,vid){document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-size',v+'px','important'));const vl=document.getElementById(vid);if(vl)vl.textContent=v+'px';_as();}
+let _pswScale=0.85;
 function applyZoom(v){
   const vn=Math.round(parseFloat(v));
-  document.getElementById('psw').style.zoom=vn/100;
+  _pswScale=vn/100;
+  const psw=document.getElementById('psw');
+  psw.style.height='';
+  void psw.offsetWidth;
+  const natH=psw.scrollHeight;
+  psw.style.transform=`scale(${_pswScale})`;
+  psw.style.height=Math.round(natH*_pswScale)+'px';
   document.getElementById('vsc').textContent=vn+'%';
   const sl=document.querySelector('#pop-sc input[type=range]');
   if(sl)sl.value=Math.min(120,Math.max(50,vn));
@@ -313,7 +320,7 @@ function setAutoFit(on){
 }
 window.addEventListener('resize',()=>{if(autoFit)applyZoom(calcAutoZoom());});
 function updateBleedLines(){
-  const z=parseFloat(document.getElementById('psw').style.zoom)||0.85;
+  const z=_pswScale||0.85;
   const cutY=(297*3.7795275591)/z;
   document.querySelectorAll('.poster').forEach(poster=>{
     let bl=poster.querySelector('.bleed-line');
@@ -679,15 +686,11 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-let _printPrevZoom=null,_printZoomApplied=false;
+let _printZoomApplied=false;
 function _applyPrintZoom(){
   if(_printZoomApplied)return;
   _printZoomApplied=true;
-  const psw=document.getElementById('psw');
-  _printPrevZoom=psw.style.zoom;
-  psw.style.transition='none';   /* 禁止動畫，確保 zoom 即時生效 */
-  psw.style.zoom='1';
-  void psw.offsetWidth;           /* 強制同步 reflow */
+  /* #psw 由 print CSS transform:none!important 歸零，只需處理 poster-inner */
   const A4H=297*3.7795275591;
   document.querySelectorAll('.poster').forEach(poster=>{
     const inner=poster.querySelector('.poster-inner');
@@ -701,10 +704,6 @@ function doPrint(){_applyPrintZoom();setTimeout(()=>window.print(),250);}
 window.addEventListener('beforeprint',_applyPrintZoom);
 window.addEventListener('afterprint',()=>{
   _printZoomApplied=false;
-  const psw=document.getElementById('psw');
-  psw.style.zoom=_printPrevZoom!==null?_printPrevZoom:'';
-  requestAnimationFrame(()=>{psw.style.transition='';});
-  _printPrevZoom=null;
   document.querySelectorAll('.poster-inner').forEach(inner=>{inner.style.zoom='';});
 });
 
