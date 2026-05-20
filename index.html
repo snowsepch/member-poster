@@ -218,6 +218,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
     <div class="pop" id="pop-sc">
       <div class="psec">整體比例</div>
       <div class="prow">比例 <span class="sv" id="vsc">85%</span><input type="range" min="50" max="120" value="85" oninput="setSc(this.value)"></div>
+      <div class="prow" style="margin-top:4px;"><button class="fbtn" id="afbtn" onclick="setAutoFit(!autoFit)" style="width:100%;text-align:center;">自動符合視窗</button></div>
     </div>
   </div>
 
@@ -293,7 +294,27 @@ function setT(k){
 
 /* ══ 字體 ══ */
 function sc(cls,v,vid){document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-size',v+'px','important'));const vl=document.getElementById(vid);if(vl)vl.textContent=v+'px';_as();}
-function setSc(v){document.getElementById('psw').style.zoom=v/100;document.getElementById('vsc').textContent=v+'%';updateBleedLines();}
+function applyZoom(v){
+  const vn=Math.round(parseFloat(v));
+  document.getElementById('psw').style.zoom=vn/100;
+  document.getElementById('vsc').textContent=vn+'%';
+  const sl=document.querySelector('#pop-sc input[type=range]');
+  if(sl)sl.value=Math.min(120,Math.max(50,vn));
+  updateBleedLines();
+}
+function calcAutoZoom(){
+  const avail=document.getElementById('pa').clientWidth-48;
+  return Math.round(Math.min(120,Math.max(30,avail/794*100)));
+}
+let autoFit=false;
+function setSc(v){setAutoFit(false);applyZoom(v);}
+function setAutoFit(on){
+  autoFit=on;
+  const btn=document.getElementById('afbtn');
+  if(btn)btn.classList.toggle('bold-on',on);
+  if(on)applyZoom(calcAutoZoom());
+}
+window.addEventListener('resize',()=>{if(autoFit)applyZoom(calcAutoZoom());});
 function updateBleedLines(){
   const z=parseFloat(document.getElementById('psw').style.zoom)||0.85;
   const cutY=(297*3.7795275591)/z;
@@ -673,14 +694,15 @@ window.addEventListener('afterprint', ()=>{
 });
 
 window.addEventListener('load',()=>{
-  setT('dp');setSc(85);
-  if(!loadState())initPosters();
+  setT('dp');
+  const hasState=loadState();
+  if(!hasState){initPosters();}
   document.querySelectorAll('.sv').forEach(el=>{
     const input = el.parentElement.querySelector('input[type=range]');
     if(input) el.textContent = input.value + (el.id==='vsc'?'%':'px');
   });
   document.getElementById('posters-wrap').addEventListener('input',_as);
-  updateBleedLines();
+  if(!hasState){setAutoFit(true);}else{updateBleedLines();}
 });
 </script>
 </body>
