@@ -6,42 +6,42 @@
 <title>右昌 會員優惠 海報系統</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-:root{--page-bg:#ffffff;--poster-bg:#f5f0e8;--navy:#1a2a5a;--accent:#f5e200;--cream:#f5f0e8;--text:#1a2a5a;--muted:#6a7080;--divider:#ddd6c4;--price-col:#1a2a5a;--orig-col:#b0a890;--badge-bg:#1a2a5a;--badge-fg:#ffffff;--badge-bar:#f5e200;--cat-bg:#f5e200;--cat-fg:#1a2a5a;--svc-bg:#eceae0;--svc-border:#ccc8b8;--date-bg:#1a2a5a;--date-fg:#f5e200;--ctrl:#0e0e0e;--ctrl2:#151515;}
+:root{--page-bg:#ffffff;--poster-bg:#f5f0e8;--navy:#1a2a5a;--accent:#f5e200;--cream:#f5f0e8;--text:#1a2a5a;--muted:#6a7080;--divider:#ddd6c4;--price-col:#1a2a5a;--orig-col:#b0a890;--badge-bg:#1a2a5a;--badge-fg:#ffffff;--badge-bar:#f5e200;--cat-bg:#f5e200;--cat-fg:#1a2a5a;--svc-bg:#eceae0;--svc-border:#ccc8b8;--date-bg:#1a2a5a;--date-fg:#f5e200;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--page-bg);min-height:100vh;}
-.cbar{background:var(--ctrl);padding:8px 18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid #050505;}
-#b2,#b3{background:var(--ctrl2);}
-.blabel{font-size:10px;color:#3a3a3a;white-space:nowrap;padding-right:9px;border-right:1px solid #1e1e1e;margin-right:2px;}
-.tpill{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:50px;border:1.5px solid #1e1e1e;background:transparent;cursor:pointer;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:#3a3a3a;transition:all .15s;white-space:nowrap;}
-.tpill:hover{border-color:#383838;color:#aaa;}
+.cbar{background:#ffffff;padding:8px 18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e8e8ea;}
+#b2{background:#f7f7f8;}
+#b3{background:#f0f0f2;font-size:10px;color:#555;}
+#b3 b{color:#1a2a5a;}
+#b3 strong{color:#888;}
+.blabel{font-size:10px;color:#888;white-space:nowrap;padding-right:9px;border-right:1px solid #e0e0e0;margin-right:2px;}
+.tpill{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:50px;border:1.5px solid #d8d8da;background:transparent;cursor:pointer;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:#444;transition:all .15s;white-space:nowrap;}
+.tpill:hover{border-color:#aaa;color:#111;}
 .tpill.on{border-color:transparent;}
 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.bhint{margin-left:auto;font-size:10px;color:#282828;white-space:nowrap;}
-.pbadge{font-size:12px;font-weight:900;color:#ccc;white-space:nowrap;margin-right:4px;}
-.pbadge em{color:#f5e200;font-style:normal;}
-.bbtn{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:6px;border:1.5px solid #1e1e1e;background:#111;color:#555;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s;}
-.bbtn:hover{border-color:#383838;color:#bbb;}
-.bbtn.pdf{background:#f5e200;border-color:#f5e200;color:#1a1040;font-weight:900;}
+.bhint{margin-left:auto;font-size:10px;color:#aaa;white-space:nowrap;}
+.pbadge{font-size:12px;font-weight:900;color:#333;white-space:nowrap;margin-right:4px;}
+.pbadge em{color:#1a2a5a;font-style:normal;}
+.bbtn{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:6px;border:1.5px solid #d8d8da;background:#f0f0f2;color:#444;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.bbtn:hover{border-color:#aaa;color:#111;background:#e8e8ea;}
+.bbtn.pdf{background:#f5e200;border-color:#ddd000;color:#1a1040;font-weight:900;}
 .bbtn.pdf:hover{background:#ffe400;}
 .bbtn.prt{background:#1a2a5a;border-color:#2a3a70;color:#fff;}
 .bbtn.prt:hover{background:#223272;}
-.bstat{font-size:10px;color:#2a2a2a;}
+.bstat{font-size:10px;color:#888;}
 #pfi{display:none;}
 .pwrap{position:relative;}
-.pop{display:none;position:absolute;top:calc(100% + 7px);left:0;background:#0e0e0e;border:1.5px solid #1e1e1e;border-radius:9px;padding:13px 15px;min-width:230px;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.7);max-height:80vh;overflow-y:auto;}
+.pop{display:none;position:absolute;top:calc(100% + 7px);left:0;background:#ffffff;border:1.5px solid #d8d8da;border-radius:9px;padding:13px 15px;min-width:230px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.12);max-height:80vh;overflow-y:auto;}
 .pop.on{display:block;}
-.psec{font-size:9px;color:#2e2e2e;text-transform:uppercase;letter-spacing:.12em;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid #191919;}
-.prow{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#555;margin-bottom:7px;gap:6px;}
+.psec{font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:.12em;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid #e8e8ea;}
+.prow{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#444;margin-bottom:7px;gap:6px;}
 .prow:last-child{margin-bottom:0;}
-.sv{color:#999;min-width:28px;text-align:right;font-size:10px;}
-input[type=range]{-webkit-appearance:none;width:88px;height:3px;background:#1e1e1e;border-radius:2px;outline:none;flex-shrink:0;}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#eee;cursor:pointer;}
-.fbtn{background:#1e1e1e;color:#888;border:1.5px solid #2a2a2a;border-radius:5px;padding:4px 9px;font-size:10px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .15s;}
-.fbtn:hover{border-color:#555;color:#ccc;}
-.fbtn.bold-on{background:#f5e200;color:#1a1040;border-color:#f5e200;}
-#b3{font-size:10px;color:#2a2a2a;}
-#b3 b{color:#f5e200;}
-#b3 strong{color:#444;}
+.sv{color:#666;min-width:28px;text-align:right;font-size:10px;}
+input[type=range]{-webkit-appearance:none;width:88px;height:3px;background:#d8d8da;border-radius:2px;outline:none;flex-shrink:0;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#444;cursor:pointer;}
+.fbtn{background:#f0f0f2;color:#555;border:1.5px solid #d8d8da;border-radius:5px;padding:4px 9px;font-size:10px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .15s;}
+.fbtn:hover{border-color:#aaa;color:#111;}
+.fbtn.bold-on{background:#f5e200;color:#1a1040;border-color:#ddd000;}
 
 /* ══ 海報區 ══ */
 #pa{display:flex;justify-content:center;padding:28px 16px 80px;}
@@ -122,18 +122,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 /* 回報 */
 #cbar-sticky{position:sticky;top:0;z-index:90;}
-#rbtn{position:fixed;bottom:18px;right:18px;z-index:9999;background:#0e0e0e;color:#555;border:1.5px solid #1e1e1e;border-radius:50px;padding:8px 14px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;}
-#rbtn:hover{background:#181818;color:#bbb;border-color:#383838;}
-#rpanel{display:none;position:fixed;bottom:55px;right:18px;z-index:9999;background:#0e0e0e;border:1.5px solid #1e1e1e;border-radius:11px;padding:15px;width:232px;box-shadow:0 10px 32px rgba(0,0,0,.7);font-family:'Noto Sans TC',sans-serif;}
-#rpanel h4{font-size:12px;font-weight:700;color:#ccc;margin-bottom:10px;}
+#rbtn{position:fixed;bottom:18px;right:18px;z-index:9999;background:#f0f0f2;color:#555;border:1.5px solid #d8d8da;border-radius:50px;padding:8px 14px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;}
+#rbtn:hover{background:#e8e8ea;color:#111;border-color:#aaa;}
+#rpanel{display:none;position:fixed;bottom:55px;right:18px;z-index:9999;background:#ffffff;border:1.5px solid #d8d8da;border-radius:11px;padding:15px;width:232px;box-shadow:0 4px 20px rgba(0,0,0,.12);font-family:'Noto Sans TC',sans-serif;}
+#rpanel h4{font-size:12px;font-weight:700;color:#333;margin-bottom:10px;}
 .rtg{display:flex;flex-direction:column;gap:6px;margin-bottom:9px;}
-.rtg label{font-size:11px;color:#666;display:flex;align-items:center;gap:7px;cursor:pointer;}
-.rtg input[type=radio]{accent-color:#f5e200;}
-#rmsg{width:100%;height:56px;background:#080808;border:1.5px solid #1e1e1e;border-radius:5px;padding:6px 8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:#999;resize:none;box-sizing:border-box;margin-bottom:8px;outline:none;}
-#rmsg:focus{border-color:#303030;}
-#rsub{width:100%;background:#f5e200;color:#1a1040;border:none;border-radius:5px;padding:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;}
-#rsub:hover{background:#ffe400;}
-#rsub:disabled{background:#1e1e1e;color:#333;cursor:not-allowed;}
+.rtg label{font-size:11px;color:#555;display:flex;align-items:center;gap:7px;cursor:pointer;}
+.rtg input[type=radio]{accent-color:#1a2a5a;}
+#rmsg{width:100%;height:56px;background:#f7f7f8;border:1.5px solid #d8d8da;border-radius:5px;padding:6px 8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:#333;resize:none;box-sizing:border-box;margin-bottom:8px;outline:none;}
+#rmsg:focus{border-color:#aaa;}
+#rsub{width:100%;background:#1a2a5a;color:#fff;border:none;border-radius:5px;padding:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;}
+#rsub:hover{background:#223272;}
+#rsub:disabled{background:#e0e0e0;color:#aaa;cursor:not-allowed;}
 #rok{display:none;text-align:center;padding:7px 0;font-size:11px;color:#3DAB8A;font-weight:700;}
 
 /* 規格列新增/刪除按鈕 */
@@ -149,7 +149,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
   body{margin:0;padding:0;min-height:0!important;background:white;}
   #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;}
-  .poster{display:block;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;}
+  .poster{display:block;width:210mm;height:297mm;overflow:hidden;margin:0;padding:0;outline:none;break-inside:avoid;page-break-inside:avoid;}
   .poster:not(:last-child){break-after:page;}
   .poster-inner{width:794px;}
   [contenteditable]{outline:none!important;}
@@ -223,14 +223,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   </div>
 
   <button class="bbtn prt" onclick="doPrint()">🖨 列印</button>
-  <button class="bbtn" id="sbtn" onclick="saveState()" style="background:#1e3a1e;border-color:#2a5a2a;color:#6dbf6d;">💾 儲存</button>
-  <button class="bbtn" onclick="document.getElementById('dbgpanel').style.cssText='display:flex;flex-direction:column'" style="color:#333;font-size:10px;">🔍</button>
+  <button class="bbtn" id="sbtn" onclick="saveState()" style="background:#e8f5e9;border-color:#a5d6a7;color:#2e7d32;">💾 儲存</button>
+  <button class="bbtn" onclick="document.getElementById('dbgpanel').style.cssText='display:flex;flex-direction:column'" style="color:#aaa;font-size:10px;">🔍</button>
   <span class="bstat" id="pstat">請選擇操盤 PDF 檔案</span>
 </div>
 
 <!-- Bar 3 -->
 <div class="cbar" id="b3">
-  🖨 縮放建議：<b>80%</b> Watch 完整顯示 ／ <b>85%</b> 一般使用 — 點「🖨 列印」→ A4 直向 → 勾 <b>「列印背景」</b> → 共 <b>4頁</b>
+  🖨 點「🖨 列印」→ A4 直向 → 勾 <b>「列印背景」</b> → 共 <b>4頁</b>（系統自動計算最佳列印比例）
 </div>
 </div><!-- /cbar-sticky -->
 
@@ -286,9 +286,6 @@ function setT(k){
   document.querySelectorAll('.tpill').forEach(p=>{p.classList.remove('on');p.style.background='';p.style.color='';});
   const pill=document.getElementById('p-'+k);
   if(pill){pill.classList.add('on');pill.style.background=t.pill;pill.style.color=t.pt;}
-  document.getElementById('b1').style.background=t['--ctrl'];
-  document.getElementById('b2').style.background=t['--ctrl2'];
-  document.getElementById('b3').style.background=t['--ctrl2'];
   _as();
 }
 
@@ -682,10 +679,15 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-/* 列印前把畫面縮放比例套到 poster-inner，印後還原 */
+/* 列印前量每張海報自然高度，自動算最佳縮放確保頁尾不被裁 */
 function doPrint(){
-  const z = parseFloat(document.getElementById('psw').style.zoom) || 0.85;
-  document.querySelectorAll('.poster-inner').forEach(inner=>{ inner.style.zoom = z; });
+  const A4H = 297 * 3.7795275591;
+  document.querySelectorAll('.poster').forEach(poster=>{
+    const inner = poster.querySelector('.poster-inner');
+    inner.style.zoom = '';
+    const natH = inner.scrollHeight;
+    inner.style.zoom = Math.min(0.98, A4H * 0.97 / Math.max(natH, 1));
+  });
   setTimeout(()=>window.print(), 300);
 }
 
