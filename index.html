@@ -142,56 +142,48 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .row-add{display:block;width:100%;background:none;border:1px dashed #ccc;border-radius:3px;color:#aaa;cursor:pointer;font-size:9px;font-family:'Noto Sans TC',sans-serif;padding:3px 8px;margin-top:3px;text-align:left;box-sizing:border-box;}
 .row-add:hover{border-color:#888;color:#666;}
 
-/* ══ 列印：每張海報分頁 ══ */
+/* ══ 列印備用（Cmd+P 直接列印主視窗時） ══ */
 @media print{
   @page{size:A4 portrait;margin:0;}
   html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
   body{margin:0;padding:0;min-height:0!important;background:white;}
   #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;height:auto!important;}
-  .poster{display:block;width:210mm;height:297mm;overflow:hidden;position:relative;margin:0;padding:0;outline:none;break-after:page;page-break-after:always;}
-  .poster:last-child{break-after:auto;page-break-after:auto;}
-  /* position:absolute 讓 poster-inner 脫離 flow → 分頁只看 poster 的 height:297mm */
-  .poster-inner{position:absolute!important;top:0!important;left:0!important;width:794px;transform-origin:top left;}
-  /* — store bar — */
-  .store-bar{padding:7px 22px!important;}
-  .sname{font-size:13px!important;}
-  .sbadge{padding:3px 8px!important;font-size:9px!important;}
-  /* — 頁首 — */
-  .ph{min-height:0!important;padding:12px 22px 10px!important;}
+  .poster{display:block!important;width:210mm!important;height:auto!important;overflow:visible!important;margin:0!important;padding:0!important;outline:none!important;break-after:page;page-break-after:always;position:relative!important;}
+  .poster:last-child{break-after:avoid;page-break-after:avoid;}
+  .poster-inner{position:static!important;width:100%!important;}
+  .store-bar{padding:5px 18px!important;}
+  .sname{font-size:12px!important;}
+  .sbadge{padding:2px 7px!important;font-size:8px!important;}
+  .ph{min-height:0!important;padding:8px 18px 6px!important;}
   .ph-ghost{display:none!important;}
-  .ph-toprow{margin-bottom:6px!important;}
-  .ph-eye{margin-bottom:2px!important;font-size:8px!important;}
-  .ph-title{font-size:58px!important;line-height:.88!important;}
-  .ph-sub{font-size:11px!important;margin-top:4px!important;}
-  .date-pill{padding:3px 8px!important;font-size:10px!important;}
-  .mem-pill{padding:3px 10px!important;font-size:10px!important;}
-  /* — 日期 / 服務 — */
-  .dbar{padding:5px 22px!important;}
-  .dtext{font-size:12px!important;}
-  .svc{padding:5px 10px!important;font-size:9px!important;}
-  /* — 品類 — */
-  .catrow{padding:4px 16px!important;font-size:10px!important;}
-  /* — 產品格 — */
-  .pcol{padding:6px 12px 7px!important;}
-  .phead{margin-bottom:2px!important;}
-  .pname{font-size:12px!important;}
-  .psp{font-size:22px!important;}
-  .psup{font-size:7px!important;}
-  .pbadge2{padding:1px 5px 1px 3px!important;margin-bottom:3px!important;}
-  .bbar{height:8px!important;}
-  .btxt{font-size:8px!important;}
-  .srow{padding:2px 0!important;}
-  .slbl{font-size:9px!important;}
-  .sprice{font-size:14px!important;}
-  .sorig{font-size:8px!important;}
-  /* 每商品最多顯示 3 條規格（節省高度） */
+  .ph-toprow{margin-bottom:4px!important;}
+  .ph-eye{margin-bottom:2px!important;font-size:7px!important;}
+  .ph-title{font-size:46px!important;line-height:.85!important;}
+  .ph-sub{font-size:10px!important;margin-top:3px!important;}
+  .date-pill{padding:2px 6px!important;font-size:9px!important;}
+  .mem-pill{padding:2px 8px!important;font-size:9px!important;}
+  .dbar{padding:4px 18px!important;}
+  .dtext{font-size:11px!important;}
+  .svc{padding:4px 8px!important;font-size:8px!important;}
+  .catrow{padding:3px 14px!important;font-size:9px!important;}
+  .pcol{padding:4px 10px 5px!important;}
+  .phead{margin-bottom:1px!important;}
+  .pname{font-size:11px!important;}
+  .psp{font-size:19px!important;}
+  .psup{font-size:6px!important;}
+  .pbadge2{padding:1px 4px 1px 2px!important;margin-bottom:2px!important;}
+  .bbar{height:6px!important;}
+  .btxt{font-size:7px!important;}
+  .srow{padding:1px 0!important;}
+  .slbl{font-size:8px!important;}
+  .sprice{font-size:12px!important;}
+  .sorig{font-size:7px!important;}
   .pcol .srow~.srow~.srow~.srow{display:none!important;}
-  /* — 頁尾 — */
-  .pfoot{padding:7px 22px!important;}
-  .fnote{font-size:8px!important;line-height:1.5!important;}
-  .fstore{font-size:11px!important;}
-  .freseller{font-size:7px!important;}
+  .pfoot{padding:5px 18px!important;}
+  .fnote{font-size:7px!important;line-height:1.4!important;}
+  .fstore{font-size:10px!important;}
+  .freseller{font-size:6px!important;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -726,14 +718,76 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-function doPrint(){window.print();}
-window.addEventListener('afterprint',()=>{
-  document.querySelectorAll('.poster-inner').forEach(inner=>{
-    inner.style.transform='';inner.style.transformOrigin='';
-    inner.style.zoom='';inner.style.marginBottom='';inner.style.marginRight='';
-  });
-  applyZoom(_pswScale*100);
-});
+function doPrint(){
+  const rs=getComputedStyle(document.documentElement);
+  const vars=['--page-bg','--poster-bg','--navy','--accent','--cream','--text','--muted','--divider','--price-col','--orig-col','--badge-bg','--badge-fg','--badge-bar','--cat-bg','--cat-fg','--svc-bg','--svc-border','--date-bg','--date-fg'];
+  const rootCSS=':root{'+vars.map(v=>v+':'+rs.getPropertyValue(v).trim()).join(';')+'}';
+  const wrap=document.getElementById('posters-wrap').cloneNode(true);
+  wrap.querySelectorAll('.row-del,.row-add,.bleed-line').forEach(el=>el.remove());
+  wrap.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  let baseCSS=document.querySelector('style').textContent;
+  const pmIdx=baseCSS.indexOf('@media print{');
+  if(pmIdx>-1)baseCSS=baseCSS.substring(0,pmIdx);
+  const overrideCSS=[
+    '@page{size:A4 portrait;margin:0;}',
+    'html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}',
+    'body{margin:0;padding:0;background:white;}',
+    '#pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;height:auto!important;}',
+    '.poster{display:block!important;width:210mm!important;height:auto!important;overflow:visible!important;margin:0!important;padding:0!important;outline:none!important;break-after:page;page-break-after:always;position:relative!important;}',
+    '.poster:last-child{break-after:avoid;page-break-after:avoid;}',
+    '.poster-inner{position:static!important;width:100%!important;}',
+    '.store-bar{padding:5px 18px!important;}',
+    '.sname{font-size:12px!important;}',
+    '.sbadge{padding:2px 7px!important;font-size:8px!important;}',
+    '.ph{min-height:0!important;padding:8px 18px 6px!important;}',
+    '.ph-ghost{display:none!important;}',
+    '.ph-toprow{margin-bottom:4px!important;}',
+    '.ph-eye{margin-bottom:2px!important;font-size:7px!important;}',
+    '.ph-title{font-size:46px!important;line-height:.85!important;}',
+    '.ph-sub{font-size:10px!important;margin-top:3px!important;}',
+    '.date-pill{padding:2px 6px!important;font-size:9px!important;}',
+    '.mem-pill{padding:2px 8px!important;font-size:9px!important;}',
+    '.dbar{padding:4px 18px!important;}',
+    '.dtext{font-size:11px!important;}',
+    '.svc{padding:4px 8px!important;font-size:8px!important;}',
+    '.catrow{padding:3px 14px!important;font-size:9px!important;}',
+    '.pcol{padding:4px 10px 5px!important;}',
+    '.phead{margin-bottom:1px!important;}',
+    '.pname{font-size:11px!important;}',
+    '.psp{font-size:19px!important;}',
+    '.psup{font-size:6px!important;}',
+    '.pbadge2{padding:1px 4px 1px 2px!important;margin-bottom:2px!important;}',
+    '.bbar{height:6px!important;}',
+    '.btxt{font-size:7px!important;}',
+    '.srow{padding:1px 0!important;}',
+    '.slbl{font-size:8px!important;}',
+    '.sprice{font-size:12px!important;}',
+    '.sorig{font-size:7px!important;}',
+    '.pcol .srow~.srow~.srow~.srow{display:none!important;}',
+    '.pfoot{padding:5px 18px!important;}',
+    '.fnote{font-size:7px!important;line-height:1.4!important;}',
+    '.fstore{font-size:10px!important;}',
+    '.freseller{font-size:6px!important;}',
+    '[contenteditable]{outline:none!important;}'
+  ].join('');
+  const w=window.open('','_blank','width=900,height=700');
+  if(!w){alert('請允許彈出視窗以列印');return;}
+  w.document.write('<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8">'
+    +'<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">'
+    +'<style>'+rootCSS+'\n'+baseCSS+'\n'+overrideCSS+'</style>'
+    +'</head><body>'
+    +'<div id="pa"><div id="psw"><div id="posters-wrap">'+wrap.innerHTML+'</div></div></div>'
+    +'<script>'
+    +'window.onload=function(){'
+    +'  var go=function(){window.focus();window.print();};'
+    +'  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){setTimeout(go,200);});}else{setTimeout(go,1200);}'
+    +'};'
+    +'window.addEventListener("afterprint",function(){window.close();});'
+    +'<\/script>'
+    +'</body></html>');
+  w.document.close();
+}
+window.addEventListener('afterprint',()=>{applyZoom(_pswScale*100);});
 
 window.addEventListener('load',()=>{
   setT('dp');
