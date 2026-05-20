@@ -697,7 +697,7 @@ function _applyPrintZoom(){
   });
 }
 /* 列印前量每張海報自然高度，自動算最佳縮放確保頁尾不被裁 */
-function doPrint(){_applyPrintZoom();window.print();}
+function doPrint(){_applyPrintZoom();setTimeout(()=>window.print(),250);}
 window.addEventListener('beforeprint',_applyPrintZoom);
 window.addEventListener('afterprint',()=>{
   _printZoomApplied=false;
