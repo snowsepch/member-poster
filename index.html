@@ -53,10 +53,16 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   width:794px;
   background:var(--poster-bg);
   outline:1px solid rgba(0,0,0,.08);
-  overflow:hidden;
+  position:relative;
   margin-bottom:40px;
 }
 .poster:last-child{margin-bottom:0;}
+
+/* A4 出血線 */
+.bleed-line{display:none;position:absolute;left:0;right:0;height:0;border-top:2px dashed rgba(210,40,40,.7);z-index:10;pointer-events:none;}
+.bleed-line::before{content:'▶ A4 列印邊界';position:absolute;right:6px;top:-18px;font-size:9px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:rgba(210,40,40,.85);background:rgba(255,255,255,.85);padding:2px 6px;border-radius:3px;white-space:nowrap;}
+.bleed-line::after{content:'';position:absolute;left:0;right:0;top:2px;height:500px;background:repeating-linear-gradient(45deg,rgba(210,40,40,.07),rgba(210,40,40,.07) 4px,transparent 4px,transparent 12px);}
+@media print{.bleed-line{display:none!important;}}
 
 /* store bar */
 .store-bar{background:var(--navy);border-bottom:3px solid var(--accent);padding:10px 28px;display:flex;justify-content:space-between;align-items:center;}
@@ -287,7 +293,16 @@ function setT(k){
 
 /* ══ 字體 ══ */
 function sc(cls,v,vid){document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-size',v+'px','important'));const vl=document.getElementById(vid);if(vl)vl.textContent=v+'px';_as();}
-function setSc(v){document.getElementById('psw').style.zoom=v/100;document.getElementById('vsc').textContent=v+'%';}
+function setSc(v){document.getElementById('psw').style.zoom=v/100;document.getElementById('vsc').textContent=v+'%';updateBleedLines();}
+function updateBleedLines(){
+  const z=parseFloat(document.getElementById('psw').style.zoom)||0.85;
+  const cutY=(297*3.7795275591)/z;
+  document.querySelectorAll('.poster').forEach(poster=>{
+    let bl=poster.querySelector('.bleed-line');
+    if(!bl){bl=document.createElement('div');bl.className='bleed-line';poster.appendChild(bl);}
+    bl.style.top=cutY+'px';bl.style.display='block';
+  });
+}
 function tp(id){document.querySelectorAll('.pop').forEach(p=>{if(p.id!==id)p.classList.remove('on');});document.getElementById(id).classList.toggle('on');}
 document.addEventListener('click',e=>{if(!e.target.closest('.pwrap'))document.querySelectorAll('.pop').forEach(p=>p.classList.remove('on'));});
 
@@ -566,6 +581,7 @@ document.getElementById('pfi').addEventListener('change',async function(){
     }).join('');
 
     applyStoredStyles();
+    updateBleedLines();
     saveState();
     st.textContent='✓ '+file.name;st.style.color='#3DAB8A';
     // 儲存診斷資料供手動查看
@@ -598,9 +614,12 @@ function saveState(){
       const sv=inp.parentElement.querySelector('.sv');
       if(sv)sliders[sv.id]=inp.value;
     });
+    const wrap=document.getElementById('posters-wrap');
+    const clone=wrap.cloneNode(true);
+    clone.querySelectorAll('.bleed-line').forEach(el=>el.remove());
     localStorage.setItem('mps_v1',JSON.stringify({
       v:1,
-      html:document.getElementById('posters-wrap').innerHTML,
+      html:clone.innerHTML,
       theme:cur,
       sliders
     }));
@@ -661,6 +680,7 @@ window.addEventListener('load',()=>{
     if(input) el.textContent = input.value + (el.id==='vsc'?'%':'px');
   });
   document.getElementById('posters-wrap').addEventListener('input',_as);
+  updateBleedLines();
 });
 </script>
 </body>
