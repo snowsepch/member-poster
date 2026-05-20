@@ -679,11 +679,15 @@ function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.s
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-let _printPrevZoom=null;
+let _printPrevZoom=null,_printZoomApplied=false;
 function _applyPrintZoom(){
+  if(_printZoomApplied)return;
+  _printZoomApplied=true;
   const psw=document.getElementById('psw');
   _printPrevZoom=psw.style.zoom;
-  psw.style.zoom='1'; /* 強制歸零 #psw zoom，避免父層縮放讓海報超過 A4 */
+  psw.style.transition='none';   /* 禁止動畫，確保 zoom 即時生效 */
+  psw.style.zoom='1';
+  void psw.offsetWidth;           /* 強制同步 reflow */
   const A4H=297*3.7795275591;
   document.querySelectorAll('.poster').forEach(poster=>{
     const inner=poster.querySelector('.poster-inner');
@@ -693,11 +697,13 @@ function _applyPrintZoom(){
   });
 }
 /* 列印前量每張海報自然高度，自動算最佳縮放確保頁尾不被裁 */
-function doPrint(){_applyPrintZoom();setTimeout(()=>window.print(),300);}
+function doPrint(){_applyPrintZoom();window.print();}
 window.addEventListener('beforeprint',_applyPrintZoom);
 window.addEventListener('afterprint',()=>{
+  _printZoomApplied=false;
   const psw=document.getElementById('psw');
-  psw.style.zoom=_printPrevZoom||'';
+  psw.style.zoom=_printPrevZoom!==null?_printPrevZoom:'';
+  requestAnimationFrame(()=>{psw.style.transition='';});
   _printPrevZoom=null;
   document.querySelectorAll('.poster-inner').forEach(inner=>{inner.style.zoom='';});
 });
