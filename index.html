@@ -149,9 +149,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
   body{margin:0;padding:0;min-height:0!important;background:white;}
   #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;height:auto!important;}
-  .poster{display:block;width:210mm;margin:0;padding:0;outline:none;position:relative;break-after:page;page-break-after:always;}
+  .poster{display:block;width:210mm;height:297mm;overflow:hidden;position:relative;margin:0;padding:0;outline:none;break-after:page;page-break-after:always;}
   .poster:last-child{break-after:auto;page-break-after:auto;}
-  .poster-inner{width:794px;}
+  /* position:absolute 讓 poster-inner 脫離 flow → 分頁只看 poster 的 height:297mm */
+  .poster-inner{position:absolute!important;top:0!important;left:0!important;width:794px;transform-origin:top left;}
   /* — store bar — */
   .store-bar{padding:7px 22px!important;}
   .sname{font-size:13px!important;}
@@ -729,8 +730,9 @@ function doPrint(){window.print();}
 window.addEventListener('afterprint',()=>{
   document.querySelectorAll('.poster-inner').forEach(inner=>{
     inner.style.transform='';inner.style.transformOrigin='';
-    inner.style.marginBottom='';inner.style.marginRight='';inner.style.zoom='';
+    inner.style.zoom='';inner.style.marginBottom='';inner.style.marginRight='';
   });
+  applyZoom(_pswScale*100);
 });
 
 window.addEventListener('load',()=>{
