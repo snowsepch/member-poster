@@ -579,12 +579,13 @@ document.getElementById('pfi').addEventListener('change',async function(){
 
 function addRow(btn){const r=document.createElement('div');r.className='srow';r.innerHTML='<span class="slbl" contenteditable="true">規格</span><div class="sright"><span class="sprice" contenteditable="true">$—</span></div><button class="row-del" onclick="this.closest(\'.srow\').remove()">✕</button>';btn.before(r);r.querySelector('.slbl').focus();}
 
+const _storeId=decodeURIComponent(new URLSearchParams(location.search).get('store')||'右昌');
 const API='https://script.google.com/macros/s/AKfycbyiX43HQKr48-rd7DZSm5u9KP-uoeT6DagKrPYPs-G4lE5mnpf1yHUb_n0LgHe_hMzc/exec';
 function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.style.display==='block'?'none':'block';document.getElementById('rok').style.display='none';}
-async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'海報A4-v5',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
+async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:_storeId,tool:'海報A4-v5',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-window.addEventListener('load',()=>{setT('dp');setSc(75);initPosters();});
+window.addEventListener('load',()=>{setT('dp');setSc(75);initPosters();document.querySelectorAll('.fstore').forEach(el=>el.textContent=_storeId);});
 </script>
 </body>
 </html>
