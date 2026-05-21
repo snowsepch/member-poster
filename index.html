@@ -3,232 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>右昌 會員優惠 海報系統</title>
+<title>右昌 會員優惠 海報 A4列印版 v5</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-:root{--page-bg:#ffffff;--poster-bg:#f5f0e8;--navy:#1a2a5a;--accent:#f5e200;--cream:#f5f0e8;--text:#1a2a5a;--muted:#6a7080;--divider:#ddd6c4;--price-col:#1a2a5a;--orig-col:#b0a890;--badge-bg:#1a2a5a;--badge-fg:#ffffff;--badge-bar:#f5e200;--cat-bg:#f5e200;--cat-fg:#1a2a5a;--svc-bg:#eceae0;--svc-border:#ccc8b8;--date-bg:#1a2a5a;--date-fg:#f5e200;}
+:root{
+  --poster-bg:#faf8f4;--navy:#1a2a5a;--accent:#f5e200;--cream:#faf8f4;
+  --text:#1a2a5a;--muted:#6a7080;--divider:#e8e4d8;--price-col:#1a2a5a;
+  --orig-col:#b0a890;--badge-bg:#1a2a5a;--badge-fg:#ffffff;--badge-bar:#f5e200;
+  --cat-bg:#f5e200;--cat-fg:#1a2a5a;--svc-bg:#f2f0ea;--svc-border:#d8d4c8;
+  --date-bg:#1a2a5a;--date-fg:#f5e200;--ctrl:#0e0e0e;--ctrl2:#151515;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans TC',sans-serif;background:var(--page-bg);min-height:100vh;}
-.cbar{background:#ffffff;padding:8px 18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e8e8ea;}
-#b2{background:#f7f7f8;}
-#b3{background:#f0f0f2;font-size:10px;color:#555;}
-#b3 b{color:#1a2a5a;}
-#b3 strong{color:#888;}
-.blabel{font-size:10px;color:#888;white-space:nowrap;padding-right:9px;border-right:1px solid #e0e0e0;margin-right:2px;}
-.tpill{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:50px;border:1.5px solid #d8d8da;background:transparent;cursor:pointer;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:#444;transition:all .15s;white-space:nowrap;}
-.tpill:hover{border-color:#aaa;color:#111;}
+body{font-family:'Noto Sans TC',sans-serif;background:#d0d0d0;min-height:100vh;}
+
+/* ── control bars ── */
+.cbar{background:var(--ctrl);padding:7px 16px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;border-bottom:1px solid #050505;}
+.blabel{font-size:10px;color:#3a3a3a;white-space:nowrap;padding-right:8px;border-right:1px solid #1e1e1e;margin-right:2px;}
+.tpill{display:flex;align-items:center;gap:5px;padding:4px 11px;border-radius:50px;border:1.5px solid #1e1e1e;background:transparent;cursor:pointer;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:#3a3a3a;transition:all .15s;white-space:nowrap;}
+.tpill:hover{border-color:#383838;color:#aaa;}
 .tpill.on{border-color:transparent;}
 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.bhint{margin-left:auto;font-size:10px;color:#aaa;white-space:nowrap;}
-.pbadge{font-size:12px;font-weight:900;color:#333;white-space:nowrap;margin-right:4px;}
-.pbadge em{color:#1a2a5a;font-style:normal;}
-.bbtn{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:6px;border:1.5px solid #d8d8da;background:#f0f0f2;color:#444;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s;}
-.bbtn:hover{border-color:#aaa;color:#111;background:#e8e8ea;}
-.bbtn.pdf{background:#f5e200;border-color:#ddd000;color:#1a1040;font-weight:900;}
+.pbadge{font-size:12px;font-weight:900;color:#ccc;white-space:nowrap;margin-right:4px;}
+.pbadge em{color:#f5e200;font-style:normal;}
+.bbtn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1.5px solid #1e1e1e;background:#111;color:#555;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.bbtn:hover{border-color:#383838;color:#bbb;}
+.bbtn.pdf{background:#f5e200;border-color:#f5e200;color:#1a1040;font-weight:900;}
 .bbtn.pdf:hover{background:#ffe400;}
 .bbtn.prt{background:#1a2a5a;border-color:#2a3a70;color:#fff;}
 .bbtn.prt:hover{background:#223272;}
-.bstat{font-size:10px;color:#888;}
+.bstat{font-size:10px;color:#2a2a2a;}
 #pfi{display:none;}
 .pwrap{position:relative;}
-.pop{display:none;position:absolute;top:calc(100% + 7px);left:0;background:#ffffff;border:1.5px solid #d8d8da;border-radius:9px;padding:13px 15px;min-width:230px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.12);max-height:80vh;overflow-y:auto;}
+.pop{display:none;position:absolute;top:calc(100% + 7px);left:0;background:#0e0e0e;border:1.5px solid #1e1e1e;border-radius:9px;padding:13px 15px;min-width:230px;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.7);max-height:80vh;overflow-y:auto;}
 .pop.on{display:block;}
-.psec{font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:.12em;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid #e8e8ea;}
-.prow{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#444;margin-bottom:7px;gap:6px;}
+.psec{font-size:9px;color:#2e2e2e;text-transform:uppercase;letter-spacing:.12em;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid #191919;}
+.prow{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#555;margin-bottom:7px;gap:6px;}
 .prow:last-child{margin-bottom:0;}
-.sv{color:#666;min-width:28px;text-align:right;font-size:10px;}
-input[type=range]{-webkit-appearance:none;width:88px;height:3px;background:#d8d8da;border-radius:2px;outline:none;flex-shrink:0;}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#444;cursor:pointer;}
-.fbtn{background:#f0f0f2;color:#555;border:1.5px solid #d8d8da;border-radius:5px;padding:4px 9px;font-size:10px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .15s;}
-.fbtn:hover{border-color:#aaa;color:#111;}
-.fbtn.bold-on{background:#f5e200;color:#1a1040;border-color:#ddd000;}
+.sv{color:#999;min-width:28px;text-align:right;font-size:10px;}
+input[type=range]{-webkit-appearance:none;width:88px;height:3px;background:#1e1e1e;border-radius:2px;outline:none;flex-shrink:0;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#eee;cursor:pointer;}
+.fbtn{background:#1e1e1e;color:#888;border:1.5px solid #2a2a2a;border-radius:5px;padding:4px 9px;font-size:10px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .15s;}
+.fbtn:hover{border-color:#555;color:#ccc;}
+.fbtn.bold-on{background:#f5e200;color:#1a1040;border-color:#f5e200;}
+.scwrap{display:flex;align-items:center;gap:5px;margin-left:auto;}
+.scwrap label{font-size:10px;color:#2a2a2a;}
 
-/* ══ 海報區 ══ */
-#pa{display:flex;justify-content:center;padding:28px 16px 80px;}
-#psw{transition:transform .15s;transform-origin:top center;overflow:hidden;}
+/* ── 海報顯示區 ── */
+#pa{display:flex;justify-content:center;padding:24px 16px 60px;}
+#psw{transform-origin:top center;transition:transform .2s;}
 
-/* 四張海報垂直排列 */
-.poster-inner{width:794px;}
+/* ── 海報包裝 ── */
+.poster-wrap{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:28px;}
+.poster-wrap:last-child{margin-bottom:0;}
+
+/* ── 手動縮放控制列 ── */
+.poster-ctrl{width:794px;background:#1a1a1a;border:1px solid #2a2a2a;border-bottom:none;border-radius:7px 7px 0 0;padding:7px 14px;display:flex;align-items:center;gap:10px;}
+.pctrl-name{font-size:11px;font-weight:700;color:#f5e200;min-width:90px;}
+.pctrl-sub{font-size:9px;color:#333;flex:1;}
+.pctrl-range{-webkit-appearance:none;width:160px;height:3px;background:#333;border-radius:2px;outline:none;cursor:pointer;}
+.pctrl-range::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#f5e200;cursor:pointer;}
+.pctrl-val{font-size:11px;color:#f5e200;font-weight:700;min-width:40px;text-align:right;}
+
+/* ── 海報本體：固定 794×1123px（≈ A4 @96dpi） ── */
 .poster{
   width:794px;
+  height:1123px;
+  display:flex;
+  flex-direction:column;
   background:var(--poster-bg);
-  outline:1px solid rgba(0,0,0,.08);
+  overflow:hidden;
+  outline:1px solid rgba(0,0,0,.1);
+  transform-origin:top left;
   position:relative;
-  margin-bottom:40px;
 }
-.poster:last-child{margin-bottom:0;}
-
-/* A4 出血線 */
-.bleed-line{display:none;position:absolute;left:0;right:0;height:0;border-top:2px dashed rgba(210,40,40,.7);z-index:10;pointer-events:none;}
-.bleed-line::before{content:'▶ A4 列印邊界';position:absolute;right:6px;top:-18px;font-size:9px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:rgba(210,40,40,.85);background:rgba(255,255,255,.85);padding:2px 6px;border-radius:3px;white-space:nowrap;}
-.bleed-line::after{content:'';position:absolute;left:0;right:0;top:2px;height:500px;background:repeating-linear-gradient(45deg,rgba(210,40,40,.07),rgba(210,40,40,.07) 4px,transparent 4px,transparent 12px);}
-@media print{.bleed-line{display:none!important;}}
 
 /* store bar */
-.store-bar{background:var(--navy);border-bottom:3px solid var(--accent);padding:10px 28px;display:flex;justify-content:space-between;align-items:center;}
-.sname{font-size:16px;font-weight:900;color:#fff;letter-spacing:.02em;outline:none;}
-.ssep{color:#fff;opacity:.3;margin:0 10px;}
-.ssub{font-size:11px;color:#fff;opacity:.5;letter-spacing:.04em;outline:none;}
-.sbadge{border:1px solid rgba(255,255,255,.25);border-radius:5px;padding:4px 12px;font-size:10px;font-weight:700;color:#fff;opacity:.6;}
+.store-bar{background:var(--navy);border-bottom:3px solid var(--accent);padding:9px 24px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+.sname{font-size:15px;font-weight:900;color:#fff;letter-spacing:.02em;outline:none;}
+.ssep{color:#fff;opacity:.3;margin:0 8px;}
+.ssub{font-size:10px;color:#fff;opacity:.5;letter-spacing:.04em;outline:none;}
+.sbadge{border:1px solid rgba(255,255,255,.25);border-radius:4px;padding:3px 10px;font-size:9px;font-weight:700;color:#fff;opacity:.6;}
 
 /* header */
-.ph{background:var(--cream);padding:22px 28px 18px;position:relative;overflow:hidden;min-height:180px;border-bottom:4px solid var(--navy);}
-.ph-ghost{position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:128px;line-height:1;color:rgba(26,42,90,0.055);white-space:nowrap;pointer-events:none;user-select:none;letter-spacing:-.02em;}
-.ph-toprow{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.date-pill{border:2px solid var(--navy);border-radius:4px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--navy);font-family:'Bebas Neue',sans-serif;letter-spacing:.08em;}
-.mem-pill{background:var(--accent);border-radius:4px;padding:5px 14px;font-size:12px;font-weight:900;color:var(--cat-fg);letter-spacing:.04em;}
-.ph-eye{border:1px solid var(--navy);display:inline-block;padding:2px 8px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--navy);opacity:.5;text-transform:uppercase;margin-bottom:6px;}
-.ph-title{font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:80px;line-height:.9;color:var(--navy);letter-spacing:-.02em;outline:none;position:relative;z-index:1;}
-.ph-sub{font-size:15px;font-weight:700;color:var(--navy);opacity:.7;margin-top:8px;letter-spacing:.04em;outline:none;position:relative;z-index:1;}
+.ph{background:var(--cream);padding:14px 24px 12px;position:relative;overflow:hidden;border-bottom:3px solid var(--navy);flex-shrink:0;}
+.ph-ghost{position:absolute;right:-6px;top:50%;transform:translateY(-50%);font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:108px;line-height:1;color:rgba(26,42,90,0.05);white-space:nowrap;pointer-events:none;user-select:none;}
+.ph-toprow{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.date-pill{border:2px solid var(--navy);border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700;color:var(--navy);font-family:'Bebas Neue',sans-serif;letter-spacing:.08em;}
+.mem-pill{background:var(--accent);border-radius:4px;padding:3px 12px;font-size:11px;font-weight:900;color:var(--cat-fg);letter-spacing:.04em;}
+.ph-eye{border:1px solid var(--navy);display:inline-block;padding:2px 7px;border-radius:2px;font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--navy);opacity:.5;text-transform:uppercase;margin-bottom:4px;}
+.ph-title{font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:64px;line-height:.9;color:var(--navy);letter-spacing:-.02em;outline:none;position:relative;z-index:1;}
+.ph-sub{font-size:13px;font-weight:700;color:var(--navy);opacity:.7;margin-top:5px;letter-spacing:.04em;outline:none;position:relative;z-index:1;}
 
 /* date bar */
-.dbar{background:var(--date-bg);padding:9px 28px;text-align:center;}
-.dtext{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.18em;color:var(--date-fg);outline:none;}
+.dbar{background:var(--date-bg);padding:6px 24px;text-align:center;flex-shrink:0;}
+.dtext{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.18em;color:var(--date-fg);outline:none;}
 
 /* svc */
-.svcbar{background:var(--svc-bg);display:grid;grid-template-columns:repeat(4,1fr);border-bottom:2px solid var(--svc-border);}
-.svc{display:flex;align-items:center;gap:6px;padding:9px 12px;border-right:1px solid var(--svc-border);font-size:11px;font-weight:700;color:var(--text);outline:none;line-height:1.3;}
+.svcbar{background:var(--svc-bg);display:grid;grid-template-columns:repeat(4,1fr);border-bottom:2px solid var(--svc-border);flex-shrink:0;}
+.svc{display:flex;align-items:center;gap:4px;padding:6px 8px;border-right:1px solid var(--svc-border);font-size:9.5px;font-weight:700;color:var(--text);outline:none;line-height:1.2;white-space:nowrap;overflow:hidden;}
 .svc:last-child{border-right:none;}
 
+/* products */
+.poster-products{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;}
+
 /* cat */
-.catrow{background:var(--cat-bg);padding:6px 20px;font-size:12px;font-weight:900;color:var(--cat-fg);letter-spacing:.06em;}
+.catrow{background:var(--cat-bg);padding:5px 18px;font-size:11px;font-weight:900;color:var(--cat-fg);letter-spacing:.06em;flex-shrink:0;}
 
 /* product grid */
 .pgrid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1.5px solid var(--divider);background:var(--poster-bg);}
-.pcol{padding:13px 18px 14px;border-right:1px solid var(--divider);}
+.pcol{padding:9px 14px 10px;border-right:1px solid var(--divider);}
 .pcol:last-child{border-right:none;}
-.phead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;}
-.pname{font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:900;color:var(--text);flex:1;}
-.pstart{text-align:right;flex-shrink:0;display:flex;align-items:baseline;gap:2px;justify-content:flex-end;}
-.psup{font-size:9px;color:var(--muted);line-height:1;}
-.psp{font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1;color:var(--price-col);letter-spacing:.02em;}
-.pbadge2{display:inline-flex;align-items:center;background:var(--badge-bg);border-radius:2px;padding:3px 8px 3px 4px;margin-bottom:8px;max-width:100%;}
-.bbar{width:3px;height:11px;border-radius:1px;background:var(--badge-bar);margin-right:6px;flex-shrink:0;}
-.btxt{font-weight:700;color:var(--badge-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;}
-.srow{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-top:1px solid var(--divider);}
-.slbl{font-size:11px;color:var(--muted);}
-.sright{display:flex;align-items:baseline;gap:7px;}
-.sprice{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--price-col);letter-spacing:.02em;}
-.sorig{font-size:10px;color:var(--orig-col);text-decoration:line-through;}
-.empty-col{padding:13px 18px;color:var(--muted);font-size:11px;}
-.no-items{padding:24px;text-align:center;color:var(--muted);font-size:12px;}
+.phead{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:3px;}
+.pname{font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:900;color:var(--text);flex:1;}
+.pstart{text-align:right;flex-shrink:0;display:flex;align-items:baseline;gap:2px;}
+.psup{font-size:8px;color:var(--muted);line-height:1;}
+.psp{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;color:var(--price-col);}
+.pbadge2{display:inline-flex;align-items:center;background:var(--badge-bg);border-radius:2px;padding:2px 6px 2px 3px;margin-bottom:5px;max-width:100%;}
+.bbar{width:3px;height:9px;border-radius:1px;background:var(--badge-bar);margin-right:4px;flex-shrink:0;}
+.btxt{font-weight:700;color:var(--badge-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:9px;}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-top:1px solid var(--divider);}
+.slbl{font-size:9.5px;color:var(--muted);}
+.sright{display:flex;align-items:baseline;gap:5px;}
+.sprice{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--price-col);}
+.sorig{font-size:9px;color:var(--orig-col);text-decoration:line-through;}
+.empty-col{padding:9px 14px;color:var(--muted);font-size:10px;}
+.no-items{padding:20px;text-align:center;color:var(--muted);font-size:11px;}
 
 /* footer */
-.pfoot{background:var(--navy);border-top:3px solid var(--accent);padding:12px 28px;display:flex;justify-content:space-between;align-items:center;}
-.fnote{font-size:10px;color:#fff;opacity:.45;line-height:1.7;outline:none;}
+.pfoot{background:var(--navy);border-top:3px solid var(--accent);padding:9px 24px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+.fnote{font-size:9px;color:#fff;opacity:.45;line-height:1.6;outline:none;}
 .fbrand{text-align:right;}
-.fstore{font-size:13px;font-weight:900;color:#fff;letter-spacing:.05em;outline:none;}
-.freseller{font-size:9px;color:#fff;opacity:.3;letter-spacing:.1em;}
+.fstore{font-size:12px;font-weight:900;color:#fff;letter-spacing:.05em;outline:none;}
+.freseller{font-size:8px;color:#fff;opacity:.3;letter-spacing:.1em;}
 
-/* 回報 */
-#cbar-sticky{position:sticky;top:0;z-index:90;}
-#rbtn{position:fixed;bottom:18px;right:18px;z-index:9999;background:#f0f0f2;color:#555;border:1.5px solid #d8d8da;border-radius:50px;padding:8px 14px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;}
-#rbtn:hover{background:#e8e8ea;color:#111;border-color:#aaa;}
-#rpanel{display:none;position:fixed;bottom:55px;right:18px;z-index:9999;background:#ffffff;border:1.5px solid #d8d8da;border-radius:11px;padding:15px;width:232px;box-shadow:0 4px 20px rgba(0,0,0,.12);font-family:'Noto Sans TC',sans-serif;}
-#rpanel h4{font-size:12px;font-weight:700;color:#333;margin-bottom:10px;}
-.rtg{display:flex;flex-direction:column;gap:6px;margin-bottom:9px;}
-.rtg label{font-size:11px;color:#555;display:flex;align-items:center;gap:7px;cursor:pointer;}
-.rtg input[type=radio]{accent-color:#1a2a5a;}
-#rmsg{width:100%;height:56px;background:#f7f7f8;border:1.5px solid #d8d8da;border-radius:5px;padding:6px 8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:#333;resize:none;box-sizing:border-box;margin-bottom:8px;outline:none;}
-#rmsg:focus{border-color:#aaa;}
-#rsub{width:100%;background:#1a2a5a;color:#fff;border:none;border-radius:5px;padding:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;}
-#rsub:hover{background:#223272;}
-#rsub:disabled{background:#e0e0e0;color:#aaa;cursor:not-allowed;}
-#rok{display:none;text-align:center;padding:7px 0;font-size:11px;color:#3DAB8A;font-weight:700;}
-
-/* 規格列新增/刪除按鈕 */
-.row-del{display:inline-flex;flex-shrink:0;margin-left:6px;background:none;border:none;color:#c44;font-size:10px;cursor:pointer;padding:1px 4px;border-radius:3px;line-height:1;align-items:center;opacity:.5;}
+/* edit helpers */
+.row-del{display:inline-flex;flex-shrink:0;margin-left:4px;background:none;border:none;color:#c44;font-size:9px;cursor:pointer;padding:1px 3px;border-radius:3px;opacity:.5;}
 .row-del:hover{opacity:1;}
-.row-add{display:block;width:100%;background:none;border:1px dashed #ccc;border-radius:3px;color:#aaa;cursor:pointer;font-size:9px;font-family:'Noto Sans TC',sans-serif;padding:3px 8px;margin-top:3px;text-align:left;box-sizing:border-box;}
+.row-add{display:block;width:100%;background:none;border:1px dashed #ccc;border-radius:3px;color:#aaa;cursor:pointer;font-size:8px;font-family:'Noto Sans TC',sans-serif;padding:2px 6px;margin-top:2px;text-align:left;}
 .row-add:hover{border-color:#888;color:#666;}
 
-/* ══ 列印備用（Cmd+P 直接列印主視窗時） ══ */
+/* ════════════════════════════════════════════════════
+   PRINT — 完全隔離方案
+   列印時只顯示 #print-only，其餘全部隱藏。
+   每個 .ppage = 一張 A4（position:relative, height:297mm）
+   所有子元素 position:absolute → Safari 不計算子元素高度
+   → 父元素只看自己的 height:297mm → 恰好一頁
+   ════════════════════════════════════════════════════ */
+@media screen{#print-only{display:none;}}
 @media print{
   @page{size:A4 portrait;margin:0;}
   html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .cbar,#cbar-sticky,#rbtn,#rpanel,.row-del,.row-add{display:none!important;}
-  body{margin:0;padding:0;min-height:0!important;background:white;}
-  #pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;zoom:1!important;height:auto!important;}
-  .poster{display:block!important;width:210mm!important;height:297mm!important;overflow:hidden!important;margin:0!important;padding:0!important;outline:none!important;break-after:page!important;page-break-after:always!important;position:relative!important;}
-  .poster-last{break-after:avoid!important;page-break-after:avoid!important;}
-  .poster-inner{position:static!important;width:100%!important;}
-  .store-bar{padding:5px 18px!important;}
-  .sname{font-size:12px!important;}
-  .sbadge{padding:2px 7px!important;font-size:8px!important;}
-  .ph{min-height:0!important;padding:8px 18px 6px!important;}
-  .ph-ghost{display:none!important;}
-  .ph-toprow{margin-bottom:4px!important;}
-  .ph-eye{margin-bottom:2px!important;font-size:7px!important;}
-  .ph-title{font-size:46px!important;line-height:.85!important;}
-  .ph-sub{font-size:10px!important;margin-top:3px!important;}
-  .date-pill{padding:2px 6px!important;font-size:9px!important;}
-  .mem-pill{padding:2px 8px!important;font-size:9px!important;}
-  .dbar{padding:4px 18px!important;}
-  .dtext{font-size:11px!important;}
-  .svc{padding:4px 8px!important;font-size:8px!important;}
-  .catrow{padding:3px 14px!important;font-size:9px!important;}
-  .pcol{padding:4px 10px 5px!important;}
-  .phead{margin-bottom:1px!important;}
-  .pname{font-size:11px!important;}
-  .psp{font-size:19px!important;}
-  .psup{font-size:6px!important;}
-  .pbadge2{padding:1px 4px 1px 2px!important;margin-bottom:2px!important;}
-  .bbar{height:6px!important;}
-  .btxt{font-size:7px!important;}
-  .srow{padding:1px 0!important;}
-  .slbl{font-size:8px!important;}
-  .sprice{font-size:12px!important;}
-  .sorig{font-size:7px!important;}
-  .pcol .srow~.srow~.srow~.srow{display:none!important;}
-  .pfoot{padding:5px 18px!important;}
-  .fnote{font-size:7px!important;line-height:1.4!important;}
-  .fstore{font-size:10px!important;}
-  .freseller{font-size:6px!important;}
+  body{margin:0;padding:0;background:white;}
+  body>*:not(#print-only){display:none!important;}
+  #print-only{display:block!important;}
+  .ppage{
+    width:210mm;
+    height:297mm;
+    overflow:hidden;
+    position:relative;
+    display:block;
+    page-break-after:always;
+    break-after:page;
+  }
+  .ppage:last-child{page-break-after:auto;break-after:auto;}
   [contenteditable]{outline:none!important;}
 }
 </style>
 </head>
 <body>
 
-<!-- 控制列（sticky 固定頂部） -->
-<div id="cbar-sticky">
-<!-- Bar 1 主題 -->
+<!-- Bar 1：主題 -->
 <div class="cbar" id="b1">
-  <span class="blabel">🎨 海報風格</span>
-  <button class="tpill on" id="p-dp" onclick="setT('dp')"><span class="dot" style="background:#1a2a5a"></span><span class="dot" style="background:#f5e200"></span>深紫藍 × 亮黃</button>
-  <button class="tpill" id="p-nb" onclick="setT('nb')"><span class="dot" style="background:#0d2444"></span><span class="dot" style="background:#c8dff0"></span>海軍藍 × 水藍</button>
-  <button class="tpill" id="p-aw" onclick="setT('aw')"><span class="dot" style="background:#f5f5f7;border:1px solid #888"></span><span class="dot" style="background:#0066cc"></span>Apple 極簡白</button>
-  <button class="tpill" id="p-rr" onclick="setT('rr')"><span class="dot" style="background:#1a1a1a;border:1px solid #555"></span><span class="dot" style="background:#FFC567"></span>深墨 × 暖黃</button>
-  <span class="bhint">切換後直接列印，風格即時套用</span>
+  <span class="blabel">🎨 風格</span>
+  <button class="tpill on" id="p-dp" onclick="setT('dp')"><span class="dot" style="background:#1a2a5a"></span><span class="dot" style="background:#f5e200"></span>深紫藍×亮黃</button>
+  <button class="tpill" id="p-nb" onclick="setT('nb')"><span class="dot" style="background:#0d2444"></span><span class="dot" style="background:#c8dff0"></span>海軍藍×水藍</button>
+  <button class="tpill" id="p-aw" onclick="setT('aw')"><span class="dot" style="background:#f5f5f7;border:1px solid #888"></span><span class="dot" style="background:#0066cc"></span>極簡白×藍</button>
+  <button class="tpill" id="p-rr" onclick="setT('rr')"><span class="dot" style="background:#1a1a1a;border:1px solid #555"></span><span class="dot" style="background:#FFC567"></span>深墨×暖黃</button>
 </div>
 
-<!-- Bar 2 操作 -->
+<!-- Bar 2：操作 -->
 <div class="cbar" id="b2">
   <div class="pbadge">右昌 <em>會員優惠</em> 海報</div>
   <input type="file" id="pfi" accept=".pdf">
   <button class="bbtn pdf" onclick="document.getElementById('pfi').click()">📋 選擇操盤 PDF</button>
-
   <div class="pwrap">
     <button class="bbtn" onclick="tp('pop-f')">字體</button>
     <div class="pop" id="pop-f">
       <div class="psec">頁首</div>
-      <div class="prow">店名 <span class="sv" id="vsn">16px</span><input type="range" min="10" max="24" value="16" oninput="sc('sname',this.value,'vsn')"></div>
-      <div class="prow">主標題 <span class="sv" id="vt">80px</span><input type="range" min="40" max="120" value="80" oninput="sc('ph-title',this.value,'vt')"></div>
-      <div class="prow">副標題 <span class="sv" id="vs">15px</span><input type="range" min="10" max="26" value="15" oninput="sc('ph-sub',this.value,'vs')"></div>
+      <div class="prow">店名 <span class="sv" id="vsn">15px</span><input type="range" min="10" max="24" value="15" oninput="sc('sname',this.value,'vsn')"></div>
+      <div class="prow">主標題 <span class="sv" id="vt">64px</span><input type="range" min="32" max="100" value="64" oninput="sc('ph-title',this.value,'vt')"></div>
+      <div class="prow">副標題 <span class="sv" id="vs">13px</span><input type="range" min="9" max="24" value="13" oninput="sc('ph-sub',this.value,'vs')"></div>
       <div class="psec" style="margin-top:8px;">日期 / 服務</div>
-      <div class="prow">日期條 <span class="sv" id="vd">16px</span><input type="range" min="11" max="28" value="16" oninput="sc('dtext',this.value,'vd')"></div>
-      <div class="prow">服務列 <span class="sv" id="vsv">11px</span><input type="range" min="8" max="16" value="11" oninput="sc('svc',this.value,'vsv')"></div>
+      <div class="prow">日期條 <span class="sv" id="vd">14px</span><input type="range" min="10" max="26" value="14" oninput="sc('dtext',this.value,'vd')"></div>
+      <div class="prow">服務列 <span class="sv" id="vsv">9.5px</span><input type="range" min="7" max="15" value="9" oninput="sc('svc',this.value,'vsv')"></div>
       <div class="psec" style="margin-top:8px;">產品</div>
-      <div class="prow">品類標題 <span class="sv" id="vcat">12px</span><input type="range" min="9" max="18" value="12" oninput="sc('catrow',this.value,'vcat')"></div>
-      <div class="prow">品名 <span class="sv" id="vn">15px</span><input type="range" min="10" max="22" value="15" oninput="sc('pname',this.value,'vn')"></div>
-      <div class="prow">優惠標籤 <span class="sv" id="vbt">10px</span><input type="range" min="7" max="14" value="10" oninput="sc('btxt',this.value,'vbt')"></div>
-      <div class="prow">起始價 <span class="sv" id="vp">30px</span><input type="range" min="18" max="48" value="30" oninput="sc('psp',this.value,'vp')"></div>
-      <div class="prow">規格標籤 <span class="sv" id="vsl">11px</span><input type="range" min="8" max="16" value="11" oninput="sc('slbl',this.value,'vsl')"></div>
-      <div class="prow">規格價格 <span class="sv" id="vsp">18px</span><input type="range" min="12" max="32" value="18" oninput="sc('sprice',this.value,'vsp')"></div>
-      <div class="prow">原價刪除線 <span class="sv" id="vso">10px</span><input type="range" min="7" max="14" value="10" oninput="sc('sorig',this.value,'vso')"></div>
+      <div class="prow">品類標題 <span class="sv" id="vcat">11px</span><input type="range" min="8" max="16" value="11" oninput="sc('catrow',this.value,'vcat')"></div>
+      <div class="prow">品名 <span class="sv" id="vn">13px</span><input type="range" min="9" max="20" value="13" oninput="sc('pname',this.value,'vn')"></div>
+      <div class="prow">優惠標籤 <span class="sv" id="vbt">9px</span><input type="range" min="7" max="13" value="9" oninput="sc('btxt',this.value,'vbt')"></div>
+      <div class="prow">起始價 <span class="sv" id="vp">24px</span><input type="range" min="14" max="44" value="24" oninput="sc('psp',this.value,'vp')"></div>
+      <div class="prow">規格標籤 <span class="sv" id="vsl">9.5px</span><input type="range" min="7" max="15" value="9" oninput="sc('slbl',this.value,'vsl')"></div>
+      <div class="prow">規格價格 <span class="sv" id="vsp">15px</span><input type="range" min="10" max="28" value="15" oninput="sc('sprice',this.value,'vsp')"></div>
+      <div class="prow">原價刪除線 <span class="sv" id="vso">9px</span><input type="range" min="7" max="13" value="9" oninput="sc('sorig',this.value,'vso')"></div>
       <div class="psec" style="margin-top:8px;">頁腳</div>
-      <div class="prow">頁腳說明 <span class="sv" id="vfn">10px</span><input type="range" min="7" max="14" value="10" oninput="sc('fnote',this.value,'vfn')"></div>
-      <div class="prow">頁腳店名 <span class="sv" id="vfs">13px</span><input type="range" min="10" max="20" value="13" oninput="sc('fstore',this.value,'vfs')"></div>
+      <div class="prow">頁腳說明 <span class="sv" id="vfn">9px</span><input type="range" min="7" max="13" value="9" oninput="sc('fnote',this.value,'vfn')"></div>
+      <div class="prow">頁腳店名 <span class="sv" id="vfs">12px</span><input type="range" min="9" max="18" value="12" oninput="sc('fstore',this.value,'vfs')"></div>
       <div class="psec" style="margin-top:8px;">粗體切換</div>
       <div class="prow" style="flex-wrap:wrap;gap:5px;">
         <button class="fbtn" onclick="toggleBoldCls('ph-title')">主標題</button>
@@ -244,203 +222,256 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
       </div>
     </div>
   </div>
-
-  <div class="pwrap">
-    <button class="bbtn" onclick="tp('pop-sc')">縮放</button>
-    <div class="pop" id="pop-sc">
-      <div class="psec">整體比例</div>
-      <div class="prow">比例 <span class="sv" id="vsc">85%</span><input type="range" min="50" max="120" value="85" oninput="setSc(this.value)"></div>
-      <div class="prow" style="margin-top:4px;"><button class="fbtn" id="afbtn" onclick="setAutoFit(!autoFit)" style="width:100%;text-align:center;">自動符合視窗</button></div>
-    </div>
-  </div>
-
-  <button class="bbtn prt" onclick="doPrint()">🖨 列印</button>
-  <button class="bbtn" id="sbtn" onclick="saveState()" style="background:#e8f5e9;border-color:#a5d6a7;color:#2e7d32;">💾 儲存</button>
-  <button class="bbtn" onclick="document.getElementById('dbgpanel').style.cssText='display:flex;flex-direction:column'" style="color:#aaa;font-size:10px;">🔍</button>
-  <span class="bstat" id="pstat">請選擇操盤 PDF 檔案</span>
-</div>
-
-<!-- Bar 3 -->
-<div class="cbar" id="b3">
-  🖨 點「🖨 列印」→ A4 直向 → 勾 <b>「列印背景」</b> → 共 <b>4頁</b>（系統自動計算最佳列印比例）
-</div>
-</div><!-- /cbar-sticky -->
-
-<!-- Debug 面板 -->
-<div id="dbgpanel" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#111;border:1.5px solid #333;border-radius:10px;width:90%;max-width:800px;padding:16px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <span style="color:#f5e200;font-size:13px;font-weight:700;">🔍 PDF 解析診斷</span>
-      <button onclick="document.getElementById('dbgpanel').style.display='none'" style="background:#333;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:11px;">關閉</button>
-    </div>
-    <textarea id="dbgout" style="width:100%;height:60vh;background:#080808;color:#aaffaa;border:1px solid #333;border-radius:5px;padding:10px;font-size:11px;font-family:monospace;resize:none;" readonly></textarea>
+  <button class="bbtn prt" onclick="doPrint()">🖨 列印 / 匯出 PDF</button>
+  <button class="bbtn" onclick="fixAndFitPosters()" style="background:#222;border-color:#555;color:#f5e200;">✦ 自動縮放</button>
+  <span class="bstat" id="pstat">請先上傳操盤 PDF</span>
+  <div class="scwrap">
+    <label>畫面</label>
+    <input type="range" id="scslider" min="40" max="110" value="75" oninput="setSc(this.value)">
+    <span id="vsc">75%</span>
   </div>
 </div>
 
-<!-- ══ 四張海報垂直排列 ══ -->
+<!-- Bar 3：列印說明 -->
+<div class="cbar" id="b3" style="gap:8px;font-size:10px;">
+  🖨 <b style="color:#f5e200">列印步驟：</b>
+  <span style="color:#2a2a2a">點「列印」→ 縮放</span><b style="color:#aaa">100%</b>
+  <span style="color:#2a2a2a">→ 勾</span><b style="color:#aaa">「列印背景」</b>
+  <span style="color:#2a2a2a">→</span><b style="color:#f87">取消勾選「列印標頭和頁尾」</b>
+  <span style="color:#2a2a2a">→ 輸出</span><b style="color:#f5e200">4頁</b>
+</div>
+
+<!-- 海報區 -->
 <div id="pa"><div id="psw">
-
-  <div id="posters-wrap">
-    <!-- 由 JS 產生 -->
-  </div>
-
+  <div id="posters-wrap"></div>
 </div></div>
 
-<button id="rbtn" onclick="toggleR()">📢 回報問題</button>
-<div id="rpanel">
-  <h4>回報問題</h4>
-  <div class="rtg">
-    <label><input type="radio" name="rt" value="功能異常" checked> 功能異常</label>
-    <label><input type="radio" name="rt" value="資料錯誤"> 資料錯誤</label>
-    <label><input type="radio" name="rt" value="顯示異常"> 顯示異常</label>
-    <label><input type="radio" name="rt" value="其他"> 其他</label>
+<button id="rbtn" onclick="toggleR()" style="position:fixed;bottom:16px;right:16px;z-index:9999;background:#0e0e0e;color:#555;border:1.5px solid #1e1e1e;border-radius:50px;padding:7px 13px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">📢 回報</button>
+<div id="rpanel" style="display:none;position:fixed;bottom:50px;right:16px;z-index:9999;background:#0e0e0e;border:1.5px solid #1e1e1e;border-radius:10px;padding:14px;width:220px;font-family:'Noto Sans TC',sans-serif;">
+  <h4 style="font-size:12px;font-weight:700;color:#ccc;margin-bottom:9px;">回報問題</h4>
+  <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px;">
+    <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="功能異常" checked> 功能異常</label>
+    <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="資料錯誤"> 資料錯誤</label>
+    <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="顯示異常"> 顯示異常</label>
+    <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="其他"> 其他</label>
   </div>
-  <textarea id="rmsg" placeholder="說明狀況（選填）"></textarea>
-  <button id="rsub" onclick="sendR()">送出回報</button>
-  <div id="rok">✅ 已送出，謝謝回報！</div>
+  <textarea id="rmsg" placeholder="說明狀況（選填）" style="width:100%;height:52px;background:#080808;border:1.5px solid #1e1e1e;border-radius:5px;padding:6px 8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:#999;resize:none;box-sizing:border-box;margin-bottom:7px;outline:none;"></textarea>
+  <button id="rsub" onclick="sendR()" style="width:100%;background:#f5e200;color:#1a1040;border:none;border-radius:5px;padding:7px;font-size:11px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;">送出回報</button>
+  <div id="rok" style="display:none;text-align:center;padding:6px 0;font-size:11px;color:#3DAB8A;font-weight:700;">✅ 已送出，謝謝！</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-/* ══ 主題 ══ */
+/* ── 主題 ── */
 const THEMES={
-  dp:{'--page-bg':'#ffffff','--poster-bg':'#faf8f4','--navy':'#1a2a5a','--accent':'#f5e200','--cream':'#faf8f4','--text':'#1a2a5a','--muted':'#6a7080','--divider':'#e8e4d8','--price-col':'#1a2a5a','--orig-col':'#b0a890','--badge-bg':'#1a2a5a','--badge-fg':'#ffffff','--badge-bar':'#f5e200','--cat-bg':'#f5e200','--cat-fg':'#1a2a5a','--svc-bg':'#f2f0ea','--svc-border':'#d8d4c8','--date-bg':'#1a2a5a','--date-fg':'#f5e200','--ctrl':'#0e0e0e','--ctrl2':'#151515',pill:'#1a2a5a',pt:'#f5e200'},
-  nb:{'--page-bg':'#ffffff','--poster-bg':'#ffffff','--navy':'#0d2444','--accent':'#c8dff0','--cream':'#d4e8f4','--text':'#0d2444','--muted':'#607080','--divider':'#c8d8e4','--price-col':'#0d2444','--orig-col':'#a8b0b8','--badge-bg':'#0d2444','--badge-fg':'#ffffff','--badge-bar':'#c8dff0','--cat-bg':'#0d2444','--cat-fg':'#ffffff','--svc-bg':'#e8f2f8','--svc-border':'#b0c8d8','--date-bg':'#0d2444','--date-fg':'#c8dff0','--ctrl':'#060f18','--ctrl2':'#0a1820',pill:'#0d2444',pt:'#ffffff'},
-  aw:{'--page-bg':'#ffffff','--poster-bg':'#ffffff','--navy':'#1d1d1f','--accent':'#0055b3','--cream':'#ffffff','--text':'#1d1d1f','--muted':'#6e6e73','--divider':'#d2d2d7','--price-col':'#1d1d1f','--orig-col':'#bbbbbb','--badge-bg':'#ddeeff','--badge-fg':'#0055b3','--badge-bar':'#0055b3','--cat-bg':'#1d1d1f','--cat-fg':'#ffffff','--svc-bg':'#f5f5f7','--svc-border':'#d2d2d7','--date-bg':'#0055b3','--date-fg':'#ffffff','--ctrl':'#111','--ctrl2':'#181818',pill:'#1d1d1f',pt:'#ffffff'},
-  rr:{'--page-bg':'#ffffff','--poster-bg':'#fdfaf2','--navy':'#1a1a1a','--accent':'#FFC567','--cream':'#fdfaf2','--text':'#1a1a1a','--muted':'#7a7060','--divider':'#ddd6c0','--price-col':'#1a1a1a','--orig-col':'#a09080','--badge-bg':'#1a1a1a','--badge-fg':'#FFC567','--badge-bar':'#FFC567','--cat-bg':'#FFC567','--cat-fg':'#1a1a1a','--svc-bg':'#f5f0e0','--svc-border':'#ccc4a8','--date-bg':'#1a1a1a','--date-fg':'#FFC567','--ctrl':'#0a0a0a','--ctrl2':'#111111',pill:'#FFC567',pt:'#1a1a1a'}
+  dp:{'--poster-bg':'#faf8f4','--navy':'#1a2a5a','--accent':'#f5e200','--cream':'#faf8f4','--text':'#1a2a5a','--muted':'#6a7080','--divider':'#e8e4d8','--price-col':'#1a2a5a','--orig-col':'#b0a890','--badge-bg':'#1a2a5a','--badge-fg':'#ffffff','--badge-bar':'#f5e200','--cat-bg':'#f5e200','--cat-fg':'#1a2a5a','--svc-bg':'#f2f0ea','--svc-border':'#d8d4c8','--date-bg':'#1a2a5a','--date-fg':'#f5e200','--ctrl':'#0e0e0e','--ctrl2':'#151515',pill:'#1a2a5a',pt:'#f5e200'},
+  nb:{'--poster-bg':'#ffffff','--navy':'#0d2444','--accent':'#c8dff0','--cream':'#d4e8f4','--text':'#0d2444','--muted':'#607080','--divider':'#c8d8e4','--price-col':'#0d2444','--orig-col':'#a8b0b8','--badge-bg':'#0d2444','--badge-fg':'#ffffff','--badge-bar':'#c8dff0','--cat-bg':'#0d2444','--cat-fg':'#ffffff','--svc-bg':'#e8f2f8','--svc-border':'#b0c8d8','--date-bg':'#0d2444','--date-fg':'#c8dff0','--ctrl':'#060f18','--ctrl2':'#0a1820',pill:'#0d2444',pt:'#ffffff'},
+  aw:{'--poster-bg':'#ffffff','--navy':'#1d1d1f','--accent':'#0055b3','--cream':'#ffffff','--text':'#1d1d1f','--muted':'#6e6e73','--divider':'#d2d2d7','--price-col':'#1d1d1f','--orig-col':'#bbbbbb','--badge-bg':'#ddeeff','--badge-fg':'#0055b3','--badge-bar':'#0055b3','--cat-bg':'#1d1d1f','--cat-fg':'#ffffff','--svc-bg':'#f5f5f7','--svc-border':'#d2d2d7','--date-bg':'#0055b3','--date-fg':'#ffffff','--ctrl':'#111','--ctrl2':'#181818',pill:'#1d1d1f',pt:'#ffffff'},
+  rr:{'--poster-bg':'#fdfaf2','--navy':'#1a1a1a','--accent':'#FFC567','--cream':'#fdfaf2','--text':'#1a1a1a','--muted':'#7a7060','--divider':'#ddd6c0','--price-col':'#1a1a1a','--orig-col':'#a09080','--badge-bg':'#1a1a1a','--badge-fg':'#FFC567','--badge-bar':'#FFC567','--cat-bg':'#FFC567','--cat-fg':'#1a1a1a','--svc-bg':'#f5f0e0','--svc-border':'#ccc4a8','--date-bg':'#1a1a1a','--date-fg':'#FFC567','--ctrl':'#0a0a0a','--ctrl2':'#111111',pill:'#FFC567',pt:'#1a1a1a'}
 };
-let cur='dp';
 function setT(k){
-  cur=k;const t=THEMES[k],r=document.documentElement;
+  const t=THEMES[k],r=document.documentElement;
   Object.entries(t).forEach(([key,val])=>{if(key.startsWith('--'))r.style.setProperty(key,val);});
   document.querySelectorAll('.tpill').forEach(p=>{p.classList.remove('on');p.style.background='';p.style.color='';});
   const pill=document.getElementById('p-'+k);
   if(pill){pill.classList.add('on');pill.style.background=t.pill;pill.style.color=t.pt;}
-  _as();
+  ['b1','b2','b3'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.background=id==='b1'?t['--ctrl']:t['--ctrl2'];});
 }
+function setSc(v){document.getElementById('psw').style.transform=`scale(${v/100})`;document.getElementById('vsc').textContent=v+'%';}
 
-/* ══ 字體 ══ */
-function sc(cls,v,vid){document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-size',v+'px','important'));const vl=document.getElementById(vid);if(vl)vl.textContent=v+'px';_as();}
-let _pswScale=0.85;
-function applyZoom(v){
-  const vn=Math.round(parseFloat(v));
-  _pswScale=vn/100;
-  const psw=document.getElementById('psw');
-  psw.style.height='';
-  void psw.offsetWidth;
-  const natH=psw.scrollHeight;
-  psw.style.transform=`scale(${_pswScale})`;
-  psw.style.height=Math.round(natH*_pswScale)+'px';
-  document.getElementById('vsc').textContent=vn+'%';
-  const sl=document.querySelector('#pop-sc input[type=range]');
-  if(sl)sl.value=Math.min(120,Math.max(50,vn));
-  updateBleedLines();
+/* ── 字體控制 ── */
+function sc(cls,v,vid){
+  document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-size',v+'px','important'));
+  const vl=document.getElementById(vid);if(vl)vl.textContent=v+'px';
 }
-function calcAutoZoom(){
-  const avail=document.getElementById('pa').clientWidth-48;
-  return Math.round(Math.min(120,Math.max(30,avail/794*100)));
+function tp(id){
+  document.querySelectorAll('.pop').forEach(p=>{if(p.id!==id)p.classList.remove('on');});
+  document.getElementById(id).classList.toggle('on');
 }
-let autoFit=false;
-function setSc(v){setAutoFit(false);applyZoom(v);}
-function setAutoFit(on){
-  autoFit=on;
-  const btn=document.getElementById('afbtn');
-  if(btn)btn.classList.toggle('bold-on',on);
-  if(on)applyZoom(calcAutoZoom());
-}
-window.addEventListener('resize',()=>{if(autoFit)applyZoom(calcAutoZoom());});
-function updateBleedLines(){
-  const z=_pswScale||0.85;
-  const cutY=(297*3.7795275591)/z;
-  document.querySelectorAll('.poster').forEach(poster=>{
-    let bl=poster.querySelector('.bleed-line');
-    if(!bl){bl=document.createElement('div');bl.className='bleed-line';poster.appendChild(bl);}
-    bl.style.top=cutY+'px';bl.style.display='block';
-  });
-}
-function tp(id){document.querySelectorAll('.pop').forEach(p=>{if(p.id!==id)p.classList.remove('on');});document.getElementById(id).classList.toggle('on');}
 document.addEventListener('click',e=>{if(!e.target.closest('.pwrap'))document.querySelectorAll('.pop').forEach(p=>p.classList.remove('on'));});
 
-/* ══ 粗體 ══ */
+/* ── 粗體切換 ── */
 const boldState={};
 function toggleBoldCls(cls){
-  boldState[cls]=!boldState[cls];
-  const isBold=boldState[cls];
-  document.querySelectorAll('.'+cls).forEach(el=>{
-    el.style.setProperty('font-weight',isBold?'900':'400','important');
-    el.dataset.bold=isBold?'1':'';
-  });
-  document.querySelectorAll('.fbtn').forEach(b=>{
-    if(b.getAttribute('onclick')===`toggleBoldCls('${cls}')`)b.classList.toggle('bold-on',isBold);
-  });
+  boldState[cls]=!boldState[cls];const isBold=boldState[cls];
+  document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-weight',isBold?'900':'400','important'));
+  document.querySelectorAll('.fbtn').forEach(b=>{if(b.getAttribute('onclick')===`toggleBoldCls('${cls}')`)b.classList.toggle('bold-on',isBold);});
 }
 function applyStoredStyles(){
-  Object.entries(boldState).forEach(([cls,isBold])=>{
-    document.querySelectorAll('.'+cls).forEach(el=>{
-      el.style.setProperty('font-weight',isBold?'900':'400','important');
-      el.dataset.bold=isBold?'1':'';
-    });
-  });
+  Object.entries(boldState).forEach(([cls,isBold])=>{document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-weight',isBold?'900':'400','important'));});
   document.querySelectorAll('.sv').forEach(el=>{
-    const vid=el.id;
     const input=el.parentElement.querySelector('input[type=range]');
-    if(!input||!vid)return;
-    const cls=input.getAttribute('oninput').match(/sc\('([^']+)'/);
-    if(cls)document.querySelectorAll('.'+cls[1]).forEach(e=>e.style.setProperty('font-size',input.value+'px','important'));
+    if(!input||!el.id)return;
+    const m=input.getAttribute('oninput').match(/sc\('([^']+)'/);
+    if(m)document.querySelectorAll('.'+m[1]).forEach(e=>e.style.setProperty('font-size',input.value+'px','important'));
   });
 }
 
-/* ══ 海報結構 ══ */
+/* ── 手動縮放滑桿（畫面預覽用） ── */
+const posterScales={iphone:100,mac:100,ipad:100,watch:100};
+function setPosterZoom(id,pct){
+  posterScales[id]=Number(pct);
+  const poster=document.getElementById('poster-'+id);
+  if(!poster)return;
+  poster.style.zoom=pct<100?String(pct/100):'';
+  const lbl=document.getElementById('pctrl-val-'+id);if(lbl)lbl.textContent=pct+'%';
+  const slider=document.getElementById('pctrl-'+id);if(slider)slider.value=pct;
+}
+
+/* ══════════════════════════════════════════════════════
+   fixAndFitPosters
+   用 offsetHeight（不受 transform:scale 影響）量測各固定區塊，
+   把 .poster-products 鎖定在可用高度內，確保海報總高 ≤ 1123px
+   ══════════════════════════════════════════════════════ */
+function fixAndFitPosters(){
+  let anyZoomed=false;
+  POSTER_CFG.forEach(cfg=>{
+    const poster=document.getElementById('poster-'+cfg.id);
+    if(!poster)return;
+    const products=poster.querySelector('.poster-products');
+    /* 清除舊鎖定，讓 flex 先自然流動以便量測 */
+    if(products){products.style.flex='';products.style.height='';products.style.maxHeight='';products.style.overflow='';}
+    poster.style.zoom='';
+    void poster.offsetHeight;
+    /* 量測固定區塊（offsetHeight 不受父元素 transform 影響） */
+    let fixedH=0;
+    poster.querySelectorAll('.store-bar,.ph,.dbar,.svcbar,.pfoot').forEach(el=>{fixedH+=el.offsetHeight;});
+    /* 鎖定 products 高度（6px 安全餘量） */
+    const TARGET=1123;
+    const availH=Math.max(60,TARGET-fixedH-6);
+    if(products){
+      products.style.flex='none';
+      products.style.height=availH+'px';
+      products.style.maxHeight=availH+'px';
+      products.style.overflow='hidden';
+      products.style.minHeight='0';
+      products.style.display='flex';
+      products.style.flexDirection='column';
+    }
+    /* 驗證總高 */
+    void poster.offsetHeight;
+    const totalH=poster.offsetHeight;
+    if(totalH>TARGET+2){
+      const pct=Math.max(50,Math.min(100,Math.floor(TARGET/totalH*100)));
+      setPosterZoom(cfg.id,pct);anyZoomed=true;
+    }else{
+      setPosterZoom(cfg.id,100);
+    }
+  });
+  const st=document.getElementById('pstat');
+  if(st&&st.textContent.indexOf('｜')<0)
+    st.textContent+=' ｜ '+(anyZoomed?'已縮放符合A4':'版面已鎖定至A4');
+}
+
+/* ══════════════════════════════════════════════════════
+   doPrint — 列印隔離方案
+   建立 #print-only 專區：每張海報複製為 .ppage
+   所有區塊 position:absolute 精確堆疊在 height:297mm 容器內
+   Safari 不計算 absolute 子元素高度 → 每頁恰好一張 → 共 4 頁
+   ══════════════════════════════════════════════════════ */
+function doPrint(){
+  fixAndFitPosters();
+  void document.body.offsetHeight;
+
+  let ponly=document.getElementById('print-only');
+  if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
+  ponly.innerHTML='';
+
+  POSTER_CFG.forEach(cfg=>{
+    const poster=document.getElementById('poster-'+cfg.id);
+    if(!poster)return;
+    const page=document.createElement('div');
+    page.className='ppage';
+    let top=0;
+    [...poster.children].forEach(orig=>{
+      const h=orig.offsetHeight;
+      if(h===0)return;
+      const cl=orig.cloneNode(true);
+      cl.querySelectorAll('.row-del,.row-add').forEach(e=>e.remove());
+      cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
+      cl.style.setProperty('position','absolute','important');
+      cl.style.setProperty('top',top+'px','important');
+      cl.style.setProperty('left','0','important');
+      cl.style.setProperty('width','794px','important');
+      cl.style.setProperty('height',h+'px','important');
+      cl.style.setProperty('overflow','hidden','important');
+      cl.style.setProperty('flex','none','important');
+      page.appendChild(cl);
+      top+=h;
+    });
+    ponly.appendChild(page);
+  });
+
+  void document.body.offsetHeight;
+  window.print();
+}
+window.addEventListener('afterprint',()=>{
+  const p=document.getElementById('print-only');
+  if(p)p.innerHTML='';
+});
+
+/* ── 海報模板 ── */
 const POSTER_CFG=[
-  {id:'iphone',title:'iPhone',      svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期 0 利率 單機3期','🏦 搭配 AC/JC 可分12期'],groups:['iPhone']},
-  {id:'mac',   title:'Mac',         svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期 0 利率 單機3期','🏦 搭配 AC/JC 可分12期'],groups:['Mac']},
-  {id:'ipad',  title:'iPad',        svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期 0 利率 單機3期','🏦 搭配 AC/JC 可分12期'],groups:['iPad']},
-  {id:'watch', title:'Apple Watch & AirPods',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期 0 利率 單機3期','🏦 搭配 AC/JC 可分12期'],groups:['Apple Watch','耳機 & 其他']},
+  {id:'iphone',title:'iPhone',label:'iPhone',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['iPhone']},
+  {id:'mac',title:'Mac',label:'Mac',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['Mac']},
+  {id:'ipad',title:'iPad',label:'iPad',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['iPad']},
+  {id:'watch',title:'Apple Watch & AirPods',label:'Watch',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['Apple Watch','耳機 & 其他']},
 ];
 
-function makePoster(cfg, dateStr, productsHTML){
-  return `<div class="poster" id="poster-${cfg.id}"><div class="poster-inner">
-  <div class="store-bar">
-    <div style="display:flex;align-items:center;">
-      <span class="sname" contenteditable="true">右昌 Apple Shop</span>
-      <span class="ssep">|</span>
-      <span class="ssub" contenteditable="true">Apple Authorized Reseller</span>
+function makePoster(cfg,dateStr,productsHTML){
+  return `
+<div class="poster-wrap" id="wrap-${cfg.id}">
+  <div class="poster-ctrl">
+    <span class="pctrl-name">▶ ${cfg.label}</span>
+    <input class="pctrl-range" type="range" id="pctrl-${cfg.id}" min="50" max="100" value="100"
+      oninput="setPosterZoom('${cfg.id}',this.value)">
+    <span class="pctrl-val" id="pctrl-val-${cfg.id}">100%</span>
+    <span class="pctrl-sub">← 上傳後自動適配；可手動微調</span>
+  </div>
+  <div class="poster" id="poster-${cfg.id}">
+    <div class="store-bar">
+      <div style="display:flex;align-items:center;">
+        <span class="sname" contenteditable="true">右昌 Apple Shop</span>
+        <span class="ssep">|</span>
+        <span class="ssub" contenteditable="true">Apple Authorized Reseller</span>
+      </div>
+      <div class="sbadge">Authorized Reseller</div>
     </div>
-    <div class="sbadge"> Authorized Reseller</div>
-  </div>
-  <div class="ph">
-    <div class="ph-ghost">${cfg.title}</div>
-    <div class="ph-toprow">
-      <div class="date-pill">${dateStr}</div>
-      <div class="mem-pill">會員限定</div>
+    <div class="ph">
+      <div class="ph-ghost">${cfg.title}</div>
+      <div class="ph-toprow">
+        <div class="date-pill">${dateStr}</div>
+        <div class="mem-pill">會員限定</div>
+      </div>
+      <div class="ph-eye">MEMBER EXCLUSIVE</div>
+      <div class="ph-title" contenteditable="true">${cfg.title}</div>
+      <div class="ph-sub" contenteditable="true">會員優惠</div>
     </div>
-    <div class="ph-eye">MEMBER EXCLUSIVE</div>
-    <div class="ph-title" contenteditable="true">${cfg.title}</div>
-    <div class="ph-sub" contenteditable="true">會員優惠</div>
-  </div>
-  <div class="dbar"><div class="dtext" contenteditable="true">${dateStr} · 限定門市優惠 · 售完為止</div></div>
-  <div class="svcbar">
-    ${cfg.svc.map(s=>`<div class="svc" contenteditable="true">${s}</div>`).join('')}
-  </div>
-  <div>${productsHTML||'<div class="no-items">📋 請上傳操盤 PDF 產生價格表</div>'}</div>
-  <div class="pfoot">
-    <div class="fnote" contenteditable="true">● 分期0利率：3 / 6 / 12期，限持有效信用卡&#10;● 活動期間如有異動，以現場公告為準</div>
-    <div class="fbrand">
-      <div class="fstore" contenteditable="true">右昌 Apple Shop</div>
-      <div class="freseller">Apple Authorized Reseller</div>
+    <div class="dbar"><div class="dtext" contenteditable="true">${dateStr} · 限定門市優惠 · 售完為止</div></div>
+    <div class="svcbar">
+      ${cfg.svc.map(s=>`<div class="svc" contenteditable="true">${s}</div>`).join('')}
+    </div>
+    <div class="poster-products">
+      ${productsHTML||'<div class="no-items">📋 請上傳操盤 PDF 產生價格表</div>'}
+    </div>
+    <div class="pfoot">
+      <div class="fnote" contenteditable="true">● 分期0利率：3 / 6 / 12期，限持有效信用卡&#10;● 活動期間如有異動，以現場公告為準</div>
+      <div class="fbrand">
+        <div class="fstore" contenteditable="true">右昌 Apple Shop</div>
+        <div class="freseller">Apple Authorized Reseller</div>
+      </div>
     </div>
   </div>
-</div></div>`;
+</div>`;
 }
 
 function initPosters(){
-  const wrap=document.getElementById('posters-wrap');
-  wrap.innerHTML=POSTER_CFG.map(cfg=>makePoster(cfg,'05/19 — 05/31','')).join('');
+  document.getElementById('posters-wrap').innerHTML=POSTER_CFG.map(cfg=>makePoster(cfg,'05/19 — 05/31','')).join('');
 }
 
-/* ══ PDF 解析 ══ */
+/* ── PDF 解析 ── */
 const CATS=[
   {k:'iPhone 17 Pro Max',lbl:'iPhone 17 Pro Max',grp:'iPhone'},
   {k:'iPhone 17 Pro',lbl:'iPhone 17 Pro',grp:'iPhone'},
@@ -478,98 +509,29 @@ const CATS=[
   {k:'Apple TV 4K-64',lbl:'Apple TV 4K 64G',grp:'耳機 & 其他'},
 ];
 const EXCLUDE=['保護殼','保護貼','保護套','錶帶','鍵盤','雙面夾','Pencil','Trackpad','Mouse','Keyboard','掛繩','卡套','筆尖','編織線','USB','HomePod','展-','高山錶環','越野錶環'];
-
-function fixName(name){
-  return name
-    .replace(/^([Pp]hone\s)/,'iPhone ')
-    .replace(/^([Pp]ad\s)/,'iPad ')
-    .replace(/^([Mm]ac\s)/,'iMac ')
-    .replace(/Phone\s/g,'iPhone ')
-    .replace(/Pad\s/g,'iPad ');
-}
-
-function getSpec(name){
-  // Apple Watch：支援 "40mm" 與 "40 mm" 兩種格式
-  const awM=name.match(/\b(40|42|44|46|49)(?:mm)?\b/);
-  if(awM&&(name.includes('AW ')||name.includes('Apple Watch'))){
-    const mm=awM[1]+'mm';
-    if(name.includes('米蘭'))return mm+'/米蘭';
-    if(name.includes('海洋'))return mm+'/海洋';
-    return mm;
-  }
-  if(name.match(/AirPods|AirTag|Apple TV/i))return'';
-  const macM=name.match(/(\d+G)\/([\d.]+[GT])/i);
-  if(macM)return macM[1]+'/'+macM[2];
-  const m=name.match(/(\d+(?:\.\d+)?)\s*([GT]B?)\b/i);
-  if(!m)return'';
-  const n=parseFloat(m[1]),u=m[2].toUpperCase();
-  if(u==='T'||u==='TB')return n+'TB';
-  if(n>=1000)return(n/1000)+'TB';
-  return n+'G';
-}
+function fixName(n){return n.replace(/^([Pp]hone\s)/,'iPhone ').replace(/^([Pp]ad\s)/,'iPad ').replace(/^([Mm]ac\s)/,'iMac ').replace(/Phone\s/g,'iPhone ').replace(/Pad\s/g,'iPad ');}
+function getSpec(name){const awM=name.match(/\b(40|42|44|46|49)(?:mm)?\b/);if(awM&&(name.includes('AW ')||name.includes('Apple Watch'))){const mm=awM[1]+'mm';if(name.includes('米蘭'))return mm+'/米蘭';if(name.includes('海洋'))return mm+'/海洋';return mm;}if(name.match(/AirPods|AirTag|Apple TV/i))return'';const macM=name.match(/(\d+G)\/([\d.]+[GT])/i);if(macM)return macM[1]+'/'+macM[2];const m=name.match(/(\d+(?:\.\d+)?)\s*([GT]B?)\b/i);if(!m)return'';const n=parseFloat(m[1]),u=m[2].toUpperCase();if(u==='T'||u==='TB')return n+'TB';if(n>=1000)return(n/1000)+'TB';return n+'G';}
 function getConn(name){if(/Wi-Fi\+LTE|LTE/i.test(name))return'LTE';if(/Wi-Fi/i.test(name))return'Wi-Fi';if(/GPS\+LTE/i.test(name))return'LTE';if(/GPS/i.test(name))return'GPS';return'';}
-
 function parsePDF(text){
   const allLines=text.split('\n').map(l=>l.trim()).filter(l=>l.length>2);
   const tokens=text.split(/\s+/).filter(t=>t.length>0);
-  const lines=[];let cur=[];
-  for(const tok of tokens){if(/^\d{6}$/.test(tok)&&cur.length>0){lines.push(cur.join(' '));cur=[tok];}else cur.push(tok);}
-  if(cur.length>0)lines.push(cur.join(' '));
+  const lines=[];let c=[];
+  for(const tok of tokens){if(/^\d{6}$/.test(tok)&&c.length>0){lines.push(c.join(' '));c=[tok];}else c.push(tok);}
+  if(c.length>0)lines.push(c.join(' '));
   const rows=[];
   const re=/^(\d{6})\s+(.+?)\s+([A-Z][A-Z0-9]{5,}(?:\/[A-Z])?)\s+([\d,]+)(?:\s+([\d,]+)\s+([\d,]+))?/;
-  for(const line of lines){
-    const m=line.match(re);
-    if(m){const mp=parseInt(m[4].replace(/,/g,'')),dc=m[5]?parseInt(m[5].replace(/,/g,'')):0,pp=m[6]?parseInt(m[6].replace(/,/g,'')):0;if(mp>500&&mp<200000)rows.push({name:fixName(m[2].trim()),memberPrice:mp,discount:dc,promoPrice:pp||mp});}
-  }
-  function cleanAct(al){
-    const m=al.match(/[（(](.+?)[）)]/);
-    if(m){const t=m[1].replace(/^(活動|注意)[：:]\s*/,'').trim();if(t.length>=2)return t.slice(0,60);}
-    const kw=al.match(/(現折|滿萬|再送|附贈)[^\s，。；]{1,40}/);
-    if(kw)return kw[0].trim().slice(0,50);
-    return al.replace(/\s*(貨號|品名|型號|會員價|折讓額|促銷價).*/,'').trim().slice(0,60);
-  }
-  // 在單行中尋找最長匹配的 cat（含邊界檢查）
-  function findCatInLine(line){
-    let best=null,bestLen=0;
-    for(const cat of CATS){
-      const keys=[cat.k,cat.lbl];if(cat.actKey)keys.push(cat.actKey);
-      for(const key of keys){
-        if(key.length<=bestLen)continue;
-        const idx=line.indexOf(key);if(idx<0)continue;
-        if(/[^\x00-\x7F]/.test(key)){bestLen=key.length;best=cat;continue;}
-        // 允許空格作為合法邊界（如 "Air 13 M5" → '13' 後接 ' M5'）
-        const rest=line.slice(idx+key.length);
-        if(!rest[0]||rest[0]===' '||!/[a-zA-Z\d]/.test(rest[0])){bestLen=key.length;best=cat;}
-      }
-    }
-    return best;
-  }
-  // 逐行掃描：追蹤最近的產品 section，讓活動說明行可回溯對應
-  const actMap={};
-  let ctxCat=null;
-  for(const line of allLines){
-    if(/^\d{6}/.test(line))continue;
-    const catInLine=findCatInLine(line);
-    if(catInLine)ctxCat=catInLine; // 更新目前 section context
-    const hasAct=/[（(]/.test(line)||/現折|滿萬|再送|附贈|贈品|注意/.test(line);
-    if(hasAct&&line.length>4&&line.length<200){
-      const target=catInLine||ctxCat; // 優先直接匹配，否則用 context
-      if(target&&!actMap[target.lbl])actMap[target.lbl]=cleanAct(line);
-    }
-  }
-  // Apple Watch：不以「錶帶」排除（SE3 名稱含「運動型錶帶」）
+  for(const line of lines){const m=line.match(re);if(m){const mp=parseInt(m[4].replace(/,/g,'')),pp=m[6]?parseInt(m[6].replace(/,/g,'')):0;if(mp>500&&mp<200000)rows.push({name:fixName(m[2].trim()),memberPrice:mp,promoPrice:pp||mp});}}
+  function cleanAct(al){const m=al.match(/[（(](.+?)[）)]/);if(m){const t=m[1].replace(/^(活動|注意)[：:]\s*/,'').trim();if(t.length>=2)return t.slice(0,60);}const kw=al.match(/(現折|滿萬|再送|附贈)[^\s，。；]{1,40}/);if(kw)return kw[0].trim().slice(0,50);return al.replace(/\s*(貨號|品名|型號|會員價|折讓額|促銷價).*/,'').trim().slice(0,60);}
+  function findCat(line){let best=null,bestLen=0;for(const cat of CATS){const keys=[cat.k,cat.lbl];if(cat.actKey)keys.push(cat.actKey);for(const key of keys){if(key.length<=bestLen)continue;const idx=line.indexOf(key);if(idx<0)continue;if(/[^\x00-\x7F]/.test(key)){bestLen=key.length;best=cat;continue;}const rest=line.slice(idx+key.length);if(!rest[0]||rest[0]===' '||!/[a-zA-Z\d]/.test(rest[0])){bestLen=key.length;best=cat;}}}return best;}
+  const actMap={};let ctxCat=null;
+  for(const line of allLines){if(/^\d{6}/.test(line))continue;const catInLine=findCat(line);if(catInLine)ctxCat=catInLine;const hasAct=/[（(]/.test(line)||/現折|滿萬|再送|附贈|贈品|注意/.test(line);if(hasAct&&line.length>4&&line.length<200){const target=catInLine||ctxCat;if(target&&!actMap[target.lbl])actMap[target.lbl]=cleanAct(line);}}
   const EXCL_WATCH=EXCLUDE.filter(k=>k!=='錶帶');
-  // debug 輸出供診斷
-  window._dbg={allLines:allLines.slice(0,200),actMap,rows:rows.slice(0,30)};
   const grouped={};
   for(const row of rows){
-    if(row.name.startsWith('展-'))continue;
-    if(row.promoPrice<3000&&row.memberPrice<3000)continue;
-    let matched=null;
-    for(const cat of CATS){if(row.name.includes(cat.k)||row.name.includes(cat.lbl)){matched=cat;break;}}
+    if(row.name.startsWith('展-'))continue;if(row.promoPrice<3000&&row.memberPrice<3000)continue;
+    let matched=null;for(const cat of CATS){if(row.name.includes(cat.k)||row.name.includes(cat.lbl)){matched=cat;break;}}
     if(!matched)continue;
-    const excl=matched.grp==='Apple Watch'?EXCL_WATCH:EXCLUDE;
-    if(excl.some(k=>row.name.includes(k)))continue;
+    const excl=matched.grp==='Apple Watch'?EXCL_WATCH:EXCLUDE;if(excl.some(k=>row.name.includes(k)))continue;
     const lbl=matched.lbl;
     if(!grouped[lbl])grouped[lbl]={grp:matched.grp,lbl,specs:[],minPrice:Infinity,act:actMap[lbl]||''};
     const spec=getSpec(row.name),conn=getConn(row.name),price=row.promoPrice,orig=row.memberPrice;
@@ -581,235 +543,48 @@ function parsePDF(text){
   }
   return grouped;
 }
-
-function fmt(n){if(!isFinite(n))return'—';return'$'+n.toLocaleString('zh-TW');}
-
+function fmt(n){return isFinite(n)?'$'+n.toLocaleString('zh-TW'):'—';}
 function colHTML(item){
-  const specs=item.specs.slice(0,4);
-  const specsHTML=specs.map(s=>{
+  const specsHTML=item.specs.slice(0,4).map(s=>{
     const lbl=[s.spec,s.conn].filter(Boolean).join(' ');
-    return`<div class="srow"><span class="slbl" contenteditable="true">${lbl}</span><div class="sright"><span class="sprice" contenteditable="true">${fmt(s.price)}</span>${s.orig>s.price?`<span class="sorig" contenteditable="true">原${fmt(s.orig)}</span>`:''}</div><button class="row-del" title="刪除此列" onclick="this.closest('.srow').remove()">✕</button></div>`;
+    return`<div class="srow"><span class="slbl" contenteditable="true">${lbl}</span><div class="sright"><span class="sprice" contenteditable="true">${fmt(s.price)}</span>${s.orig>s.price?`<span class="sorig" contenteditable="true">原${fmt(s.orig)}</span>`:''}</div><button class="row-del" onclick="this.closest('.srow').remove()">✕</button></div>`;
   }).join('');
-  const act=item.act?`<div class="pbadge2"><div class="bbar"></div><div class="btxt" contenteditable="true" style="font-size:10px;">${item.act}</div></div>`:'';
-  return`<div class="pcol"><div class="phead"><div class="pname" contenteditable="true">${item.lbl}</div><div class="pstart"><span class="psp" contenteditable="true">${fmt(item.minPrice)}</span><span class="psup" contenteditable="true">起</span></div></div>${act}${specsHTML}<button class="row-add" onclick="addRow(this)">＋ 新增規格列</button></div>`;
+  const act=item.act?`<div class="pbadge2"><div class="bbar"></div><div class="btxt" contenteditable="true">${item.act}</div></div>`:'';
+  return`<div class="pcol"><div class="phead"><div class="pname" contenteditable="true">${item.lbl}</div><div class="pstart"><span class="psp" contenteditable="true">${fmt(item.minPrice)}</span><span class="psup">起</span></div></div>${act}${specsHTML}<button class="row-add" onclick="addRow(this)">＋ 新增規格列</button></div>`;
 }
-
-function buildGroupHTML(grouped, groups){
+function buildGroupHTML(grouped,groups){
   let html='';
-  for(const g of groups){
-    const items=Object.values(grouped).filter(i=>i.grp===g);
-    if(!items.length)continue;
-    html+=`<div class="catrow" contenteditable="true">${g}</div>`;
-    for(let i=0;i<items.length;i+=2){
-      const a=items[i],b=items[i+1];
-      html+=`<div class="pgrid">${colHTML(a)}${b?colHTML(b):'<div class="empty-col"></div>'}</div>`;
-    }
-  }
+  for(const g of groups){const items=Object.values(grouped).filter(i=>i.grp===g);if(!items.length)continue;html+=`<div class="catrow" contenteditable="true">${g}</div>`;for(let i=0;i<items.length;i+=2){const a=items[i],b=items[i+1];html+=`<div class="pgrid">${colHTML(a)}${b?colHTML(b):'<div class="empty-col"></div>'}</div>`;}}
   return html;
 }
 
 document.getElementById('pfi').addEventListener('change',async function(){
   const file=this.files[0];if(!file)return;
-  const st=document.getElementById('pstat');
-  st.textContent='解析中...';st.style.color='#f5e200';
+  const st=document.getElementById('pstat');st.textContent='解析中...';st.style.color='#f5e200';
   try{
     const ab=await file.arrayBuffer();
     const pdf=await pdfjsLib.getDocument({data:ab}).promise;
     let fullText='';
-    for(let p=1;p<=pdf.numPages;p++){
-      const page=await pdf.getPage(p);
-      const tc=await page.getTextContent();
-      const items=tc.items;let lastY=null,line='';const lineArr=[];
-      for(const item of items){const y=Math.round(item.transform[5]);if(lastY!==null&&Math.abs(y-lastY)>3){lineArr.push(line);line=item.str;}else{line+=(line?' ':'')+item.str;}lastY=y;}
-      if(line)lineArr.push(line);
-      fullText+=lineArr.join('\n')+'\n';
-    }
-
-    const fname=file.name.replace('.pdf','');
-    const dm=fname.match(/(\d{4})-(\d{4})/);
+    for(let p=1;p<=pdf.numPages;p++){const pg=await pdf.getPage(p);const tc=await pg.getTextContent();const items=tc.items;let lastY=null,line='';const lineArr=[];for(const item of items){const y=Math.round(item.transform[5]);if(lastY!==null&&Math.abs(y-lastY)>3){lineArr.push(line);line=item.str;}else{line+=(line?' ':'')+item.str;}lastY=y;}if(line)lineArr.push(line);fullText+=lineArr.join('\n')+'\n';}
+    const fname=file.name.replace('.pdf','');const dm=fname.match(/(\d{4})-(\d{4})/);
     const dateStr=dm?(()=>{const f=d=>`${d.slice(0,2)}/${d.slice(2)}`;return`${f(dm[1])} — ${f(dm[2])}`;})():'05/19 — 05/31';
-
     const grouped=parsePDF(fullText);
-
-    const wrap=document.getElementById('posters-wrap');
-    wrap.innerHTML=POSTER_CFG.map(cfg=>{
-      const productsHTML=buildGroupHTML(grouped,cfg.groups);
-      return makePoster(cfg,dateStr,productsHTML);
-    }).join('');
-
+    document.getElementById('posters-wrap').innerHTML=POSTER_CFG.map(cfg=>makePoster(cfg,dateStr,buildGroupHTML(grouped,cfg.groups))).join('');
     applyStoredStyles();
-    updateBleedLines();
-    saveState();
+    POSTER_CFG.forEach(cfg=>{posterScales[cfg.id]=100;const s=document.getElementById('pctrl-'+cfg.id);if(s)s.value=100;const v=document.getElementById('pctrl-val-'+cfg.id);if(v)v.textContent='100%';});
     st.textContent='✓ '+file.name;st.style.color='#3DAB8A';
-    // 儲存診斷資料供手動查看
-    const d=window._dbg;
-    document.getElementById('dbgout').value=
-      '=== actMap (活動對應) ===\n'+
-      (Object.keys(d.actMap).length?Object.entries(d.actMap).map(([k,v])=>`${k}: ${v}`).join('\n'):'（空白）')+
-      '\n\n=== 前50行 allLines ===\n'+
-      d.allLines.slice(0,50).map((l,i)=>`${i}: ${l}`).join('\n')+
-      '\n\n=== 前20筆 rows（已解析商品）===\n'+
-      d.rows.map(r=>`${r.name} | 會員:${r.memberPrice} 促銷:${r.promoPrice}`).join('\n');
-  }catch(e){
-    st.textContent='⚠️ 解析失敗：'+e.message;st.style.color='#f44';console.error(e);
-  }
+    document.fonts.ready.then(()=>fixAndFitPosters());
+  }catch(e){st.textContent='⚠️ 解析失敗：'+e.message;st.style.color='#f44';console.error(e);}
 });
 
-function addRow(btn){
-  const r=document.createElement('div');
-  r.className='srow';
-  r.innerHTML='<span class="slbl" contenteditable="true">規格</span><div class="sright"><span class="sprice" contenteditable="true">$—</span></div><button class="row-del" title="刪除此列" onclick="this.closest(\'.srow\').remove()">✕</button>';
-  btn.before(r);
-  r.querySelector('.slbl').focus();
-}
+function addRow(btn){const r=document.createElement('div');r.className='srow';r.innerHTML='<span class="slbl" contenteditable="true">規格</span><div class="sright"><span class="sprice" contenteditable="true">$—</span></div><button class="row-del" onclick="this.closest(\'.srow\').remove()">✕</button>';btn.before(r);r.querySelector('.slbl').focus();}
 
-/* ══ 儲存/還原 ══ */
-function saveState(){
-  try{
-    const sliders={};
-    document.querySelectorAll('.pop input[type=range]').forEach(inp=>{
-      const sv=inp.parentElement.querySelector('.sv');
-      if(sv)sliders[sv.id]=inp.value;
-    });
-    const wrap=document.getElementById('posters-wrap');
-    const clone=wrap.cloneNode(true);
-    clone.querySelectorAll('.bleed-line').forEach(el=>el.remove());
-    localStorage.setItem('mps_v1',JSON.stringify({
-      v:1,
-      html:clone.innerHTML,
-      theme:cur,
-      sliders
-    }));
-    const btn=document.getElementById('sbtn');
-    if(btn){btn.textContent='✓ 已儲存';btn.style.color='#aaffaa';setTimeout(()=>{btn.textContent='💾 儲存';btn.style.color='#6dbf6d';},1500);}
-  }catch(e){}
-}
-
-function loadState(){
-  try{
-    const raw=localStorage.getItem('mps_v1');
-    if(!raw)return false;
-    const s=JSON.parse(raw);
-    if(!s||!s.v||!s.html)return false;
-    document.getElementById('posters-wrap').innerHTML=s.html;
-    if(s.theme)setT(s.theme);
-    document.querySelectorAll('.pop input[type=range]').forEach(inp=>{
-      const oi=inp.getAttribute('oninput')||'';
-      const sv=inp.parentElement.querySelector('.sv');
-      if(!sv||!s.sliders)return;
-      const val=s.sliders[sv.id];if(val===undefined)return;
-      inp.value=val;
-      if(oi.includes('setSc')){setSc(val);}
-      else{const m=oi.match(/sc\('([^']+)'/);if(m)sc(m[1],val,sv.id);}
-    });
-    applyStoredStyles();
-    const st=document.getElementById('pstat');
-    st.textContent='✓ 已載入儲存狀態';st.style.color='#3DAB8A';
-    return true;
-  }catch(e){return false;}
-}
-
-let _st;
-function _as(){clearTimeout(_st);_st=setTimeout(saveState,800);}
-
-/* ══ 回報 ══ */
 const API='https://script.google.com/macros/s/AKfycbyiX43HQKr48-rd7DZSm5u9KP-uoeT6DagKrPYPs-G4lE5mnpf1yHUb_n0LgHe_hMzc/exec';
-function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.style.display==='block'?'none':'block';document.getElementById('rok').style.display='none';const b=document.getElementById('rsub');b.disabled=false;b.textContent='送出回報';}
-async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'門市海報系統',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
+function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.style.display==='block'?'none':'block';document.getElementById('rok').style.display='none';}
+async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:'右昌',tool:'海報A4-v5',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-function doPrint(){
-  const rs=getComputedStyle(document.documentElement);
-  const vars=['--page-bg','--poster-bg','--navy','--accent','--cream','--text','--muted','--divider','--price-col','--orig-col','--badge-bg','--badge-fg','--badge-bar','--cat-bg','--cat-fg','--svc-bg','--svc-border','--date-bg','--date-fg'];
-  const rootCSS=':root{'+vars.map(v=>v+':'+rs.getPropertyValue(v).trim()).join(';')+'}';
-  const wrap=document.getElementById('posters-wrap').cloneNode(true);
-  wrap.querySelectorAll('.row-del,.row-add,.bleed-line').forEach(el=>el.remove());
-  wrap.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
-  const ps=wrap.querySelectorAll('.poster');
-  if(ps.length>0)ps[ps.length-1].classList.add('poster-last');
-  let baseCSS=document.querySelector('style').textContent;
-  const pmIdx=baseCSS.indexOf('@media print{');
-  if(pmIdx>-1)baseCSS=baseCSS.substring(0,pmIdx);
-  const overrideCSS=[
-    '@page{size:A4 portrait;margin:0;}',
-    'html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}',
-    'body{margin:0;padding:0;background:white;}',
-    '#pa,#psw,#posters-wrap{display:block!important;margin:0!important;padding:0!important;transform:none!important;height:auto!important;}',
-    '.poster{display:block!important;width:210mm!important;height:297mm!important;overflow:hidden!important;margin:0!important;padding:0!important;outline:none!important;break-after:page!important;page-break-after:always!important;position:relative!important;}',
-    '.poster-last{break-after:avoid!important;page-break-after:avoid!important;}',
-    '.poster+.poster{break-before:page!important;page-break-before:always!important;}',
-    '.poster-inner{position:static!important;width:100%!important;}',
-    '.store-bar{padding:5px 18px!important;}',
-    '.sname{font-size:12px!important;}',
-    '.sbadge{padding:2px 7px!important;font-size:8px!important;}',
-    '.ph{min-height:0!important;padding:8px 18px 6px!important;}',
-    '.ph-ghost{display:none!important;}',
-    '.ph-toprow{margin-bottom:4px!important;}',
-    '.ph-eye{margin-bottom:2px!important;font-size:7px!important;}',
-    '.ph-title{font-size:46px!important;line-height:.85!important;}',
-    '.ph-sub{font-size:10px!important;margin-top:3px!important;}',
-    '.date-pill{padding:2px 6px!important;font-size:9px!important;}',
-    '.mem-pill{padding:2px 8px!important;font-size:9px!important;}',
-    '.dbar{padding:4px 18px!important;}',
-    '.dtext{font-size:11px!important;}',
-    '.svc{padding:4px 8px!important;font-size:8px!important;}',
-    '.catrow{padding:3px 14px!important;font-size:9px!important;}',
-    '.pcol{padding:4px 10px 5px!important;}',
-    '.phead{margin-bottom:1px!important;}',
-    '.pname{font-size:11px!important;}',
-    '.psp{font-size:19px!important;}',
-    '.psup{font-size:6px!important;}',
-    '.pbadge2{padding:1px 4px 1px 2px!important;margin-bottom:2px!important;}',
-    '.bbar{height:6px!important;}',
-    '.btxt{font-size:7px!important;}',
-    '.srow{padding:1px 0!important;}',
-    '.slbl{font-size:8px!important;}',
-    '.sprice{font-size:12px!important;}',
-    '.sorig{font-size:7px!important;}',
-    '.pcol .srow~.srow~.srow~.srow{display:none!important;}',
-    '.pfoot{padding:5px 18px!important;}',
-    '.fnote{font-size:7px!important;line-height:1.4!important;}',
-    '.fstore{font-size:10px!important;}',
-    '.freseller{font-size:6px!important;}',
-    '[contenteditable]{outline:none!important;}'
-  ].join('');
-  const w=window.open('','_blank','width=900,height=700');
-  if(!w){alert('請允許彈出視窗以列印');return;}
-  w.document.write('<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8">'
-    +'<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">'
-    +'<style>'+rootCSS+'\n'+baseCSS+'\n'+overrideCSS+'</style>'
-    +'</head><body>'
-    +'<div id="pa"><div id="psw"><div id="posters-wrap">'+wrap.innerHTML+'</div></div></div>'
-    +'<script>'
-    +'window.onload=function(){'
-    +'  var go=function(){window.focus();window.print();};'
-    +'  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){setTimeout(go,200);});}else{setTimeout(go,1200);}'
-    +'};'
-    +'window.addEventListener("afterprint",function(){window.close();});'
-    +'<\/script>'
-    +'</body></html>');
-  w.document.close();
-}
-window.addEventListener('beforeprint',()=>{
-  const ps=document.querySelectorAll('.poster');
-  if(ps.length>0)ps[ps.length-1].classList.add('poster-last');
-});
-window.addEventListener('afterprint',()=>{
-  document.querySelectorAll('.poster-last').forEach(el=>el.classList.remove('poster-last'));
-  applyZoom(_pswScale*100);
-});
-
-window.addEventListener('load',()=>{
-  setT('dp');
-  const hasState=loadState();
-  if(!hasState){initPosters();}
-  document.querySelectorAll('.sv').forEach(el=>{
-    const input = el.parentElement.querySelector('input[type=range]');
-    if(input) el.textContent = input.value + (el.id==='vsc'?'%':'px');
-  });
-  document.getElementById('posters-wrap').addEventListener('input',_as);
-  if(!hasState){setAutoFit(true);}else{updateBleedLines();}
-});
+window.addEventListener('load',()=>{setT('dp');setSc(75);initPosters();});
 </script>
 </body>
 </html>
