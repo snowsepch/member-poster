@@ -11,42 +11,42 @@
   --text:#1a2a5a;--muted:#6a7080;--divider:#e8e4d8;--price-col:#1a2a5a;
   --orig-col:#b0a890;--badge-bg:#1a2a5a;--badge-fg:#ffffff;--badge-bar:#f5e200;
   --cat-bg:#f5e200;--cat-fg:#1a2a5a;--svc-bg:#f2f0ea;--svc-border:#d8d4c8;
-  --date-bg:#1a2a5a;--date-fg:#f5e200;--ctrl:#0e0e0e;--ctrl2:#151515;
+  --date-bg:#1a2a5a;--date-fg:#f5e200;--ctrl:#f5f5f5;--ctrl2:#ebebeb;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans TC',sans-serif;background:#d0d0d0;min-height:100vh;}
 
 /* ── control bars ── */
-.cbar{background:var(--ctrl);padding:7px 16px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;border-bottom:1px solid #050505;}
-.blabel{font-size:10px;color:#3a3a3a;white-space:nowrap;padding-right:8px;border-right:1px solid #1e1e1e;margin-right:2px;}
-.tpill{display:flex;align-items:center;gap:5px;padding:4px 11px;border-radius:50px;border:1.5px solid #1e1e1e;background:transparent;cursor:pointer;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:#3a3a3a;transition:all .15s;white-space:nowrap;}
-.tpill:hover{border-color:#383838;color:#aaa;}
+.cbar{background:var(--ctrl);padding:7px 16px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;border-bottom:1px solid #d0d0d0;}
+.blabel{font-size:10px;color:#666;white-space:nowrap;padding-right:8px;border-right:1px solid #ccc;margin-right:2px;}
+.tpill{display:flex;align-items:center;gap:5px;padding:4px 11px;border-radius:50px;border:1.5px solid #ccc;background:transparent;cursor:pointer;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:#555;transition:all .15s;white-space:nowrap;}
+.tpill:hover{border-color:#888;color:#111;}
 .tpill.on{border-color:transparent;}
 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.pbadge{font-size:12px;font-weight:900;color:#ccc;white-space:nowrap;margin-right:4px;}
-.pbadge em{color:#f5e200;font-style:normal;}
-.bbtn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1.5px solid #1e1e1e;background:#111;color:#555;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s;}
-.bbtn:hover{border-color:#383838;color:#bbb;}
-.bbtn.pdf{background:#f5e200;border-color:#f5e200;color:#1a1040;font-weight:900;}
+.pbadge{font-size:12px;font-weight:900;color:#333;white-space:nowrap;margin-right:4px;}
+.pbadge em{color:#1a2a5a;font-style:normal;}
+.bbtn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1.5px solid #ccc;background:#fff;color:#444;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.bbtn:hover{border-color:#888;color:#111;}
+.bbtn.pdf{background:#f5e200;border-color:#e0cc00;color:#1a1040;font-weight:900;}
 .bbtn.pdf:hover{background:#ffe400;}
 .bbtn.prt{background:#1a2a5a;border-color:#2a3a70;color:#fff;}
 .bbtn.prt:hover{background:#223272;}
-.bstat{font-size:10px;color:#2a2a2a;}
+.bstat{font-size:10px;color:#555;}
 #pfi{display:none;}
 .pwrap{position:relative;}
-.pop{display:none;position:absolute;top:calc(100% + 7px);left:0;background:#0e0e0e;border:1.5px solid #1e1e1e;border-radius:9px;padding:13px 15px;min-width:230px;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.7);max-height:80vh;overflow-y:auto;}
+.pop{display:none;position:absolute;top:calc(100% + 7px);left:0;background:#fff;border:1.5px solid #d0d0d0;border-radius:9px;padding:13px 15px;min-width:230px;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:80vh;overflow-y:auto;}
 .pop.on{display:block;}
-.psec{font-size:9px;color:#2e2e2e;text-transform:uppercase;letter-spacing:.12em;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid #191919;}
-.prow{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#555;margin-bottom:7px;gap:6px;}
+.psec{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:.12em;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid #e0e0e0;}
+.prow{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#333;margin-bottom:7px;gap:6px;}
 .prow:last-child{margin-bottom:0;}
-.sv{color:#999;min-width:28px;text-align:right;font-size:10px;}
-input[type=range]{-webkit-appearance:none;width:88px;height:3px;background:#1e1e1e;border-radius:2px;outline:none;flex-shrink:0;}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#eee;cursor:pointer;}
-.fbtn{background:#1e1e1e;color:#888;border:1.5px solid #2a2a2a;border-radius:5px;padding:4px 9px;font-size:10px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .15s;}
-.fbtn:hover{border-color:#555;color:#ccc;}
-.fbtn.bold-on{background:#f5e200;color:#1a1040;border-color:#f5e200;}
+.sv{color:#666;min-width:28px;text-align:right;font-size:10px;}
+input[type=range]{-webkit-appearance:none;width:88px;height:3px;background:#d0d0d0;border-radius:2px;outline:none;flex-shrink:0;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#1a2a5a;cursor:pointer;}
+.fbtn{background:#f0f0f0;color:#555;border:1.5px solid #ccc;border-radius:5px;padding:4px 9px;font-size:10px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .15s;}
+.fbtn:hover{border-color:#888;color:#111;}
+.fbtn.bold-on{background:#f5e200;color:#1a1040;border-color:#e0cc00;}
 .scwrap{display:flex;align-items:center;gap:5px;margin-left:auto;}
-.scwrap label{font-size:10px;color:#2a2a2a;}
+.scwrap label{font-size:10px;color:#555;}
 
 /* ── 海報顯示區 ── */
 #pa{display:flex;justify-content:center;padding:24px 16px 60px;}
@@ -57,12 +57,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .poster-wrap:last-child{margin-bottom:0;}
 
 /* ── 手動縮放控制列 ── */
-.poster-ctrl{width:794px;background:#1a1a1a;border:1px solid #2a2a2a;border-bottom:none;border-radius:7px 7px 0 0;padding:7px 14px;display:flex;align-items:center;gap:10px;}
-.pctrl-name{font-size:11px;font-weight:700;color:#f5e200;min-width:90px;}
-.pctrl-sub{font-size:9px;color:#333;flex:1;}
-.pctrl-range{-webkit-appearance:none;width:160px;height:3px;background:#333;border-radius:2px;outline:none;cursor:pointer;}
-.pctrl-range::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#f5e200;cursor:pointer;}
-.pctrl-val{font-size:11px;color:#f5e200;font-weight:700;min-width:40px;text-align:right;}
+.poster-ctrl{width:794px;background:#e8e8e8;border:1px solid #ccc;border-bottom:none;border-radius:7px 7px 0 0;padding:7px 14px;display:flex;align-items:center;gap:10px;}
+.pctrl-name{font-size:11px;font-weight:700;color:#1a2a5a;min-width:90px;}
+.pctrl-sub{font-size:9px;color:#888;flex:1;}
+.pctrl-range{-webkit-appearance:none;width:160px;height:3px;background:#bbb;border-radius:2px;outline:none;cursor:pointer;}
+.pctrl-range::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#1a2a5a;cursor:pointer;}
+.pctrl-val{font-size:11px;color:#1a2a5a;font-weight:700;min-width:40px;text-align:right;}
 
 /* ── 海報本體：固定 794×1123px（≈ A4 @96dpi） ── */
 .poster{
@@ -223,7 +223,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
     </div>
   </div>
   <button class="bbtn prt" onclick="doPrint()">🖨 列印 / 匯出 PDF</button>
-  <button class="bbtn" onclick="fixAndFitPosters()" style="background:#222;border-color:#555;color:#f5e200;">✦ 自動縮放</button>
+  <button class="bbtn" onclick="fixAndFitPosters()" style="background:#f0f4ff;border-color:#1a2a5a;color:#1a2a5a;">✦ 自動縮放</button>
   <span class="bstat" id="pstat">請先上傳操盤 PDF</span>
   <div class="scwrap">
     <label>畫面</label>
@@ -234,11 +234,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 <!-- Bar 3：列印說明 -->
 <div class="cbar" id="b3" style="gap:8px;font-size:10px;">
-  🖨 <b style="color:#f5e200">列印步驟：</b>
-  <span style="color:#2a2a2a">點「列印」→ 縮放</span><b style="color:#aaa">100%</b>
-  <span style="color:#2a2a2a">→ 勾</span><b style="color:#aaa">「列印背景」</b>
-  <span style="color:#2a2a2a">→</span><b style="color:#f87">取消勾選「列印標頭和頁尾」</b>
-  <span style="color:#2a2a2a">→ 輸出</span><b style="color:#f5e200">4頁</b>
+  🖨 <b style="color:#1a2a5a">列印步驟：</b>
+  <span style="color:#555">點「列印」→ 縮放</span><b style="color:#111">100%</b>
+  <span style="color:#555">→ 勾</span><b style="color:#111">「列印背景」</b>
+  <span style="color:#555">→</span><b style="color:#d04020">取消勾選「列印標頭和頁尾」</b>
+  <span style="color:#555">→ 輸出</span><b style="color:#1a2a5a">4頁</b>
 </div>
 
 <!-- 海報區 -->
