@@ -390,7 +390,8 @@ const CATS=[
   {k:'AirTag 2-1',lbl:'AirTag 2（1入）',grp:'耳機 & 其他'},
 ];
 const EXCLUDE=['保護殼','保護貼','保護套','錶帶','鍵盤','雙面夾','Pencil','Trackpad','Mouse','Keyboard','掛繩','卡套','筆尖','編織線','USB','HomePod','展-','高山錶環','越野錶環'];
-function fixName(n){return n.replace(/^([Pp]hone\s)/,'iPhone ').replace(/^([Pp]ad\s)/,'iPad ').replace(/^([Mm]ac\s)/,'iMac ').replace(/Phone\s/g,'iPhone ').replace(/Pad\s/g,'iPad ');}
+/* 修正抽取時偶爾掉開頭 i（限名稱開頭，不動 Mac mini/Studio/Book） */
+function fixName(n){return n.replace(/^Phone\s/,'iPhone ').replace(/^Pad\s/,'iPad ').replace(/^Mac\s+(\d+吋)/,'iMac $1').trim();}
 function getSpec(name){
   const awM=name.match(/\b(40|42|44|46|49)(?:mm)?\b/);
   if(awM&&(name.includes('AW ')||name.includes('Apple Watch'))){const mm=awM[1]+'mm';if(name.includes('米蘭'))return mm+'/米蘭';if(name.includes('海洋'))return mm+'/海洋';return mm;}
@@ -420,16 +421,19 @@ function parsePDF(text){
   const EXCL_WATCH=EXCLUDE.filter(k=>k!=='錶帶');
   const grouped={};
   for(const row of rows){
-    if(row.name.startsWith('展-'))continue;if(row.promoPrice<3000&&row.memberPrice<3000)continue;
+    if(row.name.startsWith('展-'))continue;
+    if(/iPhone\s*17e/i.test(row.name))continue; /* 17e 不納入（避免汙染 iPhone 17） */
     let matched=null;for(const cat of CATS){if(row.name.includes(cat.k)||row.name.includes(cat.lbl)){matched=cat;break;}}
     if(!matched)continue;
+    /* 價格門檻：配件（耳機&其他）不套用，避免 AirTag 等低價品被濾掉 */
+    if(matched.grp!=='耳機 & 其他'&&row.promoPrice<3000&&row.memberPrice<3000)continue;
     const excl=matched.grp==='Apple Watch'?EXCL_WATCH:EXCLUDE;if(excl.some(k=>row.name.includes(k)))continue;
     const conn=getConn(row.name);
     const spec=getSpec(row.name);
     if(matched.grp==='iPad'&&(conn==='LTE'||/[Cc]ellular/.test(row.name)))continue;
-    /* iPad 容量篩選：mini / 11 只留 128/256；Air 只留 128/256；Pro 只留 256/512 */
+    /* iPad 容量篩選：mini / 11 只留 128/256；Air 只留 M4 的 128/256；Pro 只留 256/512 */
     if((matched.k==='iPad mini'||matched.k==='iPad 11')&&!['128G','256G'].includes(spec))continue;
-    if(matched.lbl.startsWith('iPad Air')&&!['128G','256G'].includes(spec))continue;
+    if(matched.lbl.startsWith('iPad Air')&&(!/M4/.test(row.name)||!['128G','256G'].includes(spec)))continue;
     if(matched.lbl.startsWith('iPad Pro')&&!['256G','512G'].includes(spec))continue;
     if((matched.k==='AW SE'||matched.k==='AW S11')&&conn==='LTE')continue;
     if(matched.k==='AW Ultra'){if(!spec.includes('米蘭')&&!spec.includes('海洋'))continue;}
