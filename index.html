@@ -116,8 +116,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   body{margin:0;padding:0;background:white;}
   body>*:not(#print-only){display:none!important;}
   #print-only{display:block!important;}
-  .ppage{overflow:hidden;position:relative;display:block;background:#fff;break-inside:avoid;page-break-inside:avoid;margin:0 auto;}
+  .ppage{overflow:hidden;position:relative;display:block;background:#fff;break-inside:avoid;page-break-inside:avoid;margin:0 auto;box-sizing:border-box;}
   .ppage+.ppage{break-before:page;page-break-before:always;}
+  .psheet{position:relative;width:794px;height:1123px;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -291,16 +292,18 @@ function doPrint(){
   let ponly=document.getElementById('print-only');
   if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
   ponly.innerHTML='';
-  /* 縮放整張海報塞進「預設邊界」也容得下的可列印區（≤約 270mm 高 / 188mm 寬），
-     不論列印對話框邊界設「預設」或「無」都是每張一頁 → 共 5 頁、無空白頁。
-     逐區塊各自 scale(S) 定位，佈局盒都落在頁框內。 */
-  const S=0.85, PAD_TOP=34, PAD_X=12;
-  const sheetW=Math.round(794*S)+2*PAD_X, sheetH=PAD_TOP+Math.round(1123*S)+18;
+  /* 用 zoom（會縮小佈局盒，transform 不會）把整張海報縮進「預設邊界」也容得下的尺寸，
+     每張海報堆疊進 .psheet 後整體 zoom → 佈局盒一起縮 → 不溢出、不多空白頁。
+     外層 .ppage 用 padding 給安全邊界（≤約 270mm 高 / 188mm 寬，預設/無邊界皆可）。 */
+  const S=0.85, PAD_TOP=34, PAD_BOT=18, PAD_X=12;
+  const sheetW=Math.round(794*S)+2*PAD_X, sheetH=Math.round(1123*S)+PAD_TOP+PAD_BOT;
   POSTER_CFG.forEach(cfg=>{
     const poster=document.getElementById('poster-'+cfg.id);
     if(!poster)return;
     const page=document.createElement('div');page.className='ppage';
     page.style.width=sheetW+'px';page.style.height=sheetH+'px';
+    page.style.padding=PAD_TOP+'px '+PAD_X+'px '+PAD_BOT+'px';
+    const sheet=document.createElement('div');sheet.className='psheet';sheet.style.zoom=S;
     let top=0;
     [...poster.children].forEach(orig=>{
       const h=orig.offsetHeight;if(h===0)return;
@@ -308,16 +311,15 @@ function doPrint(){
       cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
       cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
       cl.style.setProperty('position','absolute','important');
-      cl.style.setProperty('top',(PAD_TOP+S*top)+'px','important');
-      cl.style.setProperty('left',PAD_X+'px','important');
+      cl.style.setProperty('top',top+'px','important');
+      cl.style.setProperty('left','0','important');
       cl.style.setProperty('width','794px','important');
       cl.style.setProperty('height',h+'px','important');
       cl.style.setProperty('overflow','hidden','important');
       cl.style.setProperty('flex','none','important');
-      cl.style.setProperty('transform','scale('+S+')','important');
-      cl.style.setProperty('transform-origin','top left','important');
-      page.appendChild(cl);top+=h;
+      sheet.appendChild(cl);top+=h;
     });
+    page.appendChild(sheet);
     ponly.appendChild(page);
   });
   void document.body.offsetHeight;window.print();
