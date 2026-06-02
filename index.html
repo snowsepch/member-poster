@@ -116,8 +116,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   body{margin:0;padding:0;background:white;}
   body>*:not(#print-only){display:none!important;}
   #print-only{display:block!important;}
-  .ppage{width:210mm;height:295mm;overflow:hidden;position:relative;display:block;page-break-after:always;break-after:page;background:#fff;}
-  .ppage:last-child{page-break-after:auto;break-after:auto;}
+  .ppage{width:210mm;height:295mm;overflow:hidden;position:relative;display:block;background:#fff;break-inside:avoid;page-break-inside:avoid;}
+  .ppage+.ppage{break-before:page;page-break-before:always;}
   [contenteditable]{outline:none!important;}
 }
 </style>
