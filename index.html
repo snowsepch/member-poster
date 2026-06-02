@@ -363,15 +363,13 @@ function initPosters(){
 const CATS=[
   {k:'iPhone 17 Pro Max',lbl:'iPhone 17 Pro Max',grp:'iPhone'},
   {k:'iPhone 17 Pro',lbl:'iPhone 17 Pro',grp:'iPhone'},
+  {k:'iPhone 17e',lbl:'iPhone 17e',grp:'iPhone'},
   {k:'iPhone 17',lbl:'iPhone 17',grp:'iPhone'},
-  {k:'iPhone Air',lbl:'iPhone Air',grp:'iPhone'},
   {k:'13吋MBN',lbl:'MacBook Neo 13"',grp:'Mac',actKey:'MacBook Neo'},
   {k:'13.6吋MBA',lbl:'MacBook Air 13"',grp:'Mac',actKey:'MacBook Air 13'},
   {k:'15.3吋MBA',lbl:'MacBook Air 15"',grp:'Mac',actKey:'MacBook Air 15'},
   {k:'14.2吋MBP',lbl:'MacBook Pro 14"',grp:'Mac',actKey:'MacBook Pro 14'},
   {k:'16.2吋MBP',lbl:'MacBook Pro 16"',grp:'Mac',actKey:'MacBook Pro 16'},
-  {k:'iMac',lbl:'iMac 24"',grp:'Mac'},
-  {k:'Mac Studio',lbl:'Mac Studio',grp:'Mac'},
   {k:'iPad mini',lbl:'iPad mini',grp:'iPad'},
   {k:'iPad Air 11吋(M4)',lbl:'iPad Air 11"',grp:'iPad'},
   {k:'iPad Air 11吋 M4',lbl:'iPad Air 11"',grp:'iPad'},
@@ -422,7 +420,6 @@ function parsePDF(text){
   const grouped={};
   for(const row of rows){
     if(row.name.startsWith('展-'))continue;
-    if(/iPhone\s*17e/i.test(row.name))continue; /* 17e 不納入（避免汙染 iPhone 17） */
     let matched=null;for(const cat of CATS){if(row.name.includes(cat.k)||row.name.includes(cat.lbl)){matched=cat;break;}}
     if(!matched)continue;
     /* 價格門檻：配件（耳機&其他）不套用，避免 AirTag 等低價品被濾掉 */
