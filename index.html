@@ -73,26 +73,26 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .svc{display:flex;align-items:center;gap:6px;padding:9px 12px;border-right:1px solid rgba(255,255,255,.1);font-size:11px;font-weight:700;color:#fff;outline:none;line-height:1.2;white-space:nowrap;overflow:hidden;}
 .svc:last-child{border-right:none;}
 
-/* products */
-.poster-products{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;}
+/* products — 自動字級：--fs 由 fixAndFitPosters 計算，使每頁填滿可用高度 */
+.poster-products{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;--fs:1;}
 
 /* catrow */
-.catrow{padding:10px 18px 5px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--divider);flex-shrink:0;outline:none;margin-top:4px;}
+.catrow{padding:calc(10px*var(--fs)) 18px calc(5px*var(--fs));font-size:calc(10px*var(--fs));font-weight:700;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--divider);flex-shrink:0;outline:none;margin-top:calc(4px*var(--fs));}
 .catrow:first-child{margin-top:0;}
 
 /* product card */
-.pcol{margin:8px 16px 0;border:1px solid var(--divider);border-radius:6px;overflow:hidden;flex-shrink:0;}
-.pcol:first-child{margin-top:10px;}
-.pcol:last-child{margin-bottom:8px;}
-.pcol-head{background:var(--navy);padding:11px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.pname{font-size:18px;font-weight:900;color:#fff;outline:none;flex-shrink:0;}
-.pact{font-size:10px;font-weight:700;color:rgba(255,255,255,.65);text-align:right;outline:none;flex:1;min-width:0;}
-.pcol-body{background:var(--card-bg);padding:12px 16px 10px;}
-.pspecs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px 16px;margin-bottom:8px;}
+.pcol{margin:calc(8px*var(--fs)) 16px 0;border:1px solid var(--divider);border-radius:6px;overflow:hidden;flex-shrink:0;}
+.pcol:first-child{margin-top:calc(10px*var(--fs));}
+.pcol:last-child{margin-bottom:calc(8px*var(--fs));}
+.pcol-head{background:var(--navy);padding:calc(11px*var(--fs)) 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.pname{font-size:calc(18px*var(--fs));font-weight:900;color:#fff;outline:none;flex-shrink:0;}
+.pact{font-size:calc(10px*var(--fs));font-weight:700;color:rgba(255,255,255,.65);text-align:right;outline:none;flex:1;min-width:0;}
+.pcol-body{background:var(--card-bg);padding:calc(12px*var(--fs)) 16px calc(10px*var(--fs));}
+.pspecs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:calc(10px*var(--fs)) 16px;margin-bottom:calc(8px*var(--fs));}
 .pspec-item{position:relative;}
-.pspec-label{font-size:12px;color:var(--muted);margin-bottom:3px;outline:none;}
-.pspec-price{font-family:'Noto Sans TC',sans-serif;font-size:24px;font-weight:900;color:var(--text);outline:none;}
-.pspec-orig{font-size:10px;color:var(--orig-col);text-decoration:line-through;outline:none;}
+.pspec-label{font-size:calc(12px*var(--fs));color:var(--muted);margin-bottom:calc(3px*var(--fs));outline:none;}
+.pspec-price{font-family:'Noto Sans TC',sans-serif;font-size:calc(24px*var(--fs));font-weight:900;color:var(--text);outline:none;line-height:1.1;}
+.pspec-orig{font-size:calc(10px*var(--fs));color:var(--orig-col);text-decoration:line-through;outline:none;}
 .pcolor{display:none;}
 .spec-del{position:absolute;top:0;right:0;background:none;border:none;color:#c44;font-size:9px;cursor:pointer;padding:1px 3px;border-radius:3px;opacity:.4;}
 .spec-del:hover{opacity:1;}
@@ -100,7 +100,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .spec-add:hover{border-color:#888;color:#666;}
 
 /* iPad mini + iPad 11 同一行 */
-.pgrid-pair{display:grid;grid-template-columns:1fr 1fr;gap:0 8px;margin:8px 16px 0;}
+.pgrid-pair{display:grid;grid-template-columns:1fr 1fr;gap:0 8px;margin:calc(8px*var(--fs)) 16px 0;}
 .pgrid-pair .pcol{margin:0;}
 .pgrid-pair .pcol:first-child{margin-top:0;}
 .pgrid-pair .pcol:last-child{margin-bottom:0;}
@@ -240,29 +240,49 @@ function setPosterZoom(id,pct){
   const slider=document.getElementById('pctrl-'+id);if(slider)slider.value=pct;
 }
 function fixAndFitPosters(){
-  let anyZoomed=false;
+  /* 每頁自動計算產品區字級 --fs，使內容剛好填滿可用高度：
+     稀疏頁放大（上限 1.5x，老花友善）、密集頁縮小（下限 0.62x），垂直置中，避免大片留白 */
+  const TARGET=1123, FS_MIN=0.62, FS_MAX=1.5;
   POSTER_CFG.forEach(cfg=>{
     const poster=document.getElementById('poster-'+cfg.id);
     if(!poster)return;
-    const products=poster.querySelector('.poster-products');
-    if(products){products.style.flex='';products.style.height='';products.style.maxHeight='';products.style.overflow='';}
     poster.style.zoom='';
+    setPosterZoom(cfg.id,100);
+    const products=poster.querySelector('.poster-products');
+    if(!products)return;
+    /* 還原為自然高度以便量測 */
+    products.style.flex='none';products.style.height='auto';products.style.maxHeight='none';
+    products.style.overflow='visible';products.style.display='flex';products.style.flexDirection='column';
+    products.style.justifyContent='flex-start';products.style.minHeight='0';
+    products.style.setProperty('--fs','1');
     void poster.offsetHeight;
+    /* 可用高度 = A4 − 固定區（頁首/服務列/頁尾） */
     let fixedH=0;
     poster.querySelectorAll('.store-bar,.svcbar,.pfoot').forEach(el=>{fixedH+=el.offsetHeight;});
-    const TARGET=1123,availH=Math.max(60,TARGET-fixedH-6);
-    if(products){
-      products.style.flex='none';products.style.height=availH+'px';products.style.maxHeight=availH+'px';
-      products.style.overflow='hidden';products.style.minHeight='0';
-      products.style.display='flex';products.style.flexDirection='column';
+    const availH=Math.max(80,TARGET-fixedH-2);
+    const hasCards=!!poster.querySelector('.pcol');
+    let fs=1;
+    if(hasCards){
+      for(let i=0;i<7;i++){
+        products.style.setProperty('--fs',fs.toFixed(3));
+        void products.offsetHeight;
+        const contentH=products.offsetHeight;
+        if(contentH<=0)break;
+        const ratio=availH/contentH;
+        if(ratio>0.99&&ratio<1.01)break;
+        fs=Math.max(FS_MIN,Math.min(FS_MAX,fs*ratio));
+      }
+      products.style.setProperty('--fs',fs.toFixed(3));
     }
-    void poster.offsetHeight;
-    const totalH=poster.offsetHeight;
-    if(totalH>TARGET+2){const pct=Math.max(50,Math.min(100,Math.floor(TARGET/totalH*100)));setPosterZoom(cfg.id,pct);anyZoomed=true;}
-    else setPosterZoom(cfg.id,100);
+    /* 量測最終自然高度，決定是否垂直置中（內容比可用高度短時置中，消除頂部大留白） */
+    void products.offsetHeight;
+    const finalH=products.offsetHeight;
+    /* 鎖定產品區為可用高度 */
+    products.style.height=availH+'px';products.style.maxHeight=availH+'px';products.style.overflow='hidden';
+    products.style.justifyContent=(finalH<availH-4)?'center':'flex-start';
   });
   const st=document.getElementById('pstat');
-  if(st&&st.textContent.indexOf('｜')<0)st.textContent+=' ｜ '+(anyZoomed?'已縮放符合A4':'版面已鎖定至A4');
+  if(st&&st.textContent.indexOf('｜')<0)st.textContent+=' ｜ 已自動配置字級填滿 A4';
 }
 function doPrint(){
   fixAndFitPosters();
