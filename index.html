@@ -88,7 +88,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .pname{font-size:18px;font-weight:900;color:#fff;outline:none;flex-shrink:0;}
 .pact{font-size:10px;font-weight:700;color:rgba(255,255,255,.65);text-align:right;outline:none;flex:1;min-width:0;}
 .pcol-body{background:var(--card-bg);padding:12px 16px 10px;}
-.pspecs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px 16px;margin-bottom:8px;}
+.pspecs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px 16px;margin-bottom:8px;}
 .pspec-item{position:relative;}
 .pspec-label{font-size:12px;color:var(--muted);margin-bottom:3px;outline:none;}
 .pspec-price{font-family:'Noto Sans TC',sans-serif;font-size:24px;font-weight:900;color:var(--text);outline:none;}
@@ -405,14 +405,17 @@ function parsePDF(text){
     if(!matched)continue;
     const excl=matched.grp==='Apple Watch'?EXCL_WATCH:EXCLUDE;if(excl.some(k=>row.name.includes(k)))continue;
     const conn=getConn(row.name);
+    const spec=getSpec(row.name);
     if(matched.grp==='iPad'&&(conn==='LTE'||/[Cc]ellular/.test(row.name)))continue;
-    /* iPad mini / iPad 11：過濾 512G */
-    if((matched.k==='iPad mini'||matched.k==='iPad 11')&&spec==='512G')continue;
+    /* iPad 容量篩選：mini / 11 只留 128/256；Air 只留 128/256；Pro 只留 256/512 */
+    if((matched.k==='iPad mini'||matched.k==='iPad 11')&&!['128G','256G'].includes(spec))continue;
+    if(matched.lbl.startsWith('iPad Air')&&!['128G','256G'].includes(spec))continue;
+    if(matched.lbl.startsWith('iPad Pro')&&!['256G','512G'].includes(spec))continue;
     if((matched.k==='AW SE'||matched.k==='AW S11')&&conn==='LTE')continue;
-    if(matched.k==='AW Ultra'){const s=getSpec(row.name);if(!s.includes('米蘭')&&!s.includes('海洋'))continue;}
+    if(matched.k==='AW Ultra'){if(!spec.includes('米蘭')&&!spec.includes('海洋'))continue;}
     const lbl=matched.lbl;
     if(!grouped[lbl])grouped[lbl]={grp:matched.grp,lbl,specs:[],minPrice:Infinity,minOrig:Infinity,act:actMap[lbl]||''};
-    const spec=getSpec(row.name),price=row.promoPrice,orig=row.memberPrice;
+    const price=row.promoPrice,orig=row.memberPrice;
     const noSpecOk=matched.grp==='耳機 & 其他'||matched.grp==='Apple Watch';
     if(!spec&&!noSpecOk)continue;
     const key=spec+(conn?'|'+conn:'');
@@ -443,16 +446,17 @@ function buildGroupHTML(grouped,groups){
     const items=Object.values(grouped).filter(i=>i.grp===g);if(!items.length)continue;
     if(multiGroup)html+=`<div class="catrow" contenteditable="true">${GRP_LABEL[g]||g}</div>`;
     if(g==='iPad'){
-      /* iPad mini 和 iPad 11 同一行，其餘各自全寬 */
-      const pairKeys=['iPad mini','iPad 11"'];
-      const pairItems=items.filter(i=>pairKeys.includes(i.lbl));
-      const restItems=items.filter(i=>!pairKeys.includes(i.lbl));
-      if(pairItems.length>=2){
-        html+=`<div class="pgrid-pair">${pairItems.map(i=>colHTML(i)).join('')}</div>`;
-      }else{
-        pairItems.forEach(i=>html+=colHTML(i));
+      /* iPad 全頁兩兩並排，固定順序：mini｜11、Air11｜Air13、Pro11｜Pro13 */
+      const order=['iPad mini','iPad 11"','iPad Air 11"','iPad Air 13"','iPad Pro 11"','iPad Pro 13"'];
+      const sorted=items.slice().sort((a,b)=>{
+        const ia=order.indexOf(a.lbl),ib=order.indexOf(b.lbl);
+        return (ia<0?99:ia)-(ib<0?99:ib);
+      });
+      for(let i=0;i<sorted.length;i+=2){
+        const a=sorted[i],b=sorted[i+1];
+        if(b)html+=`<div class="pgrid-pair">${colHTML(a)}${colHTML(b)}</div>`;
+        else html+=colHTML(a);
       }
-      restItems.forEach(i=>html+=colHTML(i));
     }else{
       items.forEach(item=>html+=colHTML(item));
     }
