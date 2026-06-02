@@ -118,8 +118,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   #print-only{display:block!important;}
   .ppage{width:210mm;height:297mm;overflow:hidden;position:relative;display:block;page-break-after:always;break-after:page;background:#fff;}
   .ppage:last-child{page-break-after:auto;break-after:auto;}
-  /* 海報以固定比例置中縮放到安全可列印區，避免印表機驅動再縮放造成跑版/裁切 */
-  .psheet{position:absolute;top:50%;left:50%;width:794px;height:1123px;transform:translate(-50%,-50%) scale(var(--print-scale,0.95));transform-origin:center center;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -294,24 +292,31 @@ function doPrint(){
   let ponly=document.getElementById('print-only');
   if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
   ponly.innerHTML='';
+  /* 安全可列印區：整體縮放 S 並置中，留約 7mm 上下邊界，避免印表機裁切；
+     逐區塊各自定位（佈局盒都落在 297mm 內），不用大包裝層 → 不會被拆成兩頁 */
+  const S=0.95, PAGE_H=1122, DESIGN_W=794, DESIGN_H=1123;
+  const topMargin=Math.max(0,(PAGE_H-DESIGN_H*S)/2), leftMargin=(DESIGN_W-DESIGN_W*S)/2;
   POSTER_CFG.forEach(cfg=>{
     const poster=document.getElementById('poster-'+cfg.id);
     if(!poster)return;
     const page=document.createElement('div');page.className='ppage';
-    const sheet=document.createElement('div');sheet.className='psheet';
     let top=0;
     [...poster.children].forEach(orig=>{
       const h=orig.offsetHeight;if(h===0)return;
       const cl=orig.cloneNode(true);
       cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
       cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
-      cl.style.setProperty('position','absolute','important');cl.style.setProperty('top',top+'px','important');
-      cl.style.setProperty('left','0','important');cl.style.setProperty('width','794px','important');
-      cl.style.setProperty('height',h+'px','important');cl.style.setProperty('overflow','hidden','important');
+      cl.style.setProperty('position','absolute','important');
+      cl.style.setProperty('top',(topMargin+S*top)+'px','important');
+      cl.style.setProperty('left',leftMargin+'px','important');
+      cl.style.setProperty('width','794px','important');
+      cl.style.setProperty('height',h+'px','important');
+      cl.style.setProperty('overflow','hidden','important');
       cl.style.setProperty('flex','none','important');
-      sheet.appendChild(cl);top+=h;
+      cl.style.setProperty('transform','scale('+S+')','important');
+      cl.style.setProperty('transform-origin','top left','important');
+      page.appendChild(cl);top+=h;
     });
-    page.appendChild(sheet);
     ponly.appendChild(page);
   });
   void document.body.offsetHeight;window.print();
