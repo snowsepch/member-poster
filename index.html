@@ -102,11 +102,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .no-items{padding:20px;text-align:center;color:var(--muted);font-size:11px;}
 
 /* footer */
-.pfoot{background:var(--navy);border-top:1px solid rgba(255,255,255,.12);padding:9px 24px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+.pfoot{background:var(--navy);border-top:1px solid rgba(255,255,255,.12);padding:9px 24px;display:flex;align-items:center;flex-shrink:0;}
 .fnote{font-size:9px;color:#fff;opacity:.45;line-height:1.6;outline:none;}
-.fbrand{text-align:right;}
-.fstore{font-size:12px;font-weight:900;color:#fff;letter-spacing:.05em;outline:none;}
-.freseller{font-size:8px;color:#fff;opacity:.3;letter-spacing:.1em;}
 
 @media screen{#print-only{display:none;}}
 @media print{
@@ -334,10 +331,6 @@ function makePoster(cfg,dateStr,productsHTML){
     </div>
     <div class="pfoot">
       <div class="fnote" contenteditable="true">● 標示為活動促銷價，數量有限售完為止  ● 分期0利率：3/6/12期，限持有效信用卡  ● 活動期間如有異動，以現場公告為準</div>
-      <div class="fbrand">
-        <div class="fstore" contenteditable="true">右昌 Apple Shop</div>
-        <div class="freseller">Apple Authorized Reseller</div>
-      </div>
     </div>
   </div>
 </div>`;
