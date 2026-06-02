@@ -125,10 +125,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 <div class="cbar" id="b1">
   <span class="blabel">🎨 風格</span>
-  <button class="tpill on" id="p-dp" onclick="setT('dp')"><span class="dot" style="background:#1A1A1A"></span><span class="dot" style="background:#F5A623"></span>炭黑×橘</button>
-  <button class="tpill" id="p-nb" onclick="setT('nb')"><span class="dot" style="background:#1F3A5F"></span><span class="dot" style="background:#F5A623"></span>海軍藍×橘</button>
-  <button class="tpill" id="p-aw" onclick="setT('aw')"><span class="dot" style="background:#1d1d1f"></span><span class="dot" style="background:#F06030"></span>深灰×珊瑚橘</button>
-  <button class="tpill" id="p-rr" onclick="setT('rr')"><span class="dot" style="background:#9C2A2A"></span><span class="dot" style="background:#F5A623"></span>磚紅×橘</button>
+  <button class="tpill on" id="p-dp" onclick="setT('dp')"><span class="dot" style="background:#1A1A1A"></span><span class="dot" style="background:#F5F3EE;border:1px solid #ccc"></span>炭黑</button>
+  <button class="tpill" id="p-nb" onclick="setT('nb')"><span class="dot" style="background:#1F3A5F"></span><span class="dot" style="background:#F5F3EE;border:1px solid #ccc"></span>海軍藍</button>
+  <button class="tpill" id="p-aw" onclick="setT('aw')"><span class="dot" style="background:#1d1d1f"></span><span class="dot" style="background:#F5F3EE;border:1px solid #ccc"></span>深灰</button>
+  <button class="tpill" id="p-rr" onclick="setT('rr')"><span class="dot" style="background:#9C2A2A"></span><span class="dot" style="background:#F5F3EE;border:1px solid #ccc"></span>磚紅</button>
 </div>
 
 <div class="cbar" id="b2">
@@ -193,7 +193,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
     <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="其他"> 其他</label>
   </div>
   <textarea id="rmsg" placeholder="說明狀況（選填）" style="width:100%;height:52px;background:#080808;border:1.5px solid #1e1e1e;border-radius:5px;padding:6px 8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:#999;resize:none;box-sizing:border-box;margin-bottom:7px;outline:none;"></textarea>
-  <button id="rsub" onclick="sendR()" style="width:100%;background:#F5A623;color:#1A1A1A;border:none;border-radius:5px;padding:7px;font-size:11px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;">送出回報</button>
+  <button id="rsub" onclick="sendR()" style="width:100%;background:#1A1A1A;color:#fff;border:none;border-radius:5px;padding:7px;font-size:11px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;">送出回報</button>
   <div id="rok" style="display:none;text-align:center;padding:6px 0;font-size:11px;color:#3DAB8A;font-weight:700;">✅ 已送出，謝謝！</div>
 </div>
 
@@ -458,7 +458,7 @@ function buildGroupHTML(grouped,groups){
 
 document.getElementById('pfi').addEventListener('change',async function(){
   const file=this.files[0];if(!file)return;
-  const st=document.getElementById('pstat');st.textContent='解析中...';st.style.color='#F5A623';
+  const st=document.getElementById('pstat');st.textContent='解析中...';st.style.color='#888';
   try{
     const ab=await file.arrayBuffer();
     const pdf=await pdfjsLib.getDocument({data:ab}).promise;
