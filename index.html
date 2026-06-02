@@ -116,8 +116,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   body{margin:0;padding:0;background:white;}
   body>*:not(#print-only){display:none!important;}
   #print-only{display:block!important;}
-  .ppage{width:210mm;height:297mm;overflow:hidden;position:relative;display:block;page-break-after:always;break-after:page;}
+  .ppage{width:210mm;height:297mm;overflow:hidden;position:relative;display:block;page-break-after:always;break-after:page;background:#fff;}
   .ppage:last-child{page-break-after:auto;break-after:auto;}
+  /* 海報以固定比例置中縮放到安全可列印區，避免印表機驅動再縮放造成跑版/裁切 */
+  .psheet{position:absolute;top:50%;left:50%;width:794px;height:1123px;transform:translate(-50%,-50%) scale(var(--print-scale,0.95));transform-origin:center center;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -173,10 +175,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 <div class="cbar" id="b3" style="gap:8px;font-size:10px;">
   🖨 <b style="color:#1A1A1A">列印步驟：</b>
-  <span style="color:#555">點「列印」→ 縮放</span><b style="color:#111">100%</b>
+  <span style="color:#555">點「列印」→ 縮放</span><b style="color:#111">100%（勿用「符合頁面」）</b>
   <span style="color:#555">→ 勾</span><b style="color:#111">「列印背景」</b>
-  <span style="color:#555">→</span><b style="color:#d04020">取消勾選「列印標頭和頁尾」</b>
-  <span style="color:#555">→ 輸出</span><b style="color:#1A1A1A">4頁</b>
+  <span style="color:#555">→</span><b style="color:#d04020">取消「列印標頭和頁尾」</b>
+  <span style="color:#555">→ 共</span><b style="color:#1A1A1A">5頁</b>
+  <span style="color:#999">（已內建安全邊界，不會被裁切）</span>
 </div>
 
 <div id="pa"><div id="psw"><div id="posters-wrap"></div></div></div>
@@ -295,6 +298,7 @@ function doPrint(){
     const poster=document.getElementById('poster-'+cfg.id);
     if(!poster)return;
     const page=document.createElement('div');page.className='ppage';
+    const sheet=document.createElement('div');sheet.className='psheet';
     let top=0;
     [...poster.children].forEach(orig=>{
       const h=orig.offsetHeight;if(h===0)return;
@@ -305,8 +309,9 @@ function doPrint(){
       cl.style.setProperty('left','0','important');cl.style.setProperty('width','794px','important');
       cl.style.setProperty('height',h+'px','important');cl.style.setProperty('overflow','hidden','important');
       cl.style.setProperty('flex','none','important');
-      page.appendChild(cl);top+=h;
+      sheet.appendChild(cl);top+=h;
     });
+    page.appendChild(sheet);
     ponly.appendChild(page);
   });
   void document.body.offsetHeight;window.print();
