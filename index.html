@@ -229,7 +229,7 @@ function toggleBoldCls(cls){
 function applyStoredStyles(){
   Object.entries(boldState).forEach(([cls,isBold])=>{document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-weight',isBold?'900':'400','important'));});
 }
-const posterScales={iphone:100,mac:100,ipad:100,watch:100};
+const posterScales={iphone:100,mac:100,ipad:100,watch:100,accessories:100};
 function setPosterZoom(id,pct){
   posterScales[id]=Number(pct);
   const poster=document.getElementById('poster-'+id);
@@ -299,7 +299,8 @@ const POSTER_CFG=[
   {id:'iphone',seriesTitle:'iPhone 17 系列',label:'iPhone',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['iPhone']},
   {id:'mac',seriesTitle:'Mac 系列',label:'Mac',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['Mac']},
   {id:'ipad',seriesTitle:'iPad 系列',label:'iPad',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['iPad']},
-  {id:'watch',seriesTitle:'Watch & AirPods',label:'Watch',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['Apple Watch','耳機 & 其他']},
+  {id:'watch',seriesTitle:'Apple Watch',label:'Watch',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['Apple Watch']},
+  {id:'accessories',seriesTitle:'AirPods & AirTag',label:'AirPods/AirTag',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['耳機 & 其他']},
 ];
 function makePoster(cfg,dateStr,productsHTML){
   return `
@@ -431,7 +432,7 @@ function colHTML(item){
     if(!lbl)return`<div class="pspec-item"><div class="pspec-price" contenteditable="true">${fmt(s.price)}</div>${s.orig>s.price?`<div class="pspec-orig" contenteditable="true">原 ${fmt(s.orig)}</div>`:''}<button class="spec-del" onclick="this.closest('.pspec-item').remove()">✕</button></div>`;
     return`<div class="pspec-item"><div class="pspec-label" contenteditable="true">${lbl}</div><div class="pspec-price" contenteditable="true">${fmt(s.price)}</div>${s.orig>s.price?`<div class="pspec-orig" contenteditable="true">原 ${fmt(s.orig)}</div>`:''}<button class="spec-del" onclick="this.closest('.pspec-item').remove()">✕</button></div>`;
   }).join('');
-  return`<div class="pcol"><div class="pcol-head"><div class="pname" contenteditable="true">${item.lbl}</div>${actHTML}</div><div class="pcol-body"><div class="pspecs-grid">${specItems}</div><div class="pcolor" contenteditable="true">顏色：</div><button class="spec-add" onclick="addSpec(this)">＋ 新增規格</button></div></div>`;
+  return`<div class="pcol"><div class="pcol-head"><div class="pname" contenteditable="true">${item.lbl}</div>${actHTML}</div><div class="pcol-body"><div class="pspecs-grid">${specItems}</div><button class="spec-add" onclick="addSpec(this)">＋ 新增規格</button></div></div>`;
 }
 
 function buildGroupHTML(grouped,groups){
