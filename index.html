@@ -99,7 +99,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 .spec-add{display:block;width:100%;background:none;border:1px dashed #ccc;border-radius:3px;color:#aaa;cursor:pointer;font-size:8px;font-family:'Noto Sans TC',sans-serif;padding:3px 8px;margin-top:6px;text-align:left;}
 .spec-add:hover{border-color:#888;color:#666;}
 
-.no-items{padding:20px;text-align:center;color:var(--muted);font-size:11px;}
+/* iPad mini + iPad 11 同一行 */
+.pgrid-pair{display:grid;grid-template-columns:1fr 1fr;gap:0 8px;margin:8px 16px 0;}
+.pgrid-pair .pcol{margin:0;}
+.pgrid-pair .pcol:first-child{margin-top:0;}
+.pgrid-pair .pcol:last-child{margin-bottom:0;}
 
 /* footer */
 .pfoot{background:var(--navy);border-top:1px solid rgba(255,255,255,.12);padding:10px 28px;display:flex;align-items:center;flex-shrink:0;}
@@ -362,9 +366,6 @@ const CATS=[
   {k:'AirPods 4-主動',lbl:'AirPods 4 ANC',grp:'耳機 & 其他'},
   {k:'AirPods 4',lbl:'AirPods 4',grp:'耳機 & 其他'},
   {k:'AirPods Max 2',lbl:'AirPods Max 2',grp:'耳機 & 其他'},
-  {k:'AirPods Max',lbl:'AirPods Max',grp:'耳機 & 其他'},
-  {k:'AirTag 4件',lbl:'AirTag（4入）',grp:'耳機 & 其他'},
-  {k:'AirTag 1件',lbl:'AirTag（1入）',grp:'耳機 & 其他'},
   {k:'AirTag 2-4',lbl:'AirTag 2（4入）',grp:'耳機 & 其他'},
   {k:'AirTag 2-1',lbl:'AirTag 2（1入）',grp:'耳機 & 其他'},
 ];
@@ -405,6 +406,8 @@ function parsePDF(text){
     const excl=matched.grp==='Apple Watch'?EXCL_WATCH:EXCLUDE;if(excl.some(k=>row.name.includes(k)))continue;
     const conn=getConn(row.name);
     if(matched.grp==='iPad'&&(conn==='LTE'||/[Cc]ellular/.test(row.name)))continue;
+    /* iPad mini / iPad 11：過濾 512G */
+    if((matched.k==='iPad mini'||matched.k==='iPad 11')&&spec==='512G')continue;
     if((matched.k==='AW SE'||matched.k==='AW S11')&&conn==='LTE')continue;
     if(matched.k==='AW Ultra'){const s=getSpec(row.name);if(!s.includes('米蘭')&&!s.includes('海洋'))continue;}
     const lbl=matched.lbl;
@@ -439,7 +442,20 @@ function buildGroupHTML(grouped,groups){
   for(const g of groups){
     const items=Object.values(grouped).filter(i=>i.grp===g);if(!items.length)continue;
     if(multiGroup)html+=`<div class="catrow" contenteditable="true">${GRP_LABEL[g]||g}</div>`;
-    items.forEach(item=>html+=colHTML(item));
+    if(g==='iPad'){
+      /* iPad mini 和 iPad 11 同一行，其餘各自全寬 */
+      const pairKeys=['iPad mini','iPad 11"'];
+      const pairItems=items.filter(i=>pairKeys.includes(i.lbl));
+      const restItems=items.filter(i=>!pairKeys.includes(i.lbl));
+      if(pairItems.length>=2){
+        html+=`<div class="pgrid-pair">${pairItems.map(i=>colHTML(i)).join('')}</div>`;
+      }else{
+        pairItems.forEach(i=>html+=colHTML(i));
+      }
+      restItems.forEach(i=>html+=colHTML(i));
+    }else{
+      items.forEach(item=>html+=colHTML(item));
+    }
   }
   return html;
 }
