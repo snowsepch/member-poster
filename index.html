@@ -161,6 +161,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
     </div>
   </div>
   <button class="bbtn prt" onclick="doPrint()">🖨 列印 / 匯出 PDF</button>
+  <button class="bbtn" onclick="saveLayout()" style="background:#f5f5f5;border-color:#888;color:#1A1A1A;">💾 儲存版面</button>
   <button class="bbtn" onclick="fixAndFitPosters()" style="background:#f0f4ff;border-color:#1A1A1A;color:#1A1A1A;">✦ 自動縮放</button>
   <span class="bstat" id="pstat">請先上傳操盤 PDF</span>
   <div class="scwrap">
@@ -491,11 +492,43 @@ function addSpec(btn){
 const _rawStore=decodeURIComponent(new URLSearchParams(location.search).get('store')||'');
 const _storeId=_rawStore?_rawStore.replace(/^燦坤/,'').replace(/店$/,'')+' Apple Shop':'右昌 Apple Shop';
 const API='https://script.google.com/macros/s/AKfycbyiX43HQKr48-rd7DZSm5u9KP-uoeT6DagKrPYPs-G4lE5mnpf1yHUb_n0LgHe_hMzc/exec';
+
+/* ── 儲存 / 還原版面 ── */
+function saveLayout(){
+  const wrap=document.getElementById('posters-wrap');
+  if(!wrap||!wrap.innerHTML.trim()){alert('尚未載入海報，請先上傳 PDF。');return;}
+  const data={
+    html:wrap.innerHTML,
+    theme:document.querySelector('.tpill.on')?.id||'p-dp',
+    zoom:_pswScale*100
+  };
+  localStorage.setItem('posterLayout',JSON.stringify(data));
+  const st=document.getElementById('pstat');
+  const prev=st.textContent;
+  st.textContent='✓ 版面已儲存';st.style.color='#3DAB8A';
+  setTimeout(()=>{st.textContent=prev;st.style.color='';},2000);
+}
+function restoreLayout(){
+  const raw=localStorage.getItem('posterLayout');if(!raw)return false;
+  try{
+    const data=JSON.parse(raw);
+    document.getElementById('posters-wrap').innerHTML=data.html;
+    const tid=(data.theme||'p-dp').replace('p-','');
+    setT(tid);
+    applyZoom(data.zoom||75);
+    applyStoredStyles();
+    document.querySelectorAll('.fstore,.sname').forEach(el=>el.textContent=_storeId);
+    document.fonts.ready.then(()=>fixAndFitPosters());
+    document.getElementById('pstat').textContent='✓ 已還原上次儲存版面';
+    document.getElementById('pstat').style.color='#3DAB8A';
+    return true;
+  }catch(e){return false;}
+}
 function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.style.display==='block'?'none':'block';document.getElementById('rok').style.display='none';}
 async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:_storeId,tool:'海報A4-v7',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-window.addEventListener('load',()=>{setT('dp');applyZoom(75);initPosters();document.querySelectorAll('.fstore,.sname').forEach(el=>el.textContent=_storeId);});
+window.addEventListener('load',()=>{setT('dp');applyZoom(75);if(!restoreLayout())initPosters();document.querySelectorAll('.fstore,.sname').forEach(el=>el.textContent=_storeId);});
 </script>
 </body>
 </html>
