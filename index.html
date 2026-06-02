@@ -70,7 +70,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 /* svc */
 .svcbar{background:var(--navy);display:grid;grid-template-columns:repeat(4,1fr);flex-shrink:0;border-top:1px solid rgba(255,255,255,.08);}
-.svc{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 10px;border-right:1px solid rgba(255,255,255,.1);font-size:12.5px;font-weight:700;color:#fff;outline:none;line-height:1.2;white-space:nowrap;overflow:hidden;}
+.svc{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 10px;border-right:1px solid rgba(255,255,255,.1);font-size:14px;font-weight:700;color:#fff;outline:none;line-height:1.2;white-space:nowrap;overflow:hidden;}
 .svc:last-child{border-right:none;}
 
 /* products — 自動字級：--fs 由 fixAndFitPosters 計算，使每頁填滿可用高度 */
@@ -107,7 +107,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
 
 /* footer */
 .pfoot{background:var(--navy);border-top:1px solid rgba(255,255,255,.12);padding:13px 30px;display:flex;justify-content:center;align-items:center;flex-shrink:0;}
-.fnote{font-size:11.5px;color:#fff;opacity:.6;line-height:1.5;outline:none;text-align:center;}
+.fnote{font-size:13.5px;color:#fff;opacity:.6;line-height:1.5;outline:none;text-align:center;}
 
 @media screen{#print-only{display:none;}}
 @media print{
@@ -141,14 +141,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
       <div class="prow">店名 <span class="sv" id="vsn">21px</span><input type="range" min="12" max="30" value="21" oninput="sc('sname',this.value,'vsn')"></div>
       <div class="prow">日期 <span class="sv" id="vsd">17px</span><input type="range" min="10" max="26" value="17" oninput="sc('sdate',this.value,'vsd')"></div>
       <div class="psec" style="margin-top:8px;">服務列</div>
-      <div class="prow">服務文字 <span class="sv" id="vsv">12.5px</span><input type="range" min="8" max="18" value="12.5" step="0.5" oninput="sc('svc',this.value,'vsv')"></div>
+      <div class="prow">服務文字 <span class="sv" id="vsv">14px</span><input type="range" min="8" max="20" value="14" step="0.5" oninput="sc('svc',this.value,'vsv')"></div>
       <div class="psec" style="margin-top:8px;">產品卡</div>
       <div class="prow">品名 <span class="sv" id="vn">18px</span><input type="range" min="10" max="28" value="18" oninput="sc('pname',this.value,'vn')"></div>
       <div class="prow">活動文字 <span class="sv" id="vat">10px</span><input type="range" min="7" max="16" value="10" oninput="sc('pact',this.value,'vat')"></div>
       <div class="prow">規格標籤 <span class="sv" id="vsl">12px</span><input type="range" min="8" max="18" value="12" oninput="sc('pspec-label',this.value,'vsl')"></div>
       <div class="prow">規格價格 <span class="sv" id="vsp">24px</span><input type="range" min="14" max="36" value="24" oninput="sc('pspec-price',this.value,'vsp')"></div>
       <div class="psec" style="margin-top:8px;">頁腳</div>
-      <div class="prow">頁腳說明 <span class="sv" id="vfn">11.5px</span><input type="range" min="8" max="16" value="11.5" step="0.5" oninput="sc('fnote',this.value,'vfn')"></div>
+      <div class="prow">頁腳說明 <span class="sv" id="vfn">13.5px</span><input type="range" min="8" max="18" value="13.5" step="0.5" oninput="sc('fnote',this.value,'vfn')"></div>
       <div class="psec" style="margin-top:8px;">粗體切換</div>
       <div class="prow" style="flex-wrap:wrap;gap:5px;">
         <button class="fbtn" onclick="toggleBoldCls('pname')">品名</button>
