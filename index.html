@@ -163,6 +163,20 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+/* ── 錯誤可視化：任何未捕捉錯誤都顯示在畫面上方紅條，避免「畫面整個消失」卻看不到原因 ── */
+function showErr(msg){
+  let bar=document.getElementById('errbar');
+  if(!bar){bar=document.createElement('div');bar.id='errbar';
+    bar.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#C8442E;color:#fff;font-family:sans-serif;font-size:13px;font-weight:700;line-height:1.5;padding:10px 40px 10px 16px;white-space:pre-wrap;box-shadow:0 2px 10px rgba(0,0,0,.3);';
+    const x=document.createElement('button');x.textContent='✕';
+    x.style.cssText='position:absolute;top:8px;right:10px;background:none;border:none;color:#fff;font-size:16px;font-weight:900;cursor:pointer;';
+    x.onclick=()=>bar.remove();bar.appendChild(x);
+    document.body.appendChild(bar);}
+  bar.firstChild?bar.insertBefore(document.createTextNode(msg+'\n'),bar.firstChild):bar.appendChild(document.createTextNode(msg));
+}
+window.addEventListener('error',e=>{showErr('錯誤：'+(e.message||'')+(e.filename?(' @ '+e.filename.split('/').pop()+':'+e.lineno):''));});
+window.addEventListener('unhandledrejection',e=>{showErr('未處理的 Promise 錯誤：'+(e.reason&&e.reason.message||e.reason||''));});
+
 /* ── 五張海報設定（只對應指定產品線）── */
 const POSTER_CFG=[
   {id:'iphone',label:'iPhone',cat:'#DCE8F5',tag:'17 系列',groups:['iPhone'],
@@ -434,42 +448,53 @@ function fixAndFitPosters(){
   if(st&&st.textContent.indexOf('｜')<0&&st.textContent.indexOf('✓')===0)st.textContent+=' ｜ 已自動放大填滿 A4';
 }
 
-/* ── 列印 ── */
+/* ── 列印（v9：回到 zoom+padding 縮放法，內容縮進可列印區，避免空白/被切）── */
 function doPrint(){
-  fixAndFitPosters();void document.body.offsetHeight;
-  let ponly=document.getElementById('print-only');
-  if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
-  ponly.innerHTML='';
-  /* 不靠縮放（此台 Safari 列印同時忽略 zoom 與 transform）。
-     海報設計高度已降到 1080px < A4 可列印區，列印 1:1、頁高=實際內容高，每張穩落單頁、不溢出空白頁。 */
-  POSTER_CFG.forEach(cfg=>{
-    const poster=document.getElementById('poster-'+cfg.id);if(!poster)return;
-    if(!poster.querySelector('.pcol'))return; /* 空白頁不印 */
-    const page=document.createElement('div');page.className='ppage';
-    page.style.width='794px';page.style.padding='0';
-    const sheet=document.createElement('div');sheet.className='psheet';
-    let top=54;   /* 上方安全邊：避開印表機頂端死區並整體下移，頁頭不被切 */
-    [...poster.children].forEach(orig=>{
-      const h=orig.offsetHeight;if(h===0)return;
-      const cl=orig.cloneNode(true);
-      cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
-      cl.querySelectorAll('.pact').forEach(e=>{if(!e.textContent.trim())e.remove();});
-      cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
-      cl.style.setProperty('position','absolute','important');
-      cl.style.setProperty('top',top+'px','important');
-      cl.style.setProperty('left','0','important');
-      cl.style.setProperty('width','794px','important');
-      cl.style.setProperty('height',h+'px','important');
-      cl.style.setProperty('overflow','hidden','important');
-      cl.style.setProperty('flex','none','important');
-      sheet.appendChild(cl);top+=h;
+  try{
+    fixAndFitPosters();void document.body.offsetHeight;
+    let ponly=document.getElementById('print-only');
+    if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
+    ponly.innerHTML='';
+    /* zoom 會連佈局盒一起縮（transform 只縮視覺會溢出多分空白頁）。
+       sheet 794 寬 × 內容高，整體 zoom=S 縮小，再用 ppage padding 給安全邊界 → 落在 A4 可列印區內。 */
+    const S=0.82, PAD_TOP=30, PAD_BOT=18, PAD_X=14;
+    let built=0;
+    POSTER_CFG.forEach(cfg=>{
+      const poster=document.getElementById('poster-'+cfg.id);if(!poster)return;
+      if(!poster.querySelector('.pcol'))return; /* 空白頁不印 */
+      const page=document.createElement('div');page.className='ppage';
+      const sheet=document.createElement('div');sheet.className='psheet';
+      let top=0;
+      [...poster.children].forEach(orig=>{
+        const h=orig.offsetHeight;if(h===0)return;
+        const cl=orig.cloneNode(true);
+        cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
+        cl.querySelectorAll('.pact').forEach(e=>{if(!e.textContent.trim())e.remove();});
+        cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
+        cl.style.setProperty('position','absolute','important');
+        cl.style.setProperty('top',top+'px','important');
+        cl.style.setProperty('left','0','important');
+        cl.style.setProperty('width','794px','important');
+        cl.style.setProperty('height',h+'px','important');
+        cl.style.setProperty('overflow','hidden','important');
+        cl.style.setProperty('flex','none','important');
+        sheet.appendChild(cl);top+=h;
+      });
+      sheet.style.width='794px';sheet.style.height=top+'px';
+      sheet.style.zoom=String(S);                       /* 整體縮 → 不溢出、不多空白頁 */
+      page.style.boxSizing='border-box';
+      page.style.padding=PAD_TOP+'px '+PAD_X+'px '+PAD_BOT+'px';
+      page.style.width=(794*S+2*PAD_X)+'px';            /* ≈ 665+28 = 693px ≈ 183mm < 可列印寬 */
+      page.appendChild(sheet);ponly.appendChild(page);built++;
     });
-    page.style.height=top+'px';sheet.style.height=top+'px';   /* 頁高=內容高(約1078)，< A4 → 單頁 */
-    page.appendChild(sheet);ponly.appendChild(page);
-  });
-  void document.body.offsetHeight;window.print();
+    if(!built){showErr('尚未產生海報，請先上傳操盤 PDF。');return;}
+    void document.body.offsetHeight;window.print();
+  }catch(e){restoreScreen();showErr('列印發生錯誤：'+(e&&e.message||e));}
 }
-window.addEventListener('afterprint',()=>{const p=document.getElementById('print-only');if(p)p.innerHTML='';applyZoom(_pswScale*100);});
+/* 列印結束務必還原畫面（afterprint 為主，焦點/計時為備援，避免畫面卡在列印狀態變空白） */
+function restoreScreen(){const p=document.getElementById('print-only');if(p)p.innerHTML='';try{applyZoom(_pswScale*100);}catch(e){}}
+window.addEventListener('afterprint',restoreScreen);
+window.addEventListener('focus',()=>{if(document.getElementById('print-only')&&document.getElementById('print-only').innerHTML)setTimeout(restoreScreen,80);});
 
 /* ── 畫面縮放 ── */
 let _pswScale=0.68;
@@ -481,12 +506,14 @@ const _storeId=_rawStore?_rawStore.replace(/^燦坤/,'').replace(/店$/,'')+' Ap
 const API='https://script.google.com/macros/s/AKfycbyiX43HQKr48-rd7DZSm5u9KP-uoeT6DagKrPYPs-G4lE5mnpf1yHUb_n0LgHe_hMzc/exec';
 
 function saveLayout(){
-  const wrap=document.getElementById('posters-wrap');
-  if(!wrap||!wrap.innerHTML.trim()){alert('尚未載入海報，請先上傳 PDF。');return;}
-  localStorage.setItem('posterLayoutSimple',JSON.stringify({html:wrap.innerHTML,zoom:_pswScale*100}));
-  const st=document.getElementById('pstat');const prev=st.textContent;
-  st.textContent='✓ 版面已儲存';st.style.color='#2c8a63';
-  setTimeout(()=>{st.textContent=prev;st.style.color='';},1800);
+  try{
+    const wrap=document.getElementById('posters-wrap');
+    if(!wrap||!wrap.innerHTML.trim()){alert('尚未載入海報，請先上傳 PDF。');return;}
+    localStorage.setItem('posterLayoutSimple',JSON.stringify({html:wrap.innerHTML,zoom:_pswScale*100}));
+    const st=document.getElementById('pstat');const prev=st.textContent;
+    st.textContent='✓ 版面已儲存';st.style.color='#2c8a63';
+    setTimeout(()=>{st.textContent=prev;st.style.color='';},1800);
+  }catch(e){showErr('儲存失敗：'+(e&&e.message||e)+'（若為 file:// 開啟，瀏覽器可能停用儲存；改用 GitHub Pages 網址即可）');}
 }
 function restoreLayout(){
   const raw=localStorage.getItem('posterLayoutSimple');if(!raw)return false;
