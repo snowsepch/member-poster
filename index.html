@@ -3,111 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>右昌 會員優惠 海報 A4列印版 v8</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<title>右昌 會員優惠 海報・簡約大字版</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --poster-bg:#F5F3EE;--navy:#1A1A1A;--accent:#F5A623;
-  --text:#1A1A1A;--muted:#888;--divider:#ddd9d0;
-  --orig-col:#aaa;--ctrl:#f5f5f5;--ctrl2:#ebebeb;--card-bg:#ffffff;
+  --poster-bg:#FFFFFF;     /* 純白底，高對比好識別 */
+  --ink:#1A1A1A;           /* 黑硬邊線 / 主文字 */
+  --line:#1A1A1A;
+  --offer:#C8442E;         /* 單一強調色：折扣 */
+  --muted:#6b6760;
+  --orig:#9a958c;
+  --card:#ffffff;
+  --ctrl:#f3f1ec;--ctrl2:#e9e6df;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans TC',sans-serif;background:#d0d0d0;min-height:100vh;}
+body{font-family:'Noto Sans TC',sans-serif;background:#cfccc4;min-height:100vh;}
 
-.cbar{background:var(--ctrl);padding:7px 16px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;border-bottom:1px solid #d0d0d0;}
-.blabel{font-size:10px;color:#666;white-space:nowrap;padding-right:8px;border-right:1px solid #ccc;margin-right:2px;}
-.tpill{display:flex;align-items:center;gap:5px;padding:4px 11px;border-radius:50px;border:1.5px solid #ccc;background:transparent;cursor:pointer;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;color:#555;transition:all .15s;white-space:nowrap;}
-.tpill:hover{border-color:#888;color:#111;}
-.tpill.on{border-color:transparent;}
-.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.pbadge{font-size:12px;font-weight:900;color:#333;white-space:nowrap;margin-right:4px;}
-.pbadge em{font-style:normal;color:#1A1A1A;}
-.bbtn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1.5px solid #ccc;background:#fff;color:#444;font-size:11px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s;}
-.bbtn:hover{border-color:#888;color:#111;}
-.bbtn.pdf{background:#e0e0e0;border-color:#bbb;color:#1A1A1A;font-weight:900;}
-.bbtn.pdf:hover{background:#ccc;}
-.bbtn.prt{background:#1A1A1A;border-color:#333;color:#fff;}
-.bbtn.prt:hover{background:#2a2a2a;}
-.bstat{font-size:10px;color:#555;}
+/* ── 控制列 ── */
+.cbar{background:var(--ctrl);padding:9px 16px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;border-bottom:1px solid #c9c5bc;}
+.pbadge{font-size:13px;font-weight:900;color:var(--ink);white-space:nowrap;margin-right:6px;}
+.pbadge em{font-style:normal;color:var(--offer);}
 #pfi{display:none;}
-.pwrap{position:relative;}
-.pop{display:none;position:absolute;top:calc(100% + 7px);left:0;background:#fff;border:1.5px solid #d0d0d0;border-radius:9px;padding:13px 15px;min-width:230px;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:80vh;overflow-y:auto;}
-.pop.on{display:block;}
-.psec{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:.12em;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid #e0e0e0;}
-.prow{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#333;margin-bottom:7px;gap:6px;}
-.prow:last-child{margin-bottom:0;}
-.sv{color:#666;min-width:28px;text-align:right;font-size:10px;}
-input[type=range]{-webkit-appearance:none;width:88px;height:3px;background:#d0d0d0;border-radius:2px;outline:none;flex-shrink:0;}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#1A1A1A;cursor:pointer;}
-.fbtn{background:#f0f0f0;color:#555;border:1.5px solid #ccc;border-radius:5px;padding:4px 9px;font-size:10px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .15s;}
-.fbtn:hover{border-color:#888;color:#111;}
-.fbtn.bold-on{background:#1A1A1A;color:#fff;border-color:#333;}
-.scwrap{display:flex;align-items:center;gap:5px;margin-left:auto;}
-.scwrap label{font-size:10px;color:#555;}
+.bbtn{display:flex;align-items:center;gap:5px;padding:7px 14px;border:2px solid var(--ink);background:#fff;color:var(--ink);font-size:12.5px;font-weight:900;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;transition:all .12s;}
+.bbtn:hover{background:#f0ede6;}
+.bbtn.pdf{background:var(--ink);color:#fff;}
+.bbtn.pdf:hover{background:#000;}
+.bbtn.prt{background:var(--offer);border-color:var(--offer);color:#fff;}
+.bbtn.prt:hover{filter:brightness(.93);}
+.bstat{font-size:11.5px;color:var(--muted);font-weight:700;}
+.scwrap{display:flex;align-items:center;gap:6px;margin-left:auto;}
+.scwrap label{font-size:11px;color:var(--muted);font-weight:700;}
+input[type=range]{-webkit-appearance:none;width:120px;height:4px;background:#bdb9b0;border-radius:2px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--ink);cursor:pointer;}
+#vsc{font-size:11px;color:var(--muted);font-weight:700;min-width:34px;}
 
-#pa{display:flex;justify-content:center;padding:24px 16px 60px;}
+.hint{background:var(--ctrl2);padding:7px 16px;font-size:11px;color:#55514a;line-height:1.55;}
+.hint b{color:var(--ink);}
+.hint .r{color:var(--offer);font-weight:900;}
+
+/* ── 預覽區 ── */
+#pa{display:flex;justify-content:center;padding:24px 16px 80px;}
 #psw{transform-origin:top center;transition:transform .2s;}
-.poster-wrap{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:28px;}
+.poster-wrap{margin-bottom:30px;}
 .poster-wrap:last-child{margin-bottom:0;}
-.poster-ctrl{width:794px;background:#e8e8e8;border:1px solid #ccc;border-bottom:none;border-radius:7px 7px 0 0;padding:7px 14px;display:flex;align-items:center;gap:10px;}
-.pctrl-name{font-size:11px;font-weight:700;color:#1A1A1A;min-width:90px;}
-.pctrl-sub{font-size:9px;color:#888;flex:1;}
-.pctrl-range{-webkit-appearance:none;width:160px;height:3px;background:#bbb;border-radius:2px;outline:none;cursor:pointer;}
-.pctrl-range::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#1A1A1A;cursor:pointer;}
-.pctrl-val{font-size:11px;color:#1A1A1A;font-weight:700;min-width:40px;text-align:right;}
+.poster-ctrl{width:794px;background:#fff;border:2px solid var(--ink);border-bottom:none;padding:8px 16px;display:flex;align-items:center;gap:12px;}
+.pctrl-name{font-size:13px;font-weight:900;color:var(--ink);min-width:120px;}
+.pctrl-range{-webkit-appearance:none;width:170px;height:4px;background:#cfccc4;border-radius:2px;outline:none;cursor:pointer;}
+.pctrl-range::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--ink);cursor:pointer;}
+.pctrl-val{font-size:12px;color:var(--ink);font-weight:900;min-width:44px;text-align:right;}
+.pctrl-sub{font-size:10.5px;color:var(--muted);flex:1;}
 
-.poster{width:794px;height:1123px;display:flex;flex-direction:column;background:var(--poster-bg);overflow:hidden;outline:1px solid rgba(0,0,0,.1);transform-origin:top left;position:relative;}
+/* ── 海報本體 A4 ── */
+.poster{width:794px;height:1032px;display:flex;flex-direction:column;background:var(--poster-bg);overflow:hidden;outline:2px solid var(--ink);position:relative;}
 
-/* store bar */
-.store-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.12);padding:14px 30px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
-.sname{font-size:21px;font-weight:900;color:#fff;letter-spacing:.02em;outline:none;}
-.ssep{color:#fff;opacity:.3;margin:0 11px;}
-.ssub{font-size:11px;color:#fff;opacity:.5;letter-spacing:.04em;outline:none;}
-.sdate{font-size:17px;font-weight:900;color:#F5A623;letter-spacing:.04em;outline:none;font-family:'Noto Sans TC',sans-serif;}
+/* 頁首 */
+.store-bar{background:var(--ink);padding:18px 34px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+.store-l{display:flex;flex-direction:column;gap:2px;}
+.sname{font-size:26px;font-weight:900;color:#fff;letter-spacing:.02em;outline:none;line-height:1.1;}
+.ssub{font-size:12.5px;color:#fff;opacity:.62;letter-spacing:.06em;outline:none;}
+.sdate{font-size:23px;font-weight:900;color:#fff;background:var(--offer);padding:7px 16px;letter-spacing:.03em;outline:none;white-space:nowrap;}
 
-/* series bar */
-.series-bar{display:none;}
+/* 分類大標 */
+.cat-banner{background:var(--cat,#DCE8F5);border-bottom:3px solid var(--ink);padding:13px 34px;display:flex;align-items:baseline;gap:16px;flex-shrink:0;}
+.cat-title{font-size:34px;font-weight:900;color:var(--ink);letter-spacing:.01em;outline:none;line-height:1;}
+.cat-tag{font-size:15px;font-weight:900;color:#fff;background:var(--ink);padding:5px 12px;outline:none;}
 
-/* svc */
-.svcbar{background:var(--navy);display:grid;grid-template-columns:repeat(4,1fr);flex-shrink:0;border-top:1px solid rgba(255,255,255,.08);}
-.svc{display:flex;align-items:center;justify-content:center;gap:6px;padding:13px 8px;border-right:1px solid rgba(255,255,255,.1);font-size:16px;font-weight:700;color:#fff;outline:none;line-height:1.2;white-space:nowrap;overflow:hidden;}
+/* 服務列 */
+.svcbar{display:grid;grid-template-columns:repeat(4,1fr);flex-shrink:0;border-bottom:2px solid var(--ink);background:#fff;}
+.svc{display:flex;align-items:center;justify-content:center;padding:11px 6px;border-right:2px solid var(--ink);font-size:16px;font-weight:900;color:var(--ink);outline:none;line-height:1.25;text-align:center;white-space:nowrap;}
 .svc:last-child{border-right:none;}
 
-/* products — 自動字級：--fs 由 fixAndFitPosters 計算，使每頁填滿可用高度 */
-.poster-products{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;--fs:1;}
+/* 產品區（--fs 由自動配置計算填滿 A4） */
+.poster-products{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:0 18px;--fs:1;}
 
-/* catrow */
-.catrow{padding:calc(10px*var(--fs)) 18px calc(5px*var(--fs));font-size:calc(10px*var(--fs));font-weight:700;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--divider);flex-shrink:0;outline:none;margin-top:calc(4px*var(--fs));}
-.catrow:first-child{margin-top:0;}
-
-/* product card */
-.pcol{margin:calc(8px*var(--fs)) 16px 0;border:1px solid var(--divider);border-radius:6px;overflow:hidden;flex-shrink:0;}
-.pcol:first-child{margin-top:calc(10px*var(--fs));}
-.pcol:last-child{margin-bottom:calc(8px*var(--fs));}
-.pcol-head{background:var(--navy);padding:calc(11px*var(--fs)) 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.pname{font-size:calc(18px*var(--fs));font-weight:900;color:#fff;outline:none;flex-shrink:0;}
-.pact{font-size:calc(13px*var(--fs));font-weight:700;color:rgba(255,255,255,.82);text-align:right;outline:none;flex:1;min-width:0;}
-.pcol-body{background:var(--card-bg);padding:calc(12px*var(--fs)) 16px calc(10px*var(--fs));}
-.pspecs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:calc(10px*var(--fs)) 16px;margin-bottom:calc(8px*var(--fs));}
-.pspec-item{position:relative;}
-.pspec-label{font-size:calc(12px*var(--fs));color:var(--muted);margin-bottom:calc(3px*var(--fs));outline:none;}
-.pspec-price{font-family:'Noto Sans TC',sans-serif;font-size:calc(24px*var(--fs));font-weight:900;color:var(--text);outline:none;line-height:1.1;}
-.pspec-orig{font-size:calc(10px*var(--fs));color:var(--orig-col);text-decoration:line-through;outline:none;}
-.pcolor{display:none;}
-.spec-del{position:absolute;top:0;right:0;background:none;border:none;color:#c44;font-size:9px;cursor:pointer;padding:1px 3px;border-radius:3px;opacity:.4;}
+/* 產品卡 */
+.pcol{border:2.5px solid var(--ink);margin-top:calc(12px*var(--fs));flex-shrink:0;background:var(--card);overflow:hidden;display:flex;flex-direction:column;}
+.pcol:first-child{margin-top:calc(14px*var(--fs));}
+.pcol:last-child{margin-bottom:calc(12px*var(--fs));}
+.pcol-head{background:var(--cat,#DCE8F5);padding:calc(10px*var(--fs)) 16px;display:flex;justify-content:space-between;align-items:center;gap:calc(6px*var(--fs)) 10px;flex-wrap:wrap;border-bottom:2.5px solid var(--ink);}
+.pname{font-size:calc(26px*var(--fs));font-weight:900;color:var(--ink);outline:none;flex-shrink:0;line-height:1.05;}
+.pact{font-size:calc(17px*var(--fs));font-weight:900;color:#fff;background:var(--offer);padding:calc(5px*var(--fs)) calc(12px*var(--fs));outline:none;white-space:nowrap;text-align:right;cursor:text;margin-left:auto;}
+.pact:empty{background:transparent;color:#b3aea4;border:1.5px dashed #c4bfb5;font-weight:700;font-size:calc(13px*var(--fs));padding:calc(3px*var(--fs)) calc(8px*var(--fs));}
+.pact:empty::before{content:attr(data-ph);}
+.pcol-body{padding:calc(11px*var(--fs)) 16px calc(12px*var(--fs));flex:1;display:flex;flex-direction:column;justify-content:flex-start;}
+.pspecs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:calc(10px*var(--fs)) 18px;}
+.pspec{position:relative;}
+.pspec-cap{font-size:calc(16px*var(--fs));font-weight:700;color:var(--muted);margin-bottom:calc(2px*var(--fs));outline:none;}
+.pspec-price{font-size:calc(33px*var(--fs));font-weight:900;color:var(--ink);outline:none;line-height:1.05;}
+.pspec-sub{font-size:calc(14px*var(--fs));color:var(--orig);outline:none;margin-top:calc(1px*var(--fs));}
+.pspec-sub s{color:var(--orig);}
+.pspec-sub b{color:var(--offer);font-weight:900;}
+.spec-del{position:absolute;top:0;right:0;background:none;border:none;color:#c44;font-size:11px;cursor:pointer;opacity:.35;}
 .spec-del:hover{opacity:1;}
-.spec-add{display:block;width:100%;background:none;border:1px dashed #ccc;border-radius:3px;color:#aaa;cursor:pointer;font-size:8px;font-family:'Noto Sans TC',sans-serif;padding:3px 8px;margin-top:6px;text-align:left;}
-.spec-add:hover{border-color:#888;color:#666;}
+.spec-add{display:inline-block;background:none;border:1px dashed #c4bfb5;color:#a8a299;cursor:pointer;font-size:10px;font-family:'Noto Sans TC',sans-serif;padding:3px 9px;margin-top:8px;}
+.spec-add:hover{border-color:var(--ink);color:var(--ink);}
 
-/* iPad mini + iPad 11 同一行 */
-.pgrid-pair{display:grid;grid-template-columns:1fr 1fr;gap:0 8px;margin:calc(8px*var(--fs)) 16px 0;}
-.pgrid-pair .pcol{margin:0;}
-.pgrid-pair .pcol:first-child{margin-top:0;}
-.pgrid-pair .pcol:last-child{margin-bottom:0;}
+/* iPad 兩兩並排 */
+.pgrid-pair{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;align-items:stretch;}
+.pgrid-pair .pcol{margin-top:calc(12px*var(--fs));}
 
-/* footer */
-.pfoot{background:var(--navy);border-top:1px solid rgba(255,255,255,.12);padding:13px 30px;display:flex;justify-content:center;align-items:center;flex-shrink:0;}
-.fnote{font-size:15.5px;color:#fff;opacity:.62;line-height:1.5;outline:none;text-align:center;}
+.no-items{padding:60px 24px;text-align:center;font-size:20px;font-weight:700;color:var(--muted);}
+
+/* 頁尾 */
+.pfoot{background:var(--ink);padding:14px 34px;flex-shrink:0;}
+.fnote{font-size:15px;color:#fff;opacity:.8;line-height:1.55;outline:none;text-align:center;font-weight:500;}
 
 @media screen{#print-only{display:none;}}
 @media print{
@@ -118,294 +117,107 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
   #print-only{display:block!important;}
   .ppage{overflow:hidden;position:relative;display:block;background:#fff;break-inside:avoid;page-break-inside:avoid;margin:0 auto;box-sizing:border-box;}
   .ppage+.ppage{break-before:page;page-break-before:always;}
-  .psheet{position:relative;width:794px;height:1123px;}
+  .psheet{position:relative;width:794px;height:1123px;overflow:hidden;}
   [contenteditable]{outline:none!important;}
 }
 </style>
 </head>
 <body>
 
-<div class="cbar" id="b1">
-  <span class="blabel">🎨 風格</span>
-  <button class="tpill on" id="p-dp" onclick="setT('dp')"><span class="dot" style="background:#1A1A1A"></span>炭黑</button>
-  <button class="tpill" id="p-nb" onclick="setT('nb')"><span class="dot" style="background:#1F3A5F"></span>海軍藍</button>
-</div>
-
-<div class="cbar" id="b2">
-  <div class="pbadge">右昌 <em>會員優惠</em> 海報</div>
+<div class="cbar">
+  <span class="pbadge">右昌 <em>會員優惠</em>・簡約大字版 <span style="color:#C8442E;">v8（下移微調）</span></span>
   <input type="file" id="pfi" accept=".pdf">
-  <button class="bbtn pdf" onclick="document.getElementById('pfi').click()">📋 選擇操盤 PDF</button>
-  <div class="pwrap">
-    <button class="bbtn" onclick="tp('pop-f')">字體</button>
-    <div class="pop" id="pop-f">
-      <div class="psec">頁首</div>
-      <div class="prow">店名 <span class="sv" id="vsn">21px</span><input type="range" min="12" max="30" value="21" oninput="sc('sname',this.value,'vsn')"></div>
-      <div class="prow">日期 <span class="sv" id="vsd">17px</span><input type="range" min="10" max="26" value="17" oninput="sc('sdate',this.value,'vsd')"></div>
-      <div class="psec" style="margin-top:8px;">服務列</div>
-      <div class="prow">服務文字 <span class="sv" id="vsv">16px</span><input type="range" min="8" max="22" value="16" step="0.5" oninput="sc('svc',this.value,'vsv')"></div>
-      <div class="psec" style="margin-top:8px;">產品卡</div>
-      <div class="prow">品名 <span class="sv" id="vn">18px</span><input type="range" min="10" max="28" value="18" oninput="sc('pname',this.value,'vn')"></div>
-      <div class="prow">活動文字 <span class="sv" id="vat">13px</span><input type="range" min="8" max="20" value="13" step="0.5" oninput="sc('pact',this.value,'vat')"></div>
-      <div class="prow">規格標籤 <span class="sv" id="vsl">12px</span><input type="range" min="8" max="18" value="12" oninput="sc('pspec-label',this.value,'vsl')"></div>
-      <div class="prow">規格價格 <span class="sv" id="vsp">24px</span><input type="range" min="14" max="36" value="24" oninput="sc('pspec-price',this.value,'vsp')"></div>
-      <div class="psec" style="margin-top:8px;">頁腳</div>
-      <div class="prow">頁腳說明 <span class="sv" id="vfn">15.5px</span><input type="range" min="8" max="20" value="15.5" step="0.5" oninput="sc('fnote',this.value,'vfn')"></div>
-      <div class="psec" style="margin-top:8px;">粗體切換</div>
-      <div class="prow" style="flex-wrap:wrap;gap:5px;">
-        <button class="fbtn" onclick="toggleBoldCls('pname')">品名</button>
-        <button class="fbtn" onclick="toggleBoldCls('pact')">活動文字</button>
-        <button class="fbtn" onclick="toggleBoldCls('pspec-price')">規格價</button>
-        <button class="fbtn" onclick="toggleBoldCls('pspec-label')">規格標籤</button>
-        <button class="fbtn" onclick="toggleBoldCls('fnote')">頁腳說明</button>
-        <button class="fbtn" onclick="toggleBoldCls('fstore')">頁腳店名</button>
-      </div>
-    </div>
-  </div>
-  <button class="bbtn prt" onclick="doPrint()">🖨 列印 / 匯出 PDF</button>
-  <button class="bbtn" onclick="saveLayout()" style="background:#f5f5f5;border-color:#888;color:#1A1A1A;">💾 儲存版面</button>
-  <button class="bbtn" onclick="fixAndFitPosters()" style="background:#f0f4ff;border-color:#1A1A1A;color:#1A1A1A;">✦ 自動縮放</button>
+  <button class="bbtn pdf" onclick="document.getElementById('pfi').click()">① 選擇操盤 PDF</button>
+  <button class="bbtn" onclick="fixAndFitPosters()">② 自動放大配置</button>
+  <button class="bbtn prt" onclick="doPrint()">③ 列印 / 存 PDF</button>
+  <button class="bbtn" onclick="saveLayout()">儲存版面</button>
   <span class="bstat" id="pstat">請先上傳操盤 PDF</span>
   <div class="scwrap">
     <label>畫面</label>
-    <input type="range" id="scslider" min="40" max="110" value="75" oninput="applyZoom(this.value)">
-    <span id="vsc">75%</span>
+    <input type="range" id="scslider" min="40" max="110" value="68" oninput="applyZoom(this.value)">
+    <span id="vsc">68%</span>
   </div>
 </div>
 
-<div class="cbar" id="b3" style="gap:8px;font-size:10px;">
-  🖨 <b style="color:#1A1A1A">列印：</b>
-  <span style="color:#555">點「列印」→ 勾</span><b style="color:#111">「列印背景」</b>
-  <span style="color:#555">→ 取消</span><b style="color:#d04020">「列印標頭和頁尾」</b>
-  <span style="color:#555">→ 共</span><b style="color:#1A1A1A">5頁</b>
-  <span style="color:#999">（已自動縮放至安全範圍，邊界設「預設」或「無」皆可、不會跑版或多空白頁）</span>
+<div class="hint">
+  🖨 <b>列印設定（Safari）：</b>下方 Safari 區塊 <span class="r">「列印背景」務必打勾</span>（不勾色塊黑底不會印）、「列印標頭和註腳」不勾；縮放維持 <b>100%</b>。已自動縮放至 A4 單頁，共 <b>5 頁</b>（每類一張），不會再有空白頁。
 </div>
 
 <div id="pa"><div id="psw"><div id="posters-wrap"></div></div></div>
 
-<button id="rbtn" onclick="toggleR()" style="position:fixed;bottom:16px;right:16px;z-index:9999;background:#0e0e0e;color:#555;border:1.5px solid #1e1e1e;border-radius:50px;padding:7px 13px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">📢 回報</button>
-<div id="rpanel" style="display:none;position:fixed;bottom:50px;right:16px;z-index:9999;background:#0e0e0e;border:1.5px solid #1e1e1e;border-radius:10px;padding:14px;width:220px;font-family:'Noto Sans TC',sans-serif;">
-  <h4 style="font-size:12px;font-weight:700;color:#ccc;margin-bottom:9px;">回報問題</h4>
-  <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px;">
-    <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="功能異常" checked> 功能異常</label>
-    <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="資料錯誤"> 資料錯誤</label>
-    <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="顯示異常"> 顯示異常</label>
-    <label style="font-size:11px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="其他"> 其他</label>
+<button id="rbtn" onclick="toggleR()" style="position:fixed;bottom:16px;right:16px;z-index:9999;background:#1A1A1A;color:#cfccc4;border:2px solid #000;border-radius:0;padding:8px 14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;">回報問題</button>
+<div id="rpanel" style="display:none;position:fixed;bottom:54px;right:16px;z-index:9999;background:#fff;border:2px solid #1A1A1A;padding:14px;width:230px;font-family:'Noto Sans TC',sans-serif;">
+  <h4 style="font-size:13px;font-weight:900;color:#1A1A1A;margin-bottom:10px;">回報問題</h4>
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:9px;">
+    <label style="font-size:12px;color:#55514a;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="抓不到價格" checked> 抓不到價格 / 漏商品</label>
+    <label style="font-size:12px;color:#55514a;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="價格錯誤"> 價格 / 活動文字錯誤</label>
+    <label style="font-size:12px;color:#55514a;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="顯示異常"> 排版 / 列印異常</label>
+    <label style="font-size:12px;color:#55514a;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rt" value="其他"> 其他</label>
   </div>
-  <textarea id="rmsg" placeholder="說明狀況（選填）" style="width:100%;height:52px;background:#080808;border:1.5px solid #1e1e1e;border-radius:5px;padding:6px 8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:#999;resize:none;box-sizing:border-box;margin-bottom:7px;outline:none;"></textarea>
-  <button id="rsub" onclick="sendR()" style="width:100%;background:#1A1A1A;color:#fff;border:none;border-radius:5px;padding:7px;font-size:11px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;">送出回報</button>
-  <div id="rok" style="display:none;text-align:center;padding:6px 0;font-size:11px;color:#3DAB8A;font-weight:700;">✅ 已送出，謝謝！</div>
+  <textarea id="rmsg" placeholder="說明狀況（選填）" style="width:100%;height:54px;border:1.5px solid #1A1A1A;padding:6px 8px;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:#1A1A1A;resize:none;box-sizing:border-box;margin-bottom:8px;outline:none;"></textarea>
+  <button id="rsub" onclick="sendR()" style="width:100%;background:#1A1A1A;color:#fff;border:none;padding:8px;font-size:12px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;">送出回報</button>
+  <div id="rok" style="display:none;text-align:center;padding:7px 0;font-size:12px;color:#2c8a63;font-weight:900;">✅ 已送出，謝謝！</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-const THEMES={
-  dp:{'--poster-bg':'#F5F3EE','--navy':'#1A1A1A','--accent':'#F5A623','--text':'#1A1A1A','--muted':'#888','--divider':'#ddd9d0','--orig-col':'#aaa','--card-bg':'#ffffff','--ctrl':'#f5f5f5','--ctrl2':'#ebebeb',pill:'#1A1A1A',pt:'#fff'},
-  nb:{'--poster-bg':'#F5F3EE','--navy':'#1F3A5F','--accent':'#F5A623','--text':'#1F3A5F','--muted':'#7a8090','--divider':'#ddd9d0','--orig-col':'#aaa','--card-bg':'#ffffff','--ctrl':'#f5f5f5','--ctrl2':'#ebebeb',pill:'#1F3A5F',pt:'#fff'}
-};
-function setT(k){
-  const t=THEMES[k],r=document.documentElement;
-  Object.entries(t).forEach(([key,val])=>{if(key.startsWith('--'))r.style.setProperty(key,val);});
-  document.querySelectorAll('.tpill').forEach(p=>{p.classList.remove('on');p.style.background='';p.style.color='';});
-  const pill=document.getElementById('p-'+k);
-  if(pill){pill.classList.add('on');pill.style.background=t.pill;pill.style.color=t.pt;}
-  ['b1','b2','b3'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.background=id==='b1'?t['--ctrl']:t['--ctrl2'];});
-}
-let _pswScale=0.75;
-function applyZoom(v){_pswScale=v/100;document.getElementById('psw').style.transform=`scale(${v/100})`;document.getElementById('vsc').textContent=v+'%';}
-function sc(cls,v,vid){
-  document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-size',v+'px','important'));
-  const vl=document.getElementById(vid);if(vl)vl.textContent=v+'px';
-}
-function tp(id){
-  document.querySelectorAll('.pop').forEach(p=>{if(p.id!==id)p.classList.remove('on');});
-  document.getElementById(id).classList.toggle('on');
-}
-document.addEventListener('click',e=>{if(!e.target.closest('.pwrap'))document.querySelectorAll('.pop').forEach(p=>p.classList.remove('on'));});
-const boldState={};
-function toggleBoldCls(cls){
-  boldState[cls]=!boldState[cls];const isBold=boldState[cls];
-  document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-weight',isBold?'900':'400','important'));
-  document.querySelectorAll('.fbtn').forEach(b=>{if(b.getAttribute('onclick')===`toggleBoldCls('${cls}')`)b.classList.toggle('bold-on',isBold);});
-}
-function applyStoredStyles(){
-  Object.entries(boldState).forEach(([cls,isBold])=>{document.querySelectorAll('.'+cls).forEach(el=>el.style.setProperty('font-weight',isBold?'900':'400','important'));});
-}
-const posterScales={iphone:100,mac:100,ipad:100,watch:100,accessories:100};
-function setPosterZoom(id,pct){
-  posterScales[id]=Number(pct);
-  const poster=document.getElementById('poster-'+id);
-  if(!poster)return;
-  poster.style.zoom=pct<100?String(pct/100):'';
-  const lbl=document.getElementById('pctrl-val-'+id);if(lbl)lbl.textContent=pct+'%';
-  const slider=document.getElementById('pctrl-'+id);if(slider)slider.value=pct;
-}
-function fixAndFitPosters(){
-  /* 每頁自動計算產品區字級 --fs，使內容剛好填滿可用高度：
-     稀疏頁放大（上限 1.5x，老花友善）、密集頁縮小（下限 0.62x），垂直置中，避免大片留白 */
-  const TARGET=1123, FS_MIN=0.62, FS_MAX=1.5;
-  POSTER_CFG.forEach(cfg=>{
-    const poster=document.getElementById('poster-'+cfg.id);
-    if(!poster)return;
-    poster.style.zoom='';
-    setPosterZoom(cfg.id,100);
-    const products=poster.querySelector('.poster-products');
-    if(!products)return;
-    /* 還原為自然高度以便量測 */
-    products.style.flex='none';products.style.height='auto';products.style.maxHeight='none';
-    products.style.overflow='visible';products.style.display='flex';products.style.flexDirection='column';
-    products.style.justifyContent='flex-start';products.style.minHeight='0';
-    products.style.setProperty('--fs','1');
-    void poster.offsetHeight;
-    /* 可用高度 = A4 − 固定區（頁首/服務列/頁尾） */
-    let fixedH=0;
-    poster.querySelectorAll('.store-bar,.svcbar,.pfoot').forEach(el=>{fixedH+=el.offsetHeight;});
-    const availH=Math.max(80,TARGET-fixedH-2);
-    const hasCards=!!poster.querySelector('.pcol');
-    let fs=1;
-    if(hasCards){
-      for(let i=0;i<7;i++){
-        products.style.setProperty('--fs',fs.toFixed(3));
-        void products.offsetHeight;
-        const contentH=products.offsetHeight;
-        if(contentH<=0)break;
-        const ratio=availH/contentH;
-        if(ratio>0.99&&ratio<1.01)break;
-        fs=Math.max(FS_MIN,Math.min(FS_MAX,fs*ratio));
-      }
-      products.style.setProperty('--fs',fs.toFixed(3));
-    }
-    /* 量測最終自然高度，決定是否垂直置中（內容比可用高度短時置中，消除頂部大留白） */
-    void products.offsetHeight;
-    const finalH=products.offsetHeight;
-    /* 鎖定產品區為可用高度 */
-    products.style.height=availH+'px';products.style.maxHeight=availH+'px';products.style.overflow='hidden';
-    products.style.justifyContent=(finalH<availH-4)?'center':'flex-start';
-  });
-  const st=document.getElementById('pstat');
-  if(st&&st.textContent.indexOf('｜')<0)st.textContent+=' ｜ 已自動配置字級填滿 A4';
-}
-function doPrint(){
-  fixAndFitPosters();
-  void document.body.offsetHeight;
-  let ponly=document.getElementById('print-only');
-  if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
-  ponly.innerHTML='';
-  /* 用 zoom（會縮小佈局盒，transform 不會）把整張海報縮進「預設邊界」也容得下的尺寸，
-     每張海報堆疊進 .psheet 後整體 zoom → 佈局盒一起縮 → 不溢出、不多空白頁。
-     外層 .ppage 用 padding 給安全邊界（≤約 270mm 高 / 188mm 寬，預設/無邊界皆可）。 */
-  const S=0.85, PAD_TOP=34, PAD_BOT=18, PAD_X=12;
-  const sheetW=Math.round(794*S)+2*PAD_X, sheetH=Math.round(1123*S)+PAD_TOP+PAD_BOT;
-  POSTER_CFG.forEach(cfg=>{
-    const poster=document.getElementById('poster-'+cfg.id);
-    if(!poster)return;
-    const page=document.createElement('div');page.className='ppage';
-    page.style.width=sheetW+'px';page.style.height=sheetH+'px';
-    page.style.padding=PAD_TOP+'px '+PAD_X+'px '+PAD_BOT+'px';
-    const sheet=document.createElement('div');sheet.className='psheet';sheet.style.zoom=S;
-    let top=0;
-    [...poster.children].forEach(orig=>{
-      const h=orig.offsetHeight;if(h===0)return;
-      const cl=orig.cloneNode(true);
-      cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
-      cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
-      cl.style.setProperty('position','absolute','important');
-      cl.style.setProperty('top',top+'px','important');
-      cl.style.setProperty('left','0','important');
-      cl.style.setProperty('width','794px','important');
-      cl.style.setProperty('height',h+'px','important');
-      cl.style.setProperty('overflow','hidden','important');
-      cl.style.setProperty('flex','none','important');
-      sheet.appendChild(cl);top+=h;
-    });
-    page.appendChild(sheet);
-    ponly.appendChild(page);
-  });
-  void document.body.offsetHeight;window.print();
-}
-window.addEventListener('afterprint',()=>{
-  const p=document.getElementById('print-only');if(p)p.innerHTML='';
-  applyZoom(_pswScale*100);
-});
-
-/* ── 海報模板 ── */
+/* ── 五張海報設定（只對應指定產品線）── */
 const POSTER_CFG=[
-  {id:'iphone',seriesTitle:'iPhone 17 系列',label:'iPhone',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['iPhone']},
-  {id:'mac',seriesTitle:'Mac 系列',label:'Mac',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['Mac']},
-  {id:'ipad',seriesTitle:'iPad 系列',label:'iPad',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['iPad']},
-  {id:'watch',seriesTitle:'Apple Watch',label:'Watch',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['Apple Watch']},
-  {id:'accessories',seriesTitle:'AirPods & AirTag',label:'AirPods/AirTag',svc:['🚚 本店購買 免費移機','📦 可使用 舊換新','💳 分期0利率 單機3期','🏦 搭配AC/JC 可分12期'],groups:['耳機 & 其他']},
+  {id:'iphone',label:'iPhone',cat:'#DCE8F5',tag:'17 系列',groups:['iPhone'],
+   svc:['本店購買・免費移機','可使用・舊換新','分期 0 利率','搭配 AppleCare 安心']},
+  {id:'ipad',label:'iPad Wi-Fi',cat:'#E7E0F2',tag:'Wi-Fi 機型',groups:['iPad'],
+   svc:['本店購買・免費移機','可使用・舊換新','分期 0 利率','學生・教育價洽詢']},
+  {id:'mac',label:'MacBook',cat:'#DCEEE2',tag:'筆電全系列',groups:['Mac'],
+   svc:['本店購買・免費移機','可使用・舊換新','分期 0 利率','學生・教育價洽詢']},
+  {id:'watch',label:'Apple Watch',cat:'#F7E6D6',tag:'GPS ・ Ultra',groups:['Apple Watch'],
+   svc:['本店購買・免費移機','可使用・舊換新','分期 0 利率','搭配保固更划算']},
+  {id:'acc',label:'AirPods & AirTag',cat:'#F7DEE5',tag:'隨身配件',groups:['配件'],
+   svc:['搭配保固更划算','可使用・舊換新','分期 0 利率','加購主機更優惠']},
 ];
-function makePoster(cfg,dateStr,productsHTML){
-  return `
-<div class="poster-wrap" id="wrap-${cfg.id}">
-  <div class="poster-ctrl">
-    <span class="pctrl-name">▶ ${cfg.label}</span>
-    <input class="pctrl-range" type="range" id="pctrl-${cfg.id}" min="50" max="100" value="100" oninput="setPosterZoom('${cfg.id}',this.value)">
-    <span class="pctrl-val" id="pctrl-val-${cfg.id}">100%</span>
-    <span class="pctrl-sub">← 上傳後自動適配；可手動微調</span>
-  </div>
-  <div class="poster" id="poster-${cfg.id}">
-    <div class="store-bar">
-      <div style="display:flex;align-items:center;">
-        <span class="sname" contenteditable="true">右昌 Apple Shop</span>
-        <span class="ssep">|</span>
-        <span class="ssub" contenteditable="true">Apple Authorized Reseller</span>
-      </div>
-      <span class="sdate" contenteditable="true">${dateStr} 活動限定</span>
-    </div>
-    <div class="series-bar" contenteditable="true">${cfg.seriesTitle}</div>
-    <div class="svcbar">
-      ${cfg.svc.map(s=>`<div class="svc" contenteditable="true">${s}</div>`).join('')}
-    </div>
-    <div class="poster-products">
-      ${productsHTML||'<div class="no-items">📋 請上傳操盤 PDF 產生價格表</div>'}
-    </div>
-    <div class="pfoot">
-      <div class="fnote" contenteditable="true">● 分期0利率：3/6/12期，限持有效信用卡  ● 活動期間如有異動，以現場公告為準</div>
-    </div>
-  </div>
-</div>`;
-}
-function initPosters(){
-  document.getElementById('posters-wrap').innerHTML=POSTER_CFG.map(cfg=>makePoster(cfg,'05/19 — 05/31','')).join('');
-}
+const GRP_LABEL={'iPhone':'iPhone','Mac':'MacBook','iPad':'iPad Wi-Fi','Apple Watch':'Apple Watch','配件':'AirPods & AirTag'};
 
-/* ── PDF 解析 ── */
+/* ── 只辨識這些產品 ── */
 const CATS=[
+  /* iPhone：只留 17 系列 */
   {k:'iPhone 17 Pro Max',lbl:'iPhone 17 Pro Max',grp:'iPhone'},
   {k:'iPhone 17 Pro',lbl:'iPhone 17 Pro',grp:'iPhone'},
   {k:'iPhone 17e',lbl:'iPhone 17e',grp:'iPhone'},
   {k:'iPhone 17',lbl:'iPhone 17',grp:'iPhone'},
+  /* MacBook 系列 */
   {k:'13吋MBN',lbl:'MacBook Neo 13"',grp:'Mac',actKey:'MacBook Neo'},
   {k:'13.6吋MBA',lbl:'MacBook Air 13"',grp:'Mac',actKey:'MacBook Air 13'},
   {k:'15.3吋MBA',lbl:'MacBook Air 15"',grp:'Mac',actKey:'MacBook Air 15'},
   {k:'14.2吋MBP',lbl:'MacBook Pro 14"',grp:'Mac',actKey:'MacBook Pro 14'},
   {k:'16.2吋MBP',lbl:'MacBook Pro 16"',grp:'Mac',actKey:'MacBook Pro 16'},
-  {k:'iPad mini',lbl:'iPad mini',grp:'iPad'},
-  {k:'iPad Air 11吋(M4)',lbl:'iPad Air 11"',grp:'iPad'},
-  {k:'iPad Air 11吋 M4',lbl:'iPad Air 11"',grp:'iPad'},
-  {k:'iPad Air 13',lbl:'iPad Air 13"',grp:'iPad'},
-  {k:'iPad Pro 11',lbl:'iPad Pro 11"',grp:'iPad'},
+  /* iPad：Wi-Fi 機型（LTE 一律排除） */
   {k:'iPad Pro 13',lbl:'iPad Pro 13"',grp:'iPad'},
+  {k:'iPad Pro 11',lbl:'iPad Pro 11"',grp:'iPad'},
+  {k:'iPad Air 13吋',lbl:'iPad Air 13"',grp:'iPad'},
+  {k:'iPad Air 11吋',lbl:'iPad Air 11"',grp:'iPad'},
+  {k:'iPad mini',lbl:'iPad mini',grp:'iPad'},
   {k:'iPad 11',lbl:'iPad 11"',grp:'iPad'},
+  /* Apple Watch：GPS 系列 + Ultra 系列 */
   {k:'AW Ultra',lbl:'Apple Watch Ultra 3',grp:'Apple Watch'},
   {k:'AW S11',lbl:'Apple Watch S11',grp:'Apple Watch'},
-  {k:'AW SE',lbl:'Apple Watch SE',grp:'Apple Watch'},
-  {k:'AirPods Pro 3',lbl:'AirPods Pro 3',grp:'耳機 & 其他'},
-  {k:'AirPods Pro',lbl:'AirPods Pro',grp:'耳機 & 其他'},
-  {k:'AirPods 4-主動',lbl:'AirPods 4 ANC',grp:'耳機 & 其他'},
-  {k:'AirPods 4',lbl:'AirPods 4',grp:'耳機 & 其他'},
-  {k:'AirTag 2-4',lbl:'AirTag 2（4入）',grp:'耳機 & 其他'},
-  {k:'AirTag 2-1',lbl:'AirTag 2（1入）',grp:'耳機 & 其他'},
+  {k:'AW SE',lbl:'Apple Watch SE 3',grp:'Apple Watch'},
+  /* AirPods + AirTag */
+  {k:'AirPods Pro 3',lbl:'AirPods Pro 3',grp:'配件'},
+  {k:'AirPods 4-主動',lbl:'AirPods 4 ANC',grp:'配件'},
+  {k:'AirPods 4',lbl:'AirPods 4',grp:'配件'},
+  {k:'AirPods Max',lbl:'AirPods Max',grp:'配件'},
+  {k:'AirTag 2-4',lbl:'AirTag 2（4 入）',grp:'配件'},
+  {k:'AirTag 2-1',lbl:'AirTag 2（1 入）',grp:'配件'},
 ];
-const EXCLUDE=['保護殼','保護貼','保護套','錶帶','鍵盤','雙面夾','Pencil','Trackpad','Mouse','Keyboard','掛繩','卡套','筆尖','編織線','USB','HomePod','展-','高山錶環','越野錶環'];
-/* 修正抽取時偶爾掉開頭 i（限名稱開頭，不動 Mac mini/Studio/Book） */
+const EXCLUDE=['保護殼','保護貼','保護套','錶帶','鍵盤','雙面夾','Pencil','Trackpad','Mouse','Keyboard','掛繩','卡套','筆尖','編織線','USB','HomePod','展-','高山錶環','越野錶環','防護邊框','邊框','聰穎','巧控'];
+
+/* 修正抽取時偶爾掉開頭 i */
 function fixName(n){return n.replace(/^Phone\s/,'iPhone ').replace(/^Pad\s/,'iPad ').replace(/^Mac\s+(\d+吋)/,'iMac $1').trim();}
+
 function getSpec(name){
   const awM=name.match(/\b(40|42|44|46|49)(?:mm)?\b/);
-  if(awM&&(name.includes('AW ')||name.includes('Apple Watch'))){const mm=awM[1]+'mm';if(name.includes('米蘭'))return mm+'/米蘭';if(name.includes('海洋'))return mm+'/海洋';return mm;}
+  if(awM&&(name.includes('AW ')||name.includes('Apple Watch'))){const mm=awM[1]+'mm';if(name.includes('米蘭'))return mm+' 米蘭';if(name.includes('海洋'))return mm+' 海洋';return mm;}
   if(name.match(/AirPods|AirTag/i))return'';
   const macM=name.match(/(\d+G)\/([\d.]+[GT])/i);if(macM)return macM[1]+'/'+macM[2];
   const m=name.match(/(\d+(?:\.\d+)?)\s*([GT]B?)\b/i);if(!m)return'';
@@ -416,6 +228,7 @@ function getConn(name){
   if(/Wi-Fi\+LTE|LTE/i.test(name))return'LTE';if(/Wi-Fi/i.test(name))return'Wi-Fi';
   if(/GPS\+LTE/i.test(name))return'LTE';if(/GPS/i.test(name))return'GPS';return'';
 }
+
 function parsePDF(text){
   const allLines=text.split('\n').map(l=>l.trim()).filter(l=>l.length>2);
   const tokens=text.split(/\s+/).filter(t=>t.length>0);
@@ -424,83 +237,129 @@ function parsePDF(text){
   if(c.length>0)lines.push(c.join(' '));
   const rows=[];
   const re=/^(\d{6})\s+(.+?)\s+([A-Z][A-Z0-9]{5,}(?:\/[A-Z])?)\s+([\d,]+)(?:\s+([\d,]+)\s+([\d,]+))?/;
-  for(const line of lines){const m=line.match(re);if(m){const mp=parseInt(m[4].replace(/,/g,'')),pp=m[6]?parseInt(m[6].replace(/,/g,'')):0;if(mp>500&&mp<200000)rows.push({name:fixName(m[2].trim()),memberPrice:mp,promoPrice:pp||mp});}}
-  function cleanAct(al){const m=al.match(/[（(](.+?)[）)]/);if(m){const t=m[1].replace(/^(活動|注意)[：:]\s*/,'').trim();if(t.length>=2)return t.slice(0,60);}const kw=al.match(/(現折|滿萬|再送|附贈)[^\s，。；]{1,40}/);if(kw)return kw[0].trim().slice(0,50);return al.replace(/\s*(貨號|品名|型號|會員價|折讓額|促銷價).*/,'').trim().slice(0,60);}
+  for(const line of lines){const m=line.match(re);if(m){const mp=parseInt(m[4].replace(/,/g,'')),pp=m[6]?parseInt(m[6].replace(/,/g,'')):0;if(mp>500&&mp<300000)rows.push({name:fixName(m[2].trim()),memberPrice:mp,promoPrice:pp||mp});}}
+  function cleanAct(al){const m=al.match(/[（(](.+?)[）)]/);if(m){const t=m[1].replace(/^(活動|注意)[：:]\s*/,'').trim();if(t.length>=2)return t.slice(0,40);}const kw=al.match(/(現折|滿萬|再送|附贈|加購)[^\s，。；]{1,30}/);if(kw)return kw[0].trim().slice(0,34);return al.replace(/\s*(貨號|品名|型號|會員價|折讓額|促銷價).*/,'').trim().slice(0,34);}
   function findCat(line){let best=null,bestLen=0;for(const cat of CATS){const keys=[cat.k,cat.lbl];if(cat.actKey)keys.push(cat.actKey);for(const key of keys){if(key.length<=bestLen)continue;const idx=line.indexOf(key);if(idx<0)continue;if(/[^\x00-\x7F]/.test(key)){bestLen=key.length;best=cat;continue;}const rest=line.slice(idx+key.length);if(!rest[0]||rest[0]===' '||!/[a-zA-Z\d]/.test(rest[0])){bestLen=key.length;best=cat;}}}return best;}
   const actMap={};let ctxCat=null;
-  for(const line of allLines){if(/^\d{6}/.test(line))continue;const catInLine=findCat(line);if(catInLine)ctxCat=catInLine;const hasAct=/[（(]/.test(line)||/現折|滿萬|再送|附贈|贈品|注意/.test(line);if(hasAct&&line.length>4&&line.length<200){const target=catInLine||ctxCat;if(target&&!actMap[target.lbl])actMap[target.lbl]=cleanAct(line);}}
+  for(const line of allLines){if(/^\d{6}/.test(line))continue;const catInLine=findCat(line);if(catInLine)ctxCat=catInLine;const hasAct=/[（(]/.test(line)||/現折|滿萬|再送|附贈|贈品|加購|注意|送配件金/.test(line);if(hasAct&&line.length>3&&line.length<160){const target=catInLine||ctxCat;if(target&&!actMap[target.lbl])actMap[target.lbl]=cleanAct(line);}}
   const EXCL_WATCH=EXCLUDE.filter(k=>k!=='錶帶');
   const grouped={};
   for(const row of rows){
     if(row.name.startsWith('展-'))continue;
     let matched=null;for(const cat of CATS){if(row.name.includes(cat.k)||row.name.includes(cat.lbl)){matched=cat;break;}}
     if(!matched)continue;
-    /* 價格門檻：配件（耳機&其他）不套用，避免 AirTag 等低價品被濾掉 */
-    if(matched.grp!=='耳機 & 其他'&&row.promoPrice<3000&&row.memberPrice<3000)continue;
+    /* 配件不套價格門檻（AirTag 等低價品保留） */
+    if(matched.grp!=='配件'&&row.promoPrice<3000&&row.memberPrice<3000)continue;
     const excl=matched.grp==='Apple Watch'?EXCL_WATCH:EXCLUDE;if(excl.some(k=>row.name.includes(k)))continue;
     const conn=getConn(row.name);
     const spec=getSpec(row.name);
+    /* iPad：只留 Wi-Fi，LTE / Cellular 排除 */
     if(matched.grp==='iPad'&&(conn==='LTE'||/[Cc]ellular/.test(row.name)))continue;
-    /* iPad 容量篩選：mini / 11 只留 128/256；Air 只留 M4 的 128/256；Pro 只留 256/512 */
+    /* iPad 容量精簡：mini / 11 留 128/256；Air 只留 M4 的 128/256；Pro 留 256/512 */
     if((matched.k==='iPad mini'||matched.k==='iPad 11')&&!['128G','256G'].includes(spec))continue;
     if(matched.lbl.startsWith('iPad Air')&&(!/M4/.test(row.name)||!['128G','256G'].includes(spec)))continue;
     if(matched.lbl.startsWith('iPad Pro')&&!['256G','512G'].includes(spec))continue;
+    /* Apple Watch：只留 GPS（SE/S11 排除 LTE）；Ultra 只留米蘭/海洋一款代表 */
     if((matched.k==='AW SE'||matched.k==='AW S11')&&conn==='LTE')continue;
     if(matched.k==='AW Ultra'){if(!spec.includes('米蘭')&&!spec.includes('海洋'))continue;}
     const lbl=matched.lbl;
-    if(!grouped[lbl])grouped[lbl]={grp:matched.grp,lbl,specs:[],minPrice:Infinity,minOrig:Infinity,act:actMap[lbl]||''};
+    if(!grouped[lbl])grouped[lbl]={grp:matched.grp,lbl,specs:[],act:actMap[lbl]||''};
     const price=row.promoPrice,orig=row.memberPrice;
-    const noSpecOk=matched.grp==='耳機 & 其他'||matched.grp==='Apple Watch';
+    const noSpecOk=matched.grp==='配件';
     if(!spec&&!noSpecOk)continue;
-    const key=spec+(conn?'|'+conn:'');
-    if(!grouped[lbl].specs.find(s=>s.key===key))grouped[lbl].specs.push({key,spec,conn,price,orig});
-    if(price<grouped[lbl].minPrice){grouped[lbl].minPrice=price;grouped[lbl].minOrig=orig;}
+    const key=spec+(conn&&conn!=='Wi-Fi'?'|'+conn:'');
+    const exist=grouped[lbl].specs.find(s=>s.key===key);
+    if(exist){if(price<exist.price){exist.price=price;exist.orig=orig;}}
+    else grouped[lbl].specs.push({key,spec,conn,price,orig});
+  }
+  /* 每款依價格排序、上限 4 個規格，畫面清爽好讀 */
+  for(const lbl in grouped){
+    grouped[lbl].specs.sort((a,b)=>a.price-b.price);
+    grouped[lbl].specs=grouped[lbl].specs.slice(0,4);
   }
   return grouped;
 }
 function fmt(n){return isFinite(n)?'$'+n.toLocaleString('zh-TW'):'—';}
 
-const GRP_LABEL={'iPhone':'iPhone','Mac':'Mac','iPad':'iPad','Apple Watch':'Apple Watch','耳機 & 其他':'AirPods & AirTag'};
-
-function colHTML(item){
-  const actHTML=item.act?`<span class="pact" contenteditable="true">${item.act}</span>`:'';
-  const specItems=item.specs.slice(0,6).map(s=>{
-    const lbl=[s.spec,s.conn].filter(Boolean).join(' ');
-    if(!lbl)return`<div class="pspec-item"><div class="pspec-price" contenteditable="true">${fmt(s.price)}</div>${s.orig>s.price?`<div class="pspec-orig" contenteditable="true">原 ${fmt(s.orig)}</div>`:''}<button class="spec-del" onclick="this.closest('.pspec-item').remove()">✕</button></div>`;
-    return`<div class="pspec-item"><div class="pspec-label" contenteditable="true">${lbl}</div><div class="pspec-price" contenteditable="true">${fmt(s.price)}</div>${s.orig>s.price?`<div class="pspec-orig" contenteditable="true">原 ${fmt(s.orig)}</div>`:''}<button class="spec-del" onclick="this.closest('.pspec-item').remove()">✕</button></div>`;
-  }).join('');
-  return`<div class="pcol"><div class="pcol-head"><div class="pname" contenteditable="true">${item.lbl}</div>${actHTML}</div><div class="pcol-body"><div class="pspecs-grid">${specItems}</div><button class="spec-add" onclick="addSpec(this)">＋ 新增規格</button></div></div>`;
+/* ── 海報模板 ── */
+function makePoster(cfg,dateStr,productsHTML){
+  return `
+<div class="poster-wrap" id="wrap-${cfg.id}">
+  <div class="poster-ctrl">
+    <span class="pctrl-name">▶ ${cfg.label}</span>
+    <input class="pctrl-range" type="range" id="pctrl-${cfg.id}" min="55" max="100" value="100" oninput="setPosterZoom('${cfg.id}',this.value)">
+    <span class="pctrl-val" id="pctrl-val-${cfg.id}">100%</span>
+    <span class="pctrl-sub">← 列印縮放（一般免動，已自動配置）</span>
+  </div>
+  <div class="poster" id="poster-${cfg.id}" style="--cat:${cfg.cat}">
+    <div class="store-bar">
+      <div class="store-l">
+        <span class="sname" contenteditable="true">右昌 Apple Shop</span>
+        <span class="ssub" contenteditable="true">Apple 授權經銷・會員專屬優惠</span>
+      </div>
+      <span class="sdate" contenteditable="true">${dateStr}</span>
+    </div>
+    <div class="cat-banner">
+      <span class="cat-title" contenteditable="true">${cfg.label}</span>
+      <span class="cat-tag" contenteditable="true">${cfg.tag}</span>
+    </div>
+    <div class="svcbar">
+      ${cfg.svc.map(s=>`<div class="svc" contenteditable="true">${s}</div>`).join('')}
+    </div>
+    <div class="poster-products">
+      ${productsHTML||'<div class="no-items">請上傳操盤 PDF 自動產生價格</div>'}
+    </div>
+    <div class="pfoot">
+      <div class="fnote" contenteditable="true">分期 0 利率：3／6／12 期，限持有效信用卡　●　活動期間如有異動，以現場公告為準</div>
+    </div>
+  </div>
+</div>`;
 }
-
+function colHTML(item,cols){
+  const n=cols||Math.max(1,item.specs.length);
+  const actHTML=`<span class="pact" contenteditable="true" data-ph="＋活動">${item.act||''}</span>`;
+  const specItems=item.specs.map(s=>{
+    const cap=[s.spec,(s.conn&&s.conn!=='Wi-Fi'?s.conn:'')].filter(Boolean).join(' ');
+    const capHTML=cap?`<div class="pspec-cap" contenteditable="true">${cap}</div>`:'';
+    const save=s.orig-s.price;
+    const subHTML=save>0?`<div class="pspec-sub" contenteditable="true">原價 <s>${fmt(s.orig)}</s><br>省 <b>${fmt(save)}</b></div>`:'';
+    return`<div class="pspec">${capHTML}<div class="pspec-price" contenteditable="true">${fmt(s.price)}</div>${subHTML}<button class="spec-del" onclick="this.closest('.pspec').remove()">✕</button></div>`;
+  }).join('');
+  return`<div class="pcol"><div class="pcol-head"><div class="pname" contenteditable="true">${item.lbl}</div>${actHTML}</div><div class="pcol-body"><div class="pspecs" style="grid-template-columns:repeat(${n},1fr)">${specItems}</div><button class="spec-add" onclick="addSpec(this)">＋ 規格</button></div></div>`;
+}
 function buildGroupHTML(grouped,groups){
-  const activeGroups=groups.filter(g=>Object.values(grouped).some(i=>i.grp===g));
-  const multiGroup=activeGroups.length>1;
   let html='';
   for(const g of groups){
     const items=Object.values(grouped).filter(i=>i.grp===g);if(!items.length)continue;
-    if(multiGroup)html+=`<div class="catrow" contenteditable="true">${GRP_LABEL[g]||g}</div>`;
+    /* 同一頁所有卡片用相同欄位數 → 256G/512G/1TB 各欄上下對齊 */
+    const cols=Math.max(1,...items.map(i=>i.specs.length||1));
     if(g==='iPad'){
-      /* iPad 全頁兩兩並排，固定順序：mini｜11、Air11｜Air13、Pro11｜Pro13 */
       const order=['iPad mini','iPad 11"','iPad Air 11"','iPad Air 13"','iPad Pro 11"','iPad Pro 13"'];
-      const sorted=items.slice().sort((a,b)=>{
-        const ia=order.indexOf(a.lbl),ib=order.indexOf(b.lbl);
-        return (ia<0?99:ia)-(ib<0?99:ib);
-      });
-      for(let i=0;i<sorted.length;i+=2){
-        const a=sorted[i],b=sorted[i+1];
-        if(b)html+=`<div class="pgrid-pair">${colHTML(a)}${colHTML(b)}</div>`;
-        else html+=colHTML(a);
-      }
+      const sorted=items.slice().sort((a,b)=>{const ia=order.indexOf(a.lbl),ib=order.indexOf(b.lbl);return(ia<0?99:ia)-(ib<0?99:ib);});
+      for(let i=0;i<sorted.length;i+=2){const a=sorted[i],b=sorted[i+1];if(b)html+=`<div class="pgrid-pair">${colHTML(a,cols)}${colHTML(b,cols)}</div>`;else html+=colHTML(a,cols);}
+    }else if(g==='配件'){
+      /* 配件兩兩並排，省空間又大字 */
+      const order=['AirPods Pro 3','AirPods 4 ANC','AirPods 4','AirPods Max','AirTag 2（1 入）','AirTag 2（4 入）'];
+      const sorted=items.slice().sort((a,b)=>{const ia=order.indexOf(a.lbl),ib=order.indexOf(b.lbl);return(ia<0?99:ia)-(ib<0?99:ib);});
+      for(let i=0;i<sorted.length;i+=2){const a=sorted[i],b=sorted[i+1];if(b)html+=`<div class="pgrid-pair">${colHTML(a,cols)}${colHTML(b,cols)}</div>`;else html+=colHTML(a,cols);}
     }else{
-      items.forEach(item=>html+=colHTML(item));
+      const order=['iPhone 17e','iPhone 17','iPhone 17 Pro','iPhone 17 Pro Max',
+                   'MacBook Neo 13"','MacBook Air 13"','MacBook Air 15"','MacBook Pro 14"','MacBook Pro 16"',
+                   'Apple Watch SE 3','Apple Watch S11','Apple Watch Ultra 3'];
+      const sorted=items.slice().sort((a,b)=>{const ia=order.indexOf(a.lbl),ib=order.indexOf(b.lbl);return(ia<0?99:ia)-(ib<0?99:ib);});
+      sorted.forEach(item=>html+=colHTML(item,cols));
     }
   }
   return html;
 }
+function initPosters(){
+  document.getElementById('posters-wrap').innerHTML=POSTER_CFG.map(cfg=>makePoster(cfg,'活動日期','')).join('');
+}
 
+/* ── PDF 解析入口 ── */
 document.getElementById('pfi').addEventListener('change',async function(){
   const file=this.files[0];if(!file)return;
-  const st=document.getElementById('pstat');st.textContent='解析中...';st.style.color='#888';
+  const st=document.getElementById('pstat');st.textContent='解析中…';st.style.color='var(--muted)';
   try{
     const ab=await file.arrayBuffer();
     const pdf=await pdfjsLib.getDocument({data:ab}).promise;
@@ -519,64 +378,129 @@ document.getElementById('pfi').addEventListener('change',async function(){
       for(const [,parts] of sorted){parts.sort((a,b)=>a.x-b.x);fullText+=parts.map(p=>p.str).join(' ')+'\n';}
     }
     const fname=file.name.replace('.pdf','');const dm=fname.match(/(\d{4})-(\d{4})/);
-    const dateStr=dm?(()=>{const f=d=>`${d.slice(0,2)}/${d.slice(2)}`;return`${f(dm[1])} — ${f(dm[2])}`;})():'05/19 — 05/31';
+    const dateStr=dm?(()=>{const f=d=>`${d.slice(0,2)}/${d.slice(2)}`;return`${f(dm[1])} ─ ${f(dm[2])}`;})():'活動日期';
     const grouped=parsePDF(fullText);
     document.getElementById('posters-wrap').innerHTML=POSTER_CFG.map(cfg=>makePoster(cfg,dateStr,buildGroupHTML(grouped,cfg.groups))).join('');
-    applyStoredStyles();
-    POSTER_CFG.forEach(cfg=>{posterScales[cfg.id]=100;const s=document.getElementById('pctrl-'+cfg.id);if(s)s.value=100;const v=document.getElementById('pctrl-val-'+cfg.id);if(v)v.textContent='100%';});
-    document.querySelectorAll('.fstore,.sname').forEach(el=>el.textContent=_storeId);
-    st.textContent='✓ '+file.name;st.style.color='#3DAB8A';
+    document.querySelectorAll('.sname').forEach(el=>el.textContent=_storeId);
+    const total=Object.keys(grouped).length;
+    st.textContent='✓ '+file.name+'（'+total+' 款）';st.style.color='#2c8a63';
     document.fonts.ready.then(()=>fixAndFitPosters());
-  }catch(e){st.textContent='⚠️ 解析失敗：'+e.message;st.style.color='#f44';console.error(e);}
+  }catch(e){st.textContent='⚠️ 解析失敗：'+e.message;st.style.color='#C8442E';console.error(e);}
 });
 
 function addSpec(btn){
-  const grid=btn.previousElementSibling;if(!grid||!grid.classList.contains('pspecs-grid'))return;
-  const item=document.createElement('div');item.className='pspec-item';
-  item.innerHTML='<div class="pspec-label" contenteditable="true">規格</div><div class="pspec-price" contenteditable="true">$—</div><button class="spec-del" onclick="this.closest(\'.pspec-item\').remove()">✕</button>';
-  grid.appendChild(item);item.querySelector('.pspec-label').focus();
+  const grid=btn.previousElementSibling;if(!grid||!grid.classList.contains('pspecs'))return;
+  const item=document.createElement('div');item.className='pspec';
+  item.innerHTML='<div class="pspec-cap" contenteditable="true">容量</div><div class="pspec-price" contenteditable="true">$—</div><button class="spec-del" onclick="this.closest(\'.pspec\').remove()">✕</button>';
+  grid.appendChild(item);item.querySelector('.pspec-cap').focus();
 }
 
+/* ── 自動放大配置：依內容量自動算 --fs，填滿 A4，免手動調字 ── */
+const posterScales={};
+function setPosterZoom(id,pct){
+  posterScales[id]=Number(pct);
+  const poster=document.getElementById('poster-'+id);if(!poster)return;
+  poster.style.zoom=pct<100?String(pct/100):'';
+  const lbl=document.getElementById('pctrl-val-'+id);if(lbl)lbl.textContent=pct+'%';
+  const slider=document.getElementById('pctrl-'+id);if(slider)slider.value=pct;
+}
+function fixAndFitPosters(){
+  const TARGET=1032, FS_MIN=0.7, FS_MAX=1.9;
+  POSTER_CFG.forEach(cfg=>{
+    const poster=document.getElementById('poster-'+cfg.id);if(!poster)return;
+    poster.style.zoom='';setPosterZoom(cfg.id,100);
+    const products=poster.querySelector('.poster-products');if(!products)return;
+    products.style.flex='none';products.style.height='auto';products.style.maxHeight='none';
+    products.style.overflow='visible';products.style.justifyContent='flex-start';products.style.minHeight='0';
+    products.style.setProperty('--fs','1');void poster.offsetHeight;
+    let fixedH=0;poster.querySelectorAll('.store-bar,.cat-banner,.svcbar,.pfoot').forEach(el=>{fixedH+=el.offsetHeight;});
+    const availH=Math.max(80,TARGET-fixedH-2);
+    const hasCards=!!poster.querySelector('.pcol');
+    let fs=1;
+    if(hasCards){
+      for(let i=0;i<8;i++){
+        products.style.setProperty('--fs',fs.toFixed(3));void products.offsetHeight;
+        const contentH=products.offsetHeight;if(contentH<=0)break;
+        const ratio=availH/contentH;if(ratio>0.99&&ratio<1.01)break;
+        fs=Math.max(FS_MIN,Math.min(FS_MAX,fs*ratio));
+      }
+      products.style.setProperty('--fs',fs.toFixed(3));
+    }
+    void products.offsetHeight;const finalH=products.offsetHeight;
+    products.style.height=availH+'px';products.style.maxHeight=availH+'px';products.style.overflow='hidden';
+    products.style.justifyContent=(finalH<availH-4)?'space-between':'flex-start';
+  });
+  const st=document.getElementById('pstat');
+  if(st&&st.textContent.indexOf('｜')<0&&st.textContent.indexOf('✓')===0)st.textContent+=' ｜ 已自動放大填滿 A4';
+}
+
+/* ── 列印 ── */
+function doPrint(){
+  fixAndFitPosters();void document.body.offsetHeight;
+  let ponly=document.getElementById('print-only');
+  if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
+  ponly.innerHTML='';
+  /* 不靠縮放（此台 Safari 列印同時忽略 zoom 與 transform）。
+     海報設計高度已降到 1080px < A4 可列印區，列印 1:1、頁高=實際內容高，每張穩落單頁、不溢出空白頁。 */
+  POSTER_CFG.forEach(cfg=>{
+    const poster=document.getElementById('poster-'+cfg.id);if(!poster)return;
+    if(!poster.querySelector('.pcol'))return; /* 空白頁不印 */
+    const page=document.createElement('div');page.className='ppage';
+    page.style.width='794px';page.style.padding='0';
+    const sheet=document.createElement('div');sheet.className='psheet';
+    let top=54;   /* 上方安全邊：避開印表機頂端死區並整體下移，頁頭不被切 */
+    [...poster.children].forEach(orig=>{
+      const h=orig.offsetHeight;if(h===0)return;
+      const cl=orig.cloneNode(true);
+      cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
+      cl.querySelectorAll('.pact').forEach(e=>{if(!e.textContent.trim())e.remove();});
+      cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
+      cl.style.setProperty('position','absolute','important');
+      cl.style.setProperty('top',top+'px','important');
+      cl.style.setProperty('left','0','important');
+      cl.style.setProperty('width','794px','important');
+      cl.style.setProperty('height',h+'px','important');
+      cl.style.setProperty('overflow','hidden','important');
+      cl.style.setProperty('flex','none','important');
+      sheet.appendChild(cl);top+=h;
+    });
+    page.style.height=top+'px';sheet.style.height=top+'px';   /* 頁高=內容高(約1078)，< A4 → 單頁 */
+    page.appendChild(sheet);ponly.appendChild(page);
+  });
+  void document.body.offsetHeight;window.print();
+}
+window.addEventListener('afterprint',()=>{const p=document.getElementById('print-only');if(p)p.innerHTML='';applyZoom(_pswScale*100);});
+
+/* ── 畫面縮放 ── */
+let _pswScale=0.68;
+function applyZoom(v){_pswScale=v/100;document.getElementById('psw').style.transform=`scale(${v/100})`;document.getElementById('vsc').textContent=v+'%';}
+
+/* ── 多門市 / 回報 ── */
 const _rawStore=decodeURIComponent(new URLSearchParams(location.search).get('store')||'');
 const _storeId=_rawStore?_rawStore.replace(/^燦坤/,'').replace(/店$/,'')+' Apple Shop':'右昌 Apple Shop';
 const API='https://script.google.com/macros/s/AKfycbyiX43HQKr48-rd7DZSm5u9KP-uoeT6DagKrPYPs-G4lE5mnpf1yHUb_n0LgHe_hMzc/exec';
 
-/* ── 儲存 / 還原版面 ── */
 function saveLayout(){
   const wrap=document.getElementById('posters-wrap');
   if(!wrap||!wrap.innerHTML.trim()){alert('尚未載入海報，請先上傳 PDF。');return;}
-  const data={
-    html:wrap.innerHTML,
-    theme:document.querySelector('.tpill.on')?.id||'p-dp',
-    zoom:_pswScale*100
-  };
-  localStorage.setItem('posterLayout',JSON.stringify(data));
-  const st=document.getElementById('pstat');
-  const prev=st.textContent;
-  st.textContent='✓ 版面已儲存';st.style.color='#3DAB8A';
-  setTimeout(()=>{st.textContent=prev;st.style.color='';},2000);
+  localStorage.setItem('posterLayoutSimple',JSON.stringify({html:wrap.innerHTML,zoom:_pswScale*100}));
+  const st=document.getElementById('pstat');const prev=st.textContent;
+  st.textContent='✓ 版面已儲存';st.style.color='#2c8a63';
+  setTimeout(()=>{st.textContent=prev;st.style.color='';},1800);
 }
 function restoreLayout(){
-  const raw=localStorage.getItem('posterLayout');if(!raw)return false;
-  try{
-    const data=JSON.parse(raw);
-    document.getElementById('posters-wrap').innerHTML=data.html;
-    const tid=(data.theme||'p-dp').replace('p-','');
-    setT(tid);
-    applyZoom(data.zoom||75);
-    applyStoredStyles();
-    document.querySelectorAll('.fstore,.sname').forEach(el=>el.textContent=_storeId);
+  const raw=localStorage.getItem('posterLayoutSimple');if(!raw)return false;
+  try{const data=JSON.parse(raw);document.getElementById('posters-wrap').innerHTML=data.html;applyZoom(data.zoom||68);
+    document.querySelectorAll('.sname').forEach(el=>el.textContent=_storeId);
     document.fonts.ready.then(()=>fixAndFitPosters());
-    document.getElementById('pstat').textContent='✓ 已還原上次儲存版面';
-    document.getElementById('pstat').style.color='#3DAB8A';
-    return true;
+    document.getElementById('pstat').textContent='✓ 已還原上次版面';document.getElementById('pstat').style.color='#2c8a63';return true;
   }catch(e){return false;}
 }
 function toggleR(){const p=document.getElementById('rpanel');p.style.display=p.style.display==='block'?'none':'block';document.getElementById('rok').style.display='none';}
-async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中...';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:_storeId,tool:'海報A4-v8',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2200);}
+async function sendR(){const type=document.querySelector('input[name="rt"]:checked').value;const msg=document.getElementById('rmsg').value.trim();const btn=document.getElementById('rsub');btn.disabled=true;btn.textContent='送出中…';try{await fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:_storeId,tool:'海報-簡約大字版',type,message:msg,url:location.href})});}catch(e){}document.getElementById('rok').style.display='block';document.getElementById('rmsg').value='';btn.textContent='送出回報';btn.disabled=false;setTimeout(()=>{document.getElementById('rpanel').style.display='none';},2000);}
 document.addEventListener('click',e=>{const p=document.getElementById('rpanel'),b=document.getElementById('rbtn');if(p.style.display==='block'&&!p.contains(e.target)&&e.target!==b)p.style.display='none';});
 
-window.addEventListener('load',()=>{setT('dp');applyZoom(75);if(!restoreLayout())initPosters();document.querySelectorAll('.fstore,.sname').forEach(el=>el.textContent=_storeId);});
+window.addEventListener('load',()=>{applyZoom(68);if(!restoreLayout())initPosters();document.querySelectorAll('.sname').forEach(el=>el.textContent=_storeId);});
 </script>
 </body>
 </html>
