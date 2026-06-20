@@ -111,13 +111,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 @media screen{#print-only{display:none;}}
 @media print{
   @page{size:A4 portrait;margin:0;}
-  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  body{margin:0;padding:0;background:white;}
+  html,body{margin:0;padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   body>*:not(#print-only){display:none!important;}
   #print-only{display:block!important;}
-  .ppage{overflow:hidden;position:relative;display:block;background:#fff;break-inside:avoid;page-break-inside:avoid;margin:0 auto;box-sizing:border-box;}
-  .ppage+.ppage{break-before:page;page-break-before:always;}
-  .psheet{position:relative;width:794px;height:1123px;overflow:hidden;}
+  /* 每張海報＝一整頁 A4。整塊克隆＋transform 縮放，避免 zoom/absolute 在 Safari 列印變空白 */
+  .ppage{width:794px;height:1123px;overflow:hidden;background:#fff;display:flex;align-items:flex-start;justify-content:center;page-break-after:always;break-after:page;}
+  .ppage:last-child{page-break-after:auto;break-after:auto;}
+  .ppage .poster{transform:scale(.965);transform-origin:top center;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -125,7 +125,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 <body>
 
 <div class="cbar">
-  <span class="pbadge">右昌 <em>會員優惠</em>・簡約大字版 <span style="color:#C8442E;">v8（下移微調）</span></span>
+  <span class="pbadge">右昌 <em>會員優惠</em>・簡約大字版 <span style="color:#C8442E;">v10（列印修復）</span></span>
   <input type="file" id="pfi" accept=".pdf">
   <button class="bbtn pdf" onclick="document.getElementById('pfi').click()">① 選擇操盤 PDF</button>
   <button class="bbtn" onclick="fixAndFitPosters()">② 自動放大配置</button>
@@ -448,44 +448,25 @@ function fixAndFitPosters(){
   if(st&&st.textContent.indexOf('｜')<0&&st.textContent.indexOf('✓')===0)st.textContent+=' ｜ 已自動放大填滿 A4';
 }
 
-/* ── 列印（v9：回到 zoom+padding 縮放法，內容縮進可列印區，避免空白/被切）── */
+/* ── 列印（v10：整塊海報克隆＋transform 縮放，移除 zoom/absolute，修正 Safari 列印空白/存不出 PDF）── */
 function doPrint(){
   try{
     fixAndFitPosters();void document.body.offsetHeight;
     let ponly=document.getElementById('print-only');
     if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
     ponly.innerHTML='';
-    /* zoom 會連佈局盒一起縮（transform 只縮視覺會溢出多分空白頁）。
-       sheet 794 寬 × 內容高，整體 zoom=S 縮小，再用 ppage padding 給安全邊界 → 落在 A4 可列印區內。 */
-    const S=0.82, PAD_TOP=30, PAD_BOT=18, PAD_X=14;
     let built=0;
     POSTER_CFG.forEach(cfg=>{
-      const poster=document.getElementById('poster-'+cfg.id);if(!poster)return;
-      if(!poster.querySelector('.pcol'))return; /* 空白頁不印 */
+      const poster=document.getElementById('poster-'+cfg.id);
+      if(!poster||!poster.querySelector('.pcol'))return; /* 空白頁不印 */
+      const cl=poster.cloneNode(true);
+      cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
+      cl.querySelectorAll('.pact').forEach(e=>{if(!e.textContent.trim())e.remove();});
+      cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
+      cl.style.zoom='';        /* 清掉螢幕預覽縮放，列印用原寸（794px＝A4 寬） */
+      cl.style.margin='0';
       const page=document.createElement('div');page.className='ppage';
-      const sheet=document.createElement('div');sheet.className='psheet';
-      let top=0;
-      [...poster.children].forEach(orig=>{
-        const h=orig.offsetHeight;if(h===0)return;
-        const cl=orig.cloneNode(true);
-        cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
-        cl.querySelectorAll('.pact').forEach(e=>{if(!e.textContent.trim())e.remove();});
-        cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
-        cl.style.setProperty('position','absolute','important');
-        cl.style.setProperty('top',top+'px','important');
-        cl.style.setProperty('left','0','important');
-        cl.style.setProperty('width','794px','important');
-        cl.style.setProperty('height',h+'px','important');
-        cl.style.setProperty('overflow','hidden','important');
-        cl.style.setProperty('flex','none','important');
-        sheet.appendChild(cl);top+=h;
-      });
-      sheet.style.width='794px';sheet.style.height=top+'px';
-      sheet.style.zoom=String(S);                       /* 整體縮 → 不溢出、不多空白頁 */
-      page.style.boxSizing='border-box';
-      page.style.padding=PAD_TOP+'px '+PAD_X+'px '+PAD_BOT+'px';
-      page.style.width=(794*S+2*PAD_X)+'px';            /* ≈ 665+28 = 693px ≈ 183mm < 可列印寬 */
-      page.appendChild(sheet);ponly.appendChild(page);built++;
+      page.appendChild(cl);ponly.appendChild(page);built++;
     });
     if(!built){showErr('尚未產生海報，請先上傳操盤 PDF。');return;}
     void document.body.offsetHeight;window.print();
