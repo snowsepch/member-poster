@@ -110,15 +110,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 
 @media screen{#print-only{display:none;}}
 @media print{
-  @page{size:A4 portrait;margin:6mm;}
-  html,body{margin:0;padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  body>*:not(#print-only){display:none!important;}
-  #print-only{display:block!important;}
-  /* 關鍵：.ppage 自身＝縮放後尺寸，分頁依縮放後高度計算 → 不多出空白頁；
-     海報用 transform 縮放（Safari 列印可靠，不像 zoom 會空白），origin top left 對齊 .ppage 左上 */
-  .ppage{overflow:hidden;background:#fff;margin:0 auto;break-after:page;page-break-after:always;break-inside:avoid;page-break-inside:avoid;}
-  .ppage:last-child{break-after:auto;page-break-after:auto;}
-  .ppage .poster{transform-origin:top left;outline-offset:-2px;}
+  /* 列印一律走 ③ 按鈕的隱藏 iframe；萬一誤按 ⌘P，至少隱藏操作列、不要整頁空白 */
+  .cbar,.hint,#rbtn,#rpanel,#errbar{display:none!important;}
+  #pa{padding:0!important;}
+  #psw{transform:none!important;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -126,7 +121,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 <body>
 
 <div class="cbar">
-  <span class="pbadge">右昌 <em>會員優惠</em>・簡約大字版 <span style="color:#C8442E;">v11（列印修復）</span></span>
+  <span class="pbadge">右昌 <em>會員優惠</em>・簡約大字版 <span style="color:#C8442E;">v12（iframe 列印）</span></span>
   <input type="file" id="pfi" accept=".pdf">
   <button class="bbtn pdf" onclick="document.getElementById('pfi').click()">① 選擇操盤 PDF</button>
   <button class="bbtn" onclick="fixAndFitPosters()">② 自動放大配置</button>
@@ -449,16 +444,19 @@ function fixAndFitPosters(){
   if(st&&st.textContent.indexOf('｜')<0&&st.textContent.indexOf('✓')===0)st.textContent+=' ｜ 已自動放大填滿 A4';
 }
 
-/* ── 列印（v11：整塊克隆＋transform 縮放，且 .ppage 用「縮放後尺寸」定版面 → 不空白、不多頁）── */
+/* ── 列印（v12：寫入隱藏 iframe 只印該 iframe，主視窗完全不進列印模式 → 螢幕不會變空白；
+       iframe 內用「縮放後尺寸頁框＋transform 縮放」確保 Safari 不空白、不多頁）── */
+function stripPrintMedia(css){
+  const i=css.indexOf('@media print');if(i<0)return css;
+  let k=css.indexOf('{',i),depth=0;
+  for(;k<css.length;k++){if(css[k]==='{')depth++;else if(css[k]==='}'){depth--;if(depth===0){k++;break;}}}
+  return css.slice(0,i)+css.slice(k);
+}
 function doPrint(){
   try{
     fixAndFitPosters();void document.body.offsetHeight;
-    let ponly=document.getElementById('print-only');
-    if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
-    ponly.innerHTML='';
-    const S=0.9;                 /* 縮放比例：留印表機安全邊界，避免邊緣裁切 */
-    const PW=794, PH=1032;       /* 海報原寸 */
-    let built=0;
+    const S=0.9,PW=794,PH=1032;
+    let body='';
     POSTER_CFG.forEach(cfg=>{
       const poster=document.getElementById('poster-'+cfg.id);
       if(!poster||!poster.querySelector('.pcol'))return; /* 空白頁不印 */
@@ -466,18 +464,36 @@ function doPrint(){
       cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
       cl.querySelectorAll('.pact').forEach(e=>{if(!e.textContent.trim())e.remove();});
       cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
-      cl.style.zoom='';
-      cl.style.margin='0';
-      cl.style.transform='scale('+S+')';
-      cl.style.transformOrigin='top left';
-      const page=document.createElement('div');page.className='ppage';
-      page.style.width=(PW*S)+'px';     /* .ppage＝縮放後尺寸：分頁依此計算，不溢出多頁 */
-      page.style.height=(PH*S)+'px';
-      page.appendChild(cl);ponly.appendChild(page);built++;
+      cl.style.zoom='';cl.style.transform='';cl.style.margin='';
+      body+='<div class="ppage">'+cl.outerHTML+'</div>';
     });
-    if(!built){showErr('尚未產生海報，請先上傳操盤 PDF。');return;}
-    void document.body.offsetHeight;window.print();
-  }catch(e){restoreScreen();showErr('列印發生錯誤：'+(e&&e.message||e));}
+    if(!body){showErr('尚未產生海報，請先上傳操盤 PDF。');return;}
+    /* 複製頁面樣式（去掉主頁的 @media print，避免干擾 iframe 列印），再疊上乾淨列印樣式 */
+    let css='';document.querySelectorAll('style').forEach(s=>{css+=stripPrintMedia(s.textContent)+'\n';});
+    const printCss='*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}'+
+      '@page{size:A4 portrait;margin:6mm;}'+
+      'html,body{margin:0;padding:0;background:#fff;}'+
+      '.ppage{width:'+(PW*S)+'px;height:'+(PH*S)+'px;overflow:hidden;margin:0 auto;background:#fff;page-break-after:always;break-after:page;}'+
+      '.ppage:last-child{page-break-after:auto;break-after:auto;}'+
+      '.ppage .poster{transform:scale('+S+');transform-origin:top left;outline-offset:-2px;}';
+    const docHTML='<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8">'+
+      '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">'+
+      '<style>'+css+'</style><style>'+printCss+'</style></head><body>'+body+'</body></html>';
+    const old=document.getElementById('print-frame');if(old)old.remove();
+    const ifr=document.createElement('iframe');ifr.id='print-frame';ifr.setAttribute('aria-hidden','true');
+    ifr.style.cssText='position:fixed;left:-9999px;top:0;width:794px;height:1123px;border:0;opacity:0;';
+    document.body.appendChild(ifr);
+    let done=false;
+    const fire=()=>{if(done)return;done=true;
+      try{ifr.contentWindow.focus();ifr.contentWindow.print();}
+      catch(e){showErr('列印失敗：'+(e&&e.message||e));}
+      setTimeout(()=>{try{ifr.remove();}catch(e){}},2000);};
+    ifr.onload=()=>{const w=ifr.contentWindow;
+      if(w.document.fonts&&w.document.fonts.ready){w.document.fonts.ready.then(()=>setTimeout(fire,200));}
+      else setTimeout(fire,500);};
+    const d=ifr.contentWindow.document;d.open();d.write(docHTML);d.close();
+    setTimeout(fire,2500); /* 後備：onload／字型未觸發也能印 */
+  }catch(e){showErr('列印發生錯誤：'+(e&&e.message||e));}
 }
 /* 列印結束務必還原畫面（afterprint 為主，焦點/計時為備援，避免畫面卡在列印狀態變空白） */
 function restoreScreen(){const p=document.getElementById('print-only');if(p)p.innerHTML='';try{applyZoom(_pswScale*100);}catch(e){}}
