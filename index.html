@@ -110,14 +110,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 
 @media screen{#print-only{display:none;}}
 @media print{
-  @page{size:A4 portrait;margin:0;}
+  @page{size:A4 portrait;margin:6mm;}
   html,body{margin:0;padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   body>*:not(#print-only){display:none!important;}
   #print-only{display:block!important;}
-  /* 每張海報＝一整頁 A4。整塊克隆＋transform 縮放，避免 zoom/absolute 在 Safari 列印變空白 */
-  .ppage{width:794px;height:1123px;overflow:hidden;background:#fff;display:flex;align-items:flex-start;justify-content:center;page-break-after:always;break-after:page;}
-  .ppage:last-child{page-break-after:auto;break-after:auto;}
-  .ppage .poster{transform:scale(.965);transform-origin:top center;}
+  /* 關鍵：.ppage 自身＝縮放後尺寸，分頁依縮放後高度計算 → 不多出空白頁；
+     海報用 transform 縮放（Safari 列印可靠，不像 zoom 會空白），origin top left 對齊 .ppage 左上 */
+  .ppage{overflow:hidden;background:#fff;margin:0 auto;break-after:page;page-break-after:always;break-inside:avoid;page-break-inside:avoid;}
+  .ppage:last-child{break-after:auto;page-break-after:auto;}
+  .ppage .poster{transform-origin:top left;outline-offset:-2px;}
   [contenteditable]{outline:none!important;}
 }
 </style>
@@ -125,7 +126,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 <body>
 
 <div class="cbar">
-  <span class="pbadge">右昌 <em>會員優惠</em>・簡約大字版 <span style="color:#C8442E;">v10（列印修復）</span></span>
+  <span class="pbadge">右昌 <em>會員優惠</em>・簡約大字版 <span style="color:#C8442E;">v11（列印修復）</span></span>
   <input type="file" id="pfi" accept=".pdf">
   <button class="bbtn pdf" onclick="document.getElementById('pfi').click()">① 選擇操盤 PDF</button>
   <button class="bbtn" onclick="fixAndFitPosters()">② 自動放大配置</button>
@@ -448,13 +449,15 @@ function fixAndFitPosters(){
   if(st&&st.textContent.indexOf('｜')<0&&st.textContent.indexOf('✓')===0)st.textContent+=' ｜ 已自動放大填滿 A4';
 }
 
-/* ── 列印（v10：整塊海報克隆＋transform 縮放，移除 zoom/absolute，修正 Safari 列印空白/存不出 PDF）── */
+/* ── 列印（v11：整塊克隆＋transform 縮放，且 .ppage 用「縮放後尺寸」定版面 → 不空白、不多頁）── */
 function doPrint(){
   try{
     fixAndFitPosters();void document.body.offsetHeight;
     let ponly=document.getElementById('print-only');
     if(!ponly){ponly=document.createElement('div');ponly.id='print-only';document.body.appendChild(ponly);}
     ponly.innerHTML='';
+    const S=0.9;                 /* 縮放比例：留印表機安全邊界，避免邊緣裁切 */
+    const PW=794, PH=1032;       /* 海報原寸 */
     let built=0;
     POSTER_CFG.forEach(cfg=>{
       const poster=document.getElementById('poster-'+cfg.id);
@@ -463,9 +466,13 @@ function doPrint(){
       cl.querySelectorAll('.spec-del,.spec-add').forEach(e=>e.remove());
       cl.querySelectorAll('.pact').forEach(e=>{if(!e.textContent.trim())e.remove();});
       cl.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
-      cl.style.zoom='';        /* 清掉螢幕預覽縮放，列印用原寸（794px＝A4 寬） */
+      cl.style.zoom='';
       cl.style.margin='0';
+      cl.style.transform='scale('+S+')';
+      cl.style.transformOrigin='top left';
       const page=document.createElement('div');page.className='ppage';
+      page.style.width=(PW*S)+'px';     /* .ppage＝縮放後尺寸：分頁依此計算，不溢出多頁 */
+      page.style.height=(PH*S)+'px';
       page.appendChild(cl);ponly.appendChild(page);built++;
     });
     if(!built){showErr('尚未產生海報，請先上傳操盤 PDF。');return;}
