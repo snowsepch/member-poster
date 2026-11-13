@@ -3,8 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
 <title>右昌 會員優惠 海報・簡約大字版</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@5.3.1/400.css" integrity="sha384-X6XRC062QGnH48n64y+H6zP8JzoQKVtcSpIZbr+2W8RQ8VjVKZur7vLT3FuFzkjD" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@5.3.1/500.css" integrity="sha384-fkJWgi1im+qkzbVxSLYiFGQlVKFyznVWufmeQGtz6HTlgjS/Jk3e/s+rwJ1nIpVE" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@5.3.1/700.css" integrity="sha384-GTr6YrImhTHp7GzDBjuYnA8NLD5qaOlCqAQy4EJLMuxI+YOKzjM6dzMBlixorL5b" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@5.3.1/900.css" integrity="sha384-ToV8MFrNgxIIBe5v7hF9hlf30H43j6lkdY70dU/q36BgHagM1PR5ktX/uKMyrfSu" crossorigin="anonymous">
 <style>
 :root{
   --poster-bg:#FFFFFF;     /* 純白底，高對比好識別 */
@@ -200,9 +204,29 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
   <div id="rok" style="display:none;text-align:center;padding:7px 0;font-size:12px;color:#2c8a63;font-weight:900;">✅ 已送出，謝謝！</div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "pdfjs-dist": "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.5.438/pdf.min.mjs"
+  },
+  "integrity": {
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.5.438/pdf.min.mjs": "sha384-6MTG6VynDVMfHzijur0VKc9BdrA6HaXHZd+pK6iGWh2acDj3CibR0CRwHizMoy1N"
+  }
+}
+</script>
+<script type="module">
+try{
+  const pdfjsLib=await import("pdfjs-dist");
+  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.5.438/pdf.worker.min.mjs";
+  window.__pdfjsResolve(pdfjsLib);
+}catch(e){
+  window.__pdfjsReject(e);
+  if(window.showErr)window.showErr("PDF 元件載入失敗："+(e&&e.message||e));
+}
+</script>
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const pdfjsReady=new Promise((resolve,reject)=>{window.__pdfjsResolve=resolve;window.__pdfjsReject=reject;});
+pdfjsReady.catch(()=>{});
 
 /* ── 錯誤可視化：任何未捕捉錯誤都顯示在畫面上方紅條，避免「畫面整個消失」卻看不到原因 ── */
 function showErr(msg){
@@ -633,7 +657,8 @@ document.getElementById('pfi').addEventListener('change',async function(){
   const st=document.getElementById('pstat');st.textContent='解析中…';st.style.color='var(--muted)';
   try{
     const ab=await file.arrayBuffer();
-    const pdf=await pdfjsLib.getDocument({data:ab}).promise;
+    const pdfjsLib=await pdfjsReady;
+    const pdf=await pdfjsLib.getDocument({data:ab,isEvalSupported:false,enableScripting:false}).promise;
     let fullText='';
     for(let p=1;p<=pdf.numPages;p++){
       const pg=await pdf.getPage(p);const tc=await pg.getTextContent();
@@ -835,8 +860,9 @@ function doPrint(){
       '.ppage{width:'+(PW*S)+'px;height:'+(PH*S)+'px;overflow:hidden;margin:0 auto;background:#fff;page-break-after:always;break-after:page;}'+
       '.ppage:last-child{page-break-after:auto;break-after:auto;}'+
       '.ppage .poster{transform:scale('+S+');transform-origin:top left;outline-offset:-2px;}';
+    const fontLinks=[...document.querySelectorAll('link[rel="stylesheet"]')].map(el=>el.outerHTML).join('');
     const docHTML='<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8">'+
-      '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">'+
+      fontLinks+
       '<style>'+css+'</style><style>'+printCss+'</style></head><body>'+body+'</body></html>';
     const old=document.getElementById('print-frame');if(old)old.remove();
     const ifr=document.createElement('iframe');ifr.id='print-frame';ifr.setAttribute('aria-hidden','true');
